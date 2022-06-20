@@ -1,0 +1,366 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>后端程序员必备：分布式事务基础篇 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言最近看了几篇有关于分布式事务的博文，做一下笔记。哈哈~  数据库事务数据库事务（简称：事务），是数据库管理系统执行过程中的一个逻辑单位，由一个有限的数据库操作序列构成，这些操作要么全部执行,要么全部不执行，是一个不可分割的工作单位。 数据库事务的几个典型特性：原子性(Atomicity )、一致性( Consistency )、隔离性( Isolation)和持久性(Durabilily)，简">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后端程序员必备：分布式事务基础篇">
+<meta property="og:url" content="http://example.com/2022/06/19/JavaHome/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%90%8E%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="前言最近看了几篇有关于分布式事务的博文，做一下笔记。哈哈~  数据库事务数据库事务（简称：事务），是数据库管理系统执行过程中的一个逻辑单位，由一个有限的数据库操作序列构成，这些操作要么全部执行,要么全部不执行，是一个不可分割的工作单位。 数据库事务的几个典型特性：原子性(Atomicity )、一致性( Consistency )、隔离性( Isolation)和持久性(Durabilily)，简">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF">
+<meta property="article:published_time" content="2022-06-19T13:50:08.168Z">
+<meta property="article:modified_time" content="2022-06-20T11:51:41.971Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/19/JavaHome/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%90%8E%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%AF%87/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '后端程序员必备：分布式事务基础篇',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-20 19:51:41'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://t7.baidu.com/it/u=825057118,3516313570&amp;fm=193&amp;f=GIF')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">后端程序员必备：分布式事务基础篇</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-19T13:50:08.168Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-20T11:51:41.971Z" title="更新于 2022-06-20 19:51:41">2022-06-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="后端程序员必备：分布式事务基础篇"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看了几篇有关于分布式事务的博文，做一下笔记。哈哈~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/28/1708c36f8bdae442?w=1123&h=479&f=png&s=66214"></p>
+<h2 id="数据库事务"><a href="#数据库事务" class="headerlink" title="数据库事务"></a>数据库事务</h2><p>数据库事务（<strong>简称：事务</strong>），是数据库管理系统执行过程中的一个逻辑单位，由一个有限的数据库操作序列构成，这些操作<strong>要么全部执行,要么全部不执</strong>行，是一个<strong>不可分割</strong>的工作单位。</p>
+<p>数据库事务的几个典型特性：原子性(Atomicity )、一致性( Consistency )、隔离性( Isolation)和持久性(Durabilily)，简称就是ACID。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/23/170709c59894dabd?w=626&h=466&f=png&s=48562"></p>
+<ul>
+<li><strong>原子性：</strong> 事务作为一个整体被执行，包含在其中的对数据库的操作要么全部被执行，要么都不执行。</li>
+<li><strong>一致性：</strong> 指在事务开始之前和事务结束以后，数据不会被破坏，假如A账户给B账户转10块钱，不管成功与否，A和B的总金额是不变的。</li>
+<li><strong>隔离性：</strong> 多个事务并发访问时，事务之间是相互隔离的，即一个事务不影响其它事务运行效果。简言之，就是事务之间是进水不犯河水的。</li>
+<li><strong>持久性：</strong> 表示事务完成以后，该事务对数据库所作的操作更改，将持久地保存在数据库之中。</li>
+</ul>
+<h2 id="事务的实现原理"><a href="#事务的实现原理" class="headerlink" title="事务的实现原理"></a>事务的实现原理</h2><h3 id="本地事务"><a href="#本地事务" class="headerlink" title="本地事务"></a>本地事务</h3><p>传统的单服务器，单关系型数据库下的事务，就是本地事务。本地事务由资源管理器管理，JDBC事务就是一个非常典型的本地事务。<br><img src="https://user-gold-cdn.xitu.io/2020/2/23/170716766fd18b24?w=832&h=520&f=png&s=53822"></p>
+<h3 id="事务日志"><a href="#事务日志" class="headerlink" title="事务日志"></a>事务日志</h3><p>innodb事务日志包括redo log和undo log。</p>
+<h4 id="redo-log（重做日志）"><a href="#redo-log（重做日志）" class="headerlink" title="redo log（重做日志）"></a>redo log（重做日志）</h4><p>redo log通常是物理日志，记录的是数据页的物理修改，而不是某一行或某几行修改成怎样，它用来恢复提交后的物理数据页。</p>
+<h4 id="undo-log（回滚日志）"><a href="#undo-log（回滚日志）" class="headerlink" title="undo log（回滚日志）"></a>undo log（回滚日志）</h4><p>undo log是逻辑日志，和redo log记录物理日志的不一样。可以这样认为，当delete一条记录时，undo log中会记录一条对应的insert记录，当update一条记录时，它记录一条对应相反的update记录。</p>
+<h3 id="事务ACID特性的实现思想"><a href="#事务ACID特性的实现思想" class="headerlink" title="事务ACID特性的实现思想"></a>事务ACID特性的实现思想</h3><ul>
+<li>原子性：是使用 undo log来实现的，如果事务执行过程中出错或者用户执行了rollback，系统通过undo log日志返回事务开始的状态。</li>
+<li>持久性：使用 redo log来实现，只要redo log日志持久化了，当系统崩溃，即可通过redo log把数据恢复。</li>
+<li>隔离性：通过锁以及MVCC,使事务相互隔离开。</li>
+<li>一致性：通过回滚、恢复，以及并发情况下的隔离性，从而实现一致性。</li>
+</ul>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><p><strong>分布式事务：</strong> 就是指事务的参与者、支持事务的服务器、资源服务器以及事务管理器分别位于不同的分布式系统的不同节点之上。简单来说，分布式事务指的就是分布式系统中的事务，它的存在就是为了保证不同数据库节点的数据一致性。</p>
+<p>为什么需要分布式事务？接下来分两方面阐述：</p>
+<h3 id="微服务架构下的分布式事务"><a href="#微服务架构下的分布式事务" class="headerlink" title="微服务架构下的分布式事务"></a>微服务架构下的分布式事务</h3><p>随着互联网的快速发展，轻盈且功能划分明确的微服务，登上了历史舞台。比如，一个用户下订单，购买直播礼物的服务，被拆分成三个service，分别是金币服务（coinService），下订单服务（orderService）、礼物服务（giftService）。这些服务都部署在不同的机器上（节点），对应的数据库（金币数据库、订单数据库、礼物数据库）也在不同节点上。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/23/170713f8f725ab91?w=790&h=709&f=png&s=69304"></p>
+<p>用户下单购买礼物，礼物数据库、金币数据库、订单数据库在不同节点上，用本地事务是不可以的，那么如何保证不同数据库（节点）上的数据一致性呢？这就需要分布式事务啦~</p>
+<h3 id="分库分表下的分布式事务"><a href="#分库分表下的分布式事务" class="headerlink" title="分库分表下的分布式事务"></a>分库分表下的分布式事务</h3><p>随着业务的发展，数据库的数据日益庞大，超过千万级别的数据，我们就需要对它分库分表（以前公司是用mycat分库分表，后来用sharding-jdbc）。一分库，数据又分布在不同节点上啦，比如有的在深圳机房，有的在北京机房<del>你再想用本地事务去保证，已经无动于衷啦</del>还是需要分布式事务啦。</p>
+<p>比如A转10块给B，A的账户数据是在北京机房，B的账户数据是在深圳机房。流程如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/20/1706322f36bfdf51?w=626&h=673&f=png&s=42564"></p>
+<h2 id="CAP-理论-amp-BASE-理论"><a href="#CAP-理论-amp-BASE-理论" class="headerlink" title="CAP 理论&amp;BASE 理论"></a>CAP 理论&amp;BASE 理论</h2><p>学习分布式事务，当然需要了解 CAP 理论和BASE 理论。</p>
+<h3 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h3><p>CAP理论作为分布式系统的基础理论，指的是在一个分布式系统中， Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性），这三个要素最多只能同时实现两点。<br><img src="https://user-gold-cdn.xitu.io/2019/7/20/16c0f6675fee8222?w=302&h=289&f=png&s=25862"></p>
+<p><strong>一致性(C：Consistency)：</strong></p>
+<p>一致性是指数据在多个副本之间能否保持一致的特性。例如一个数据在某个分区节点更新之后，在其他分区节点读出来的数据也是更新之后的数据。</p>
+<p><strong>可用性(A：Availability)：</strong></p>
+<p>可用性是指系统提供的服务必须一直处于可用的状态，对于用户的每一个操作请求总是能够在有限的时间内返回结果。这里的重点是”有限时间内”和”返回结果”。</p>
+<p><strong>分区容错性（P:Partition tolerance）:</strong></p>
+<p>分布式系统在遇到任何网络分区故障的时候，仍然需要能够保证对外提供满足一致性和可用性的服务。</p>
+<table>
+<thead>
+<tr>
+<th>选择</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CA</td>
+<td>放弃分区容错性，加强一致性和可用性，其实就是传统的单机数据库的选择</td>
+</tr>
+<tr>
+<td>AP</td>
+<td>放弃一致性，分区容错性和可用性，这是很多分布式系统设计时的选择</td>
+</tr>
+<tr>
+<td>CP</td>
+<td>放弃可用性，追求一致性和分区容错性，网络问题会直接让整个系统不可用</td>
+</tr>
+</tbody></table>
+<h3 id="BASE-理论"><a href="#BASE-理论" class="headerlink" title="BASE 理论"></a>BASE 理论</h3><p>BASE 理论， 是对CAP中AP的一个扩展，对于我们的业务系统，我们考虑牺牲一致性来换取系统的可用性和分区容错性。BASE是Basically Available(基本可用)，Soft state（软状态）,和 Eventually consistent（最终一致性）三个短语的缩写。</p>
+<p><strong>Basically Available</strong></p>
+<p>基本可用：通过支持局部故障而不是系统全局故障来实现的。如将用户分区在 5 个数据库服务器上，一个用户数据库的故障只影响这台特定主机那 20% 的用户，其他用户不受影响。</p>
+<p><strong>Soft State</strong></p>
+<p>软状态，状态可以有一段时间不同步</p>
+<p><strong>Eventually Consistent</strong></p>
+<p>最终一致，最终数据是一致的就可以了，而不是时时保持强一致。</p>
+<h2 id="分布式事务的几种解决方案"><a href="#分布式事务的几种解决方案" class="headerlink" title="分布式事务的几种解决方案"></a>分布式事务的几种解决方案</h2><p>分布式事务解决方案主要有以下这几种：</p>
+<ul>
+<li>2PC(二阶段提交)方案</li>
+<li>TCC（Try、Confirm、Cancel）</li>
+<li>本地消息表</li>
+<li>最大努力通知</li>
+<li>Saga事务</li>
+</ul>
+<h3 id="二阶段提交方案"><a href="#二阶段提交方案" class="headerlink" title="二阶段提交方案"></a>二阶段提交方案</h3><p>二阶段提交方案是常用的分布式事务解决方案。事务的提交分为两个阶段：准备阶段和提交执行方案。</p>
+<h4 id="二阶段提交成功的情况"><a href="#二阶段提交成功的情况" class="headerlink" title="二阶段提交成功的情况"></a>二阶段提交成功的情况</h4><p><strong>准备阶段</strong>，事务管理器向每个资源管理器发送准备消息，如果资源管理器的本地事务操作执行成功，则返回成功。</p>
+<p><strong>提交执行阶段</strong>，如果事务管理器收到了所有资源管理器回复的成功消息，则向每个资源管理器发送提交消息，RM 根据 TM 的指令执行提交。如图：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/22/1706bf8fa81abf45?w=1208&h=425&f=png&s=63545"></p>
+<h4 id="二阶段提交失败的情况"><a href="#二阶段提交失败的情况" class="headerlink" title="二阶段提交失败的情况"></a>二阶段提交失败的情况</h4><p><strong>准备阶段</strong>，事务管理器向每个资源管理器发送准备消息，如果资源管理器的本地事务操作执行成功，则返回成功，如果执行失败，则返回失败。</p>
+<p><strong>提交执行阶段</strong>，如果事务管理器收到了任何一个资源管理器失败的消息，则向每个资源管理器发送回滚消息。资源管理器根据事务管理器的指令回滚本地事务操作，释放所有事务处理过程中使用的锁资源。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/22/1706bfc3e9b3968c?w=1298&h=458&f=png&s=69883"></p>
+<h4 id="二阶段提交优缺点"><a href="#二阶段提交优缺点" class="headerlink" title="二阶段提交优缺点"></a>二阶段提交优缺点</h4><p>2PC方案实现起来简单，成本较低，但是主要有以下<strong>缺点</strong>：</p>
+<ul>
+<li>单点问题：如果事务管理器出现故障，资源管理器将一直处于锁定状态。</li>
+<li>性能问题：所有资源管理器在事务提交阶段处于同步阻塞状态，占用系统资源，一直到提交完成，才释放资源，容易导致性能瓶颈。</li>
+<li>数据一致性问题：如果有的资源管理器收到提交的消息，有的没收到，那么会导致数据不一致问题。</li>
+</ul>
+<h3 id="TCC（补偿机制）"><a href="#TCC（补偿机制）" class="headerlink" title="TCC（补偿机制）"></a>TCC（补偿机制）</h3><p>TCC 采用了补偿机制，其核心思想是：针对每个操作，都要注册一个与其对应的确认和补偿（撤销）操作。</p>
+<h4 id="TCC（Try-Confirm-Cancel）模型"><a href="#TCC（Try-Confirm-Cancel）模型" class="headerlink" title="TCC（Try-Confirm-Cancel）模型"></a>TCC（Try-Confirm-Cancel）模型</h4><p>TCC（Try-Confirm-Cancel）是通过对业务逻辑的分解来实现分布式事务。针对一个具体的业务服务，TCC 分布式事务模型需要业务系统都实现一下三段逻辑：</p>
+<p><strong>try阶段</strong>： 尝试去执行，完成所有业务的一致性检查，预留必须的业务资源。</p>
+<p><strong>Confirm阶段</strong>：该阶段对业务进行确认提交，不做任何检查，因为try阶段已经检查过了，默认Confirm阶段是不会出错的。</p>
+<p><strong>Cancel 阶段</strong>：若业务执行失败，则进入该阶段，它会释放try阶段占用的所有业务资源，并回滚Confirm阶段执行的所有操作。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/22/1706d1749decc6ce?w=1468&h=979&f=png&s=1128862"></p>
+<p>TCC 分布式事务模型包括三部分：<strong>主业务服务、从业务服务、业务活动管理器</strong>。</p>
+<ul>
+<li>主业务服务：主业务服务负责发起并完成整个业务活动。</li>
+<li>从业务服务：从业务服务是整个业务活动的参与方，实现Try、Confirm、Cancel操作，供主业务服务调用。</li>
+<li>业务活动管理器：业务活动管理器管理控制整个业务活动，包括记录事务状态，调用从业务服务的 Confirm 操作，调用从业务服务的 Cancel 操作等。</li>
+</ul>
+<p>下面再拿用户下单购买礼物作为例子来模拟TCC实现分布式事务的过程：</p>
+<blockquote>
+<p>假设用户A余额为100金币，拥有的礼物为5朵。A花了10个金币，下订单，购买10朵玫瑰。余额、订单、礼物都在不同数据库。</p>
+</blockquote>
+<p><strong>TCC的Try阶段：</strong></p>
+<ul>
+<li>生成一条订单记录，订单状态为待确认。</li>
+<li>将用户A的账户金币中余额更新为90，冻结金币为10（预留业务资源）</li>
+<li>将用户的礼物数量为5，预增加数量为10。</li>
+<li>Try成功之后，便进入Confirm阶段</li>
+<li>Try过程发生任何异常，均进入Cancel阶段</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/22/1706cf4d0578b364?w=1553&h=830&f=png&s=101136"></p>
+<p><strong>TCC的Confirm阶段：</strong></p>
+<ul>
+<li>订单状态更新为已支付</li>
+<li>更新用户余额为90，可冻结为0</li>
+<li>用户礼物数量更新为15，预增加为0</li>
+<li>Confirm过程发生任何异常，均进入Cancel阶段</li>
+<li>Confirm过程执行成功，则该事务结束</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/22/1706d101f3da66ac?w=1565&h=805&f=png&s=123868"><br><strong>TCC的Cancel阶段：</strong></p>
+<ul>
+<li>修改订单状态为已取消</li>
+<li>更新用户余额回100</li>
+<li>更新用户礼物数量为5</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/22/1706d0f4dc07c44f?w=1612&h=814&f=png&s=135316"></p>
+<h4 id="TCC优缺点"><a href="#TCC优缺点" class="headerlink" title="TCC优缺点"></a>TCC优缺点</h4><p>TCC方案让应用可以自定义数据库操作的粒度，降低了锁冲突，可以提升性能，但是也有以下缺点：</p>
+<ul>
+<li>应用侵入性强，try、confirm、cancel三个阶段都需要业务逻辑实现。</li>
+<li>需要根据网络、系统故障等不同失败原因实现不同的回滚策略，实现难度大，一般借助TCC开源框架，ByteTCC，TCC-transaction，Himly。</li>
+</ul>
+<h3 id="本地消息表"><a href="#本地消息表" class="headerlink" title="本地消息表"></a>本地消息表</h3><p>ebay最初提出本地消息表这个方案，来解决分布式事务问题。业界目前使用这种方案是比较多的，它的核心思想就是将分布式事务拆分成本地事务进行处理。可以看一下基本的实现流程图：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/22/1706d35dba36801f?w=1355&h=648&f=png&s=159895"></p>
+<h4 id="基本实现思路"><a href="#基本实现思路" class="headerlink" title="基本实现思路"></a>基本实现思路</h4><p><strong>发送消息方：</strong> </p>
+<ul>
+<li>需要有一个消息表，记录着消息状态相关信息。</li>
+<li>业务数据和消息表在同一个数据库，即要保证它俩在同一个本地事务。</li>
+<li>在本地事务中处理完业务数据和写消息表操作后，通过写消息到MQ消息队列。</li>
+<li>消息会发到消息消费方，如果发送失败，即进行重试。</li>
+</ul>
+<p><strong>消息消费方：</strong> </p>
+<ul>
+<li>处理消息队列中的消息，完成自己的业务逻辑。</li>
+<li>此时如果本地事务处理成功，则表明已经处理成功了。</li>
+<li>如果本地事务处理失败，那么就会重试执行。</li>
+<li>如果是业务上面的失败，给消息生产方发送一个业务补偿消息，通知进行回滚等操作。</li>
+</ul>
+<p>生产方和消费方定时扫描本地消息表，把还没处理完成的消息或者失败的消息再发送一遍。如果有靠谱的自动对账补账逻辑，这种方案还是非常实用的。</p>
+<h4 id="优点-amp-缺点："><a href="#优点-amp-缺点：" class="headerlink" title="优点&amp;缺点："></a>优点&amp;缺点：</h4><p>该方案的优点是很好地解决了分布式事务问题，实现了最终一致性。缺点是消息表会耦合到业务系统中。</p>
+<h3 id="最大努力通知"><a href="#最大努力通知" class="headerlink" title="最大努力通知"></a>最大努力通知</h3><h4 id="什么是最大通知"><a href="#什么是最大通知" class="headerlink" title="什么是最大通知"></a>什么是最大通知</h4><p>最大努力通知也是一种分布式事务解决方案。下面是企业网银转账一个例子</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/28/170879e04cfd9d00?w=964&h=861&f=png&s=115120"></p>
+<ul>
+<li>企业网银系统调用前置接口，跳转到转账页</li>
+<li>企业网银调用转账系统接口</li>
+<li>转账系统完成转账处理，向企业网银系统发起转账结果通知，若通知失败，则转账系统按策略进行重复通知。</li>
+<li>企业网银系统未接收到通知，会主动调用转账系统的接口查询转账结果。</li>
+<li>转账系统会遇到退汇等情况，会定时回来对账。</li>
+</ul>
+<p>最大努力通知方案的目标，就是<strong>发起通知方通过一定的机制，最大努力将业务处理结果通知到接收方</strong>。最大努力通知实现机制如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/28/1708ba72abeb5e05?w=660&h=440&f=png&s=45177"></p>
+<h4 id="最大努力通知解决方案"><a href="#最大努力通知解决方案" class="headerlink" title="最大努力通知解决方案"></a>最大努力通知解决方案</h4><p>要实现最大努力通知，可以采用MQ的ack机制。</p>
+<p><strong>方案</strong></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/28/1708c187f8e1608d?w=1555&h=561&f=png&s=81088"></p>
+<ul>
+<li>1.发起方将通知发给MQ。</li>
+<li>2.接收通知方监听MQ消息。</li>
+<li>3.接收通知方收到消息后，处理完业务，回应ack。</li>
+<li>4.接收通知方若没有回应ack，则MQ会间隔1min、5min、10min等重复通知。</li>
+<li>5.接受通知方可用消息校对接口，保证消息的一致性。</li>
+</ul>
+<p>转账业务实现流程图：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/28/1708c2a3a6a04190?w=1045&h=559&f=png&s=77360"><br>交互流程如下：</p>
+<ul>
+<li>1、用户请求转账系统进行转账。 </li>
+<li>2、转账系统完成转账，将转账结果发给MQ。</li>
+<li>3、企业网银系统监听MQ，接收转账结果通知，如果接收不到消息，MQ会重复发送通知。接收到转账结果，更新转账状态。</li>
+<li>4、企业网银系统也可以主动查询转账系统的转账结果查询接口，更新转账状态。</li>
+</ul>
+<h3 id="Saga事务"><a href="#Saga事务" class="headerlink" title="Saga事务"></a>Saga事务</h3><p>Saga事务由普林斯顿大学的Hector Garcia-Molina和Kenneth Salem提出，其核心思想是将长事务拆分为多个本地短事务，由Saga事务协调器协调，如果正常结束那就正常完成，如果某个步骤失败，则根据相反顺序一次调用补偿操作。</p>
+<p><strong>saga简介</strong></p>
+<ul>
+<li>Saga &#x3D; Long Live Transaction (LLT，长活事务)</li>
+<li>LLT &#x3D; T1 + T2 + T3 + … + Ti（Ti为本地短事务）</li>
+<li>每个本地事务Ti 有对应的补偿 Ci</li>
+</ul>
+<p><strong>Saga的执行顺序</strong></p>
+<ul>
+<li>正常情况：T1 T2 T3 … Tn</li>
+<li>异常情况：T1 T2 T3 C3 C2 C1</li>
+</ul>
+<p><strong>Saga两种恢复策略</strong></p>
+<ul>
+<li>向后恢复，如果任意本地子事务失败，补偿已完成的事务。如异常情况的执行顺序T1 T2 Ti Ci C2 C1.</li>
+<li>向前恢复，即重试失败的事务，假设最后每个子事务都会成功。执行顺序：T1, T2, …, Tj(失败), Tj(重试),…, Tn。</li>
+</ul>
+<p>举个例子，假设用户下订单，花10块钱购买了10多玫瑰，则有</p>
+<p> T1&#x3D;下订单 ，T2&#x3D;扣用户10块钱，T3&#x3D;用户加10朵玫瑰， T4&#x3D;库存减10朵玫瑰</p>
+<p> C1&#x3D;取消订单 ，C2&#x3D; 给用户加10块钱，C3 &#x3D;用户减10朵玫瑰， C4&#x3D;库存加10朵玫瑰</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/2/25/1707ccc17917ef04?w=1194&h=571&f=png&s=50655"></p>
+<p>假设事务执行到T4发生异常回滚，在C4的要把玫瑰给库存加回去的时候，发现用户的玫瑰都用掉了，这是<strong>Saga的一个缺点</strong>，由于事务之间没有隔离性导致的问题。</p>
+<p><strong>可以通过以下方案解决这个问题</strong>：</p>
+<ul>
+<li>在应⽤层⾯加⼊逻辑锁的逻辑。</li>
+<li>Session层⾯隔离来保证串⾏化操作。</li>
+<li>业务层⾯采⽤预先冻结资⾦的⽅式隔离此部分资⾦。</li>
+<li>业务操作过程中通过及时读取当前状态的⽅式获取更新。</li>
+</ul>
+<h2 id="参考与感谢"><a href="#参考与感谢" class="headerlink" title="参考与感谢"></a>参考与感谢</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/RDnf637MY0IVgv2NpNVByw">干货 | 一篇文章带你学习分布式事务</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b5a0bf9f265da0f6523913b#heading-16">再有人问你分布式事务，把这篇扔给他</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/savorboard/p/distributed-system-transaction-consistency.html">聊聊分布式事务，再说说解决方案</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5cb2e3b46fb9a0686e40c5cb#comment">Mysql事务实现原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/entry/5ba0a254e51d450e735e4a1f">详细分析MySQL事务日志(redo log和undo log)</a></li>
+<li><a target="_blank" rel="noopener" href="https://servicecomb.apache.org/assets/slides/20180422/QConBeijing2018-Saga.pdf">《Saga分布式事务解决⽅案与实践》</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zeussbook/p/11799017.html">分布式事务解决方案之最大努力通知</a></li>
+</ul>
+<h2 id="个人公众号"><a href="#个人公众号" class="headerlink" title="个人公众号"></a>个人公众号</h2><p><img src="https://user-gold-cdn.xitu.io/2019/7/28/16c381c89b127bbb?w=344&h=344&f=jpeg&s=8943"></p>
+<ul>
+<li>觉得写得好的小伙伴给个点赞+关注啦，谢谢~</li>
+<li>同时非常期待小伙伴们能够关注我公众号，后面慢慢推出更好的干货~嘻嘻</li>
+<li>github地址：<a target="_blank" rel="noopener" href="https://github.com/whx123/JavaHome">https://github.com/whx123/JavaHome</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/19/JavaHome/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%90%8E%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%AF%87/">http://example.com/2022/06/19/JavaHome/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%90%8E%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%AF%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/19/JavaHome/letecode%E8%A7%A3%E9%A2%98%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D/%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E6%85%A2%E6%85%A2%E6%9D%A5%EF%BC%8C%E4%B8%8D%E6%80%95Mysql%E6%AD%BB%E9%94%81%E5%95%A6/%E6%AD%BB%E9%94%81%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B/"><img class="next-cover" src="/image/7.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">死锁分析过程</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">数据库事务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">事务的实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E4%BA%8B%E5%8A%A1"><span class="toc-number">3.1.</span> <span class="toc-text">本地事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97"><span class="toc-number">3.2.</span> <span class="toc-text">事务日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#redo-log%EF%BC%88%E9%87%8D%E5%81%9A%E6%97%A5%E5%BF%97%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">redo log（重做日志）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undo-log%EF%BC%88%E5%9B%9E%E6%BB%9A%E6%97%A5%E5%BF%97%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">undo log（回滚日志）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1ACID%E7%89%B9%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%80%9D%E6%83%B3"><span class="toc-number">3.3.</span> <span class="toc-text">事务ACID特性的实现思想</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">4.</span> <span class="toc-text">分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%B8%8B%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">4.1.</span> <span class="toc-text">微服务架构下的分布式事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E4%B8%8B%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">4.2.</span> <span class="toc-text">分库分表下的分布式事务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CAP-%E7%90%86%E8%AE%BA-amp-BASE-%E7%90%86%E8%AE%BA"><span class="toc-number">5.</span> <span class="toc-text">CAP 理论&amp;BASE 理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP%E7%90%86%E8%AE%BA"><span class="toc-number">5.1.</span> <span class="toc-text">CAP理论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BASE-%E7%90%86%E8%AE%BA"><span class="toc-number">5.2.</span> <span class="toc-text">BASE 理论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%87%A0%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">6.</span> <span class="toc-text">分布式事务的几种解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%E6%96%B9%E6%A1%88"><span class="toc-number">6.1.</span> <span class="toc-text">二阶段提交方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%E6%88%90%E5%8A%9F%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">6.1.1.</span> <span class="toc-text">二阶段提交成功的情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%E5%A4%B1%E8%B4%A5%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">6.1.2.</span> <span class="toc-text">二阶段提交失败的情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">6.1.3.</span> <span class="toc-text">二阶段提交优缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCC%EF%BC%88%E8%A1%A5%E5%81%BF%E6%9C%BA%E5%88%B6%EF%BC%89"><span class="toc-number">6.2.</span> <span class="toc-text">TCC（补偿机制）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC%EF%BC%88Try-Confirm-Cancel%EF%BC%89%E6%A8%A1%E5%9E%8B"><span class="toc-number">6.2.1.</span> <span class="toc-text">TCC（Try-Confirm-Cancel）模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">6.2.2.</span> <span class="toc-text">TCC优缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%B6%88%E6%81%AF%E8%A1%A8"><span class="toc-number">6.3.</span> <span class="toc-text">本地消息表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="toc-number">6.3.1.</span> <span class="toc-text">基本实现思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E7%82%B9-amp-%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="toc-number">6.3.2.</span> <span class="toc-text">优点&amp;缺点：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E5%8A%AA%E5%8A%9B%E9%80%9A%E7%9F%A5"><span class="toc-number">6.4.</span> <span class="toc-text">最大努力通知</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%A4%A7%E9%80%9A%E7%9F%A5"><span class="toc-number">6.4.1.</span> <span class="toc-text">什么是最大通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E5%A4%A7%E5%8A%AA%E5%8A%9B%E9%80%9A%E7%9F%A5%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">6.4.2.</span> <span class="toc-text">最大努力通知解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Saga%E4%BA%8B%E5%8A%A1"><span class="toc-number">6.5.</span> <span class="toc-text">Saga事务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E6%84%9F%E8%B0%A2"><span class="toc-number">7.</span> <span class="toc-text">参考与感谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-number">8.</span> <span class="toc-text">个人公众号</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁"><img src="/image/8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="七种方案对比分布式锁"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁">七种方案对比分布式锁</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识"><img src="/image/7.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="学习Redis相关知识"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识">学习Redis相关知识</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="程序员必备基础：Git 命令全方位学习"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习">程序员必备基础：Git 命令全方位学习</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析"><img src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库连接池内存泄漏问题分析"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析">数据库连接池内存泄漏问题分析</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池运用不当导致的问题"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题">线程池运用不当导致的问题</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>死锁分析过程 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言发生死锁了，如何排查和解决呢？本文将跟你一起探讨这个问题  准备好数据环境 模拟死锁案发  分析死锁日志 分析死锁结果  环境准备数据库隔离级别： 1234567mysql&gt; select @@tx_isolation;+-----------------+| @@tx_isolation  |+-----------------+| REPEATABLE-READ |+--------">
+<meta property="og:type" content="article">
+<meta property="og:title" content="死锁分析过程">
+<meta property="og:url" content="http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E6%85%A2%E6%85%A2%E6%9D%A5%EF%BC%8C%E4%B8%8D%E6%80%95Mysql%E6%AD%BB%E9%94%81%E5%95%A6/%E6%AD%BB%E9%94%81%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="前言发生死锁了，如何排查和解决呢？本文将跟你一起探讨这个问题  准备好数据环境 模拟死锁案发  分析死锁日志 分析死锁结果  环境准备数据库隔离级别： 1234567mysql&gt; select @@tx_isolation;+-----------------+| @@tx_isolation  |+-----------------+| REPEATABLE-READ |+--------">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/7.jpeg">
+<meta property="article:published_time" content="2022-06-19T13:50:08.165Z">
+<meta property="article:modified_time" content="2022-06-20T14:26:23.371Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/7.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E6%85%A2%E6%85%A2%E6%9D%A5%EF%BC%8C%E4%B8%8D%E6%80%95Mysql%E6%AD%BB%E9%94%81%E5%95%A6/%E6%AD%BB%E9%94%81%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '死锁分析过程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-20 22:26:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/image/7.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">死锁分析过程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-19T13:50:08.165Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-20T14:26:23.371Z" title="更新于 2022-06-20 22:26:23">2022-06-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="死锁分析过程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发生死锁了，如何排查和解决呢？本文将跟你一起探讨这个问题</p>
+<ul>
+<li>准备好数据环境</li>
+<li>模拟死锁案发 </li>
+<li>分析死锁日志</li>
+<li>分析死锁结果</li>
+</ul>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>数据库隔离级别：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@tx_isolation;</span><br><span class="line">+-----------------+</span><br><span class="line">| @@tx_isolation  |</span><br><span class="line">+-----------------+</span><br><span class="line">| REPEATABLE-READ |</span><br><span class="line">+-----------------+</span><br><span class="line">1 row in set, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>自动提交关闭：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set autocommit=0;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select @@autocommit;</span><br><span class="line">+--------------+</span><br><span class="line">| @@autocommit |</span><br><span class="line">+--------------+</span><br><span class="line">|            0 |</span><br><span class="line">+--------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>表结构:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//id是自增主键，name是非唯一索引，balance普通字段</span><br><span class="line">CREATE TABLE `account` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `name` varchar(255) DEFAULT NULL,</span><br><span class="line">  `balance` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  KEY `idx_name` (`name`) USING BTREE</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure>
+
+<p>表中的数据：<br><img src="https://user-gold-cdn.xitu.io/2020/4/11/17166847bd88b4e8?w=1381&h=260&f=png&s=17691"></p>
+<h2 id="模拟并发"><a href="#模拟并发" class="headerlink" title="模拟并发"></a>模拟并发</h2><p>开启两个终端模拟事务并发情况，执行顺序以及实验现象如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/171668ba06d81383?w=1819&h=677&f=png&s=149930"></p>
+<p>1）事务A执行更新操作，更新成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update  account  set balance =1000 where name =&#x27;Wei&#x27;;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+<p>2）事务B执行更新操作，更新成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update  account  set balance =1000 where name =&#x27;Eason&#x27;;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+<p>3）事务A执行插入操作，陷入阻塞~</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into account values(null,&#x27;Jay&#x27;,100);</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/17166d8fe2d528bb?w=573&h=67&f=png&s=5007"><br>这时候可以用<code>select * from information_schema.innodb_locks;</code>查看锁情况：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c31c0780c88b"></p>
+<p>4）事务B执行插入操作，插入成功，同时事务A的插入由阻塞变为死锁error。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into account values(null,&#x27;Yan&#x27;,100);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/17166941c88230af?w=1696&h=683&f=png&s=121687"></p>
+<h2 id="锁介绍"><a href="#锁介绍" class="headerlink" title="锁介绍"></a>锁介绍</h2><p>在分析死锁日志前，先做一下锁介绍，哈哈~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/171655de69da0f3e?w=1280&h=687&f=png&s=248056"><br>主要介绍一下兼容性以及锁模式类型的锁：</p>
+<h3 id="共享锁与排他锁"><a href="#共享锁与排他锁" class="headerlink" title="共享锁与排他锁"></a>共享锁与排他锁</h3><p>InnoDB 实现了标准的行级锁，包括两种：共享锁（简称 s 锁）、排它锁（简称 x 锁）。</p>
+<ul>
+<li>共享锁（S锁）：允许持锁事务读取一行。</li>
+<li>排他锁（X锁）：允许持锁事务更新或者删除一行。</li>
+</ul>
+<p>如果事务 T1 持有行 r 的 s 锁，那么另一个事务 T2 请求 r 的锁时，会做如下处理：</p>
+<ul>
+<li>T2 请求 s 锁立即被允许，结果 T1 T2 都持有 r 行的 s 锁</li>
+<li>T2 请求 x 锁不能被立即允许</li>
+</ul>
+<p>如果 T1 持有 r 的 x 锁，那么 T2 请求 r 的 x、s 锁都不能被立即允许，T2 必须等待T1释放 x 锁才可以，因为X锁与任何的锁都不兼容。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/17166a413f81a41c?w=1045&h=229&f=png&s=33996"></p>
+<h3 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h3><ul>
+<li>意向共享锁( IS 锁)：事务想要获得一张表中某几行的共享锁</li>
+<li>意向排他锁( IX 锁)： 事务想要获得一张表中某几行的排他锁</li>
+</ul>
+<p>比如：事务1在表1上加了S锁后，事务2想要更改某行记录，需要添加IX锁，由于不兼容，所以需要等待S锁释放；如果事务1在表1上加了IS锁，事务2添加的IX锁与IS锁兼容，就可以操作，这就实现了更细粒度的加锁。</p>
+<p>InnoDB存储引擎中锁的兼容性如下表：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/17166a2326d023c4?w=1789&h=420&f=png&s=42054"></p>
+<h3 id="记录锁（Record-Locks）"><a href="#记录锁（Record-Locks）" class="headerlink" title="记录锁（Record Locks）"></a>记录锁（Record Locks）</h3><ul>
+<li>记录锁是最简单的行锁，<strong>仅仅锁住一行</strong>。如：<code>SELECT c1 FROM t WHERE c1 = 10 FOR UPDATE</code></li>
+<li>记录锁<strong>永远都是加在索引上</strong>的，即使一个表没有索引，InnoDB也会隐式的创建一个索引，并使用这个索引实施记录锁。</li>
+<li>会阻塞其他事务对其插入、更新、删除</li>
+</ul>
+<p>记录锁的事务数据（关键词：<code>lock_mode X locks rec but not gap</code>），记录如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RECORD LOCKS space id 58 page no 3 n bits 72 index `PRIMARY` of table `test`.`t` </span><br><span class="line">trx id 10078 lock_mode X locks rec but not gap</span><br><span class="line">Record lock, heap no 2 PHYSICAL RECORD: n_fields 3; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 1: len 6; hex 00000000274f; asc     &#x27;O;;</span><br><span class="line"> 2: len 7; hex b60000019d0110; asc        ;;</span><br></pre></td></tr></table></figure>
+<h3 id="间隙锁（Gap-Locks）"><a href="#间隙锁（Gap-Locks）" class="headerlink" title="间隙锁（Gap Locks）"></a>间隙锁（Gap Locks）</h3><ul>
+<li>间隙锁是一种加在两个索引之间的锁，或者加在第一个索引之前，或最后一个索引之后的间隙。</li>
+<li>使用间隙锁锁住的是一个区间，而不仅仅是这个区间中的每一条数据。</li>
+<li>间隙锁只阻止其他事务插入到间隙中，他们不阻止其他事务在同一个间隙上获得间隙锁，所以 gap x lock 和 gap s lock 有相同的作用。</li>
+</ul>
+<p>间隙锁的事务数据（关键词：<code>gap before rec</code>），记录如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RECORD LOCKS space id 177 page no 4 n bits 80 index idx_name of table `test2`.`account` </span><br><span class="line">trx id 38049 lock_mode X locks gap before rec</span><br><span class="line">Record lock, heap no 6 PHYSICAL RECORD: n_fields 2; compact format; info bits 0</span><br><span class="line"> 0: len 3; hex 576569; asc Wei;;</span><br><span class="line"> 1: len 4; hex 80000002; asc     ;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Next-Key-Locks"><a href="#Next-Key-Locks" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h3><ul>
+<li>Next-key锁是记录锁和间隙锁的组合，它指的是加在某条记录以及这条记录前面间隙上的锁。</li>
+</ul>
+<h3 id="插入意向锁（Insert-Intention）"><a href="#插入意向锁（Insert-Intention）" class="headerlink" title="插入意向锁（Insert Intention）"></a>插入意向锁（Insert Intention）</h3><ul>
+<li>插入意向锁是在插入一行记录操作之前设置的一种间隙锁，这个锁释放了一种插入方式的信号，亦即多个事务在相同的索引间隙插入时如果不是插入间隙中相同的位置就不需要互相等待。</li>
+<li>假设有索引值4、7，几个不同的事务准备插入5、6，每个锁都在获得插入行的独占锁之前用插入意向锁各自锁住了4、7之间的间隙，但是不阻塞对方因为插入行不冲突。</li>
+</ul>
+<p>事务数据类似于下面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RECORD LOCKS space id 31 page no 3 n bits 72 index `PRIMARY` of table `test`.`child`</span><br><span class="line">trx id 8731 lock_mode X locks gap before rec insert intention waiting</span><br><span class="line">Record lock, heap no 3 PHYSICAL RECORD: n_fields 3; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 80000066; asc    f;;</span><br><span class="line"> 1: len 6; hex 000000002215; asc     &quot; ;;</span><br><span class="line"> 2: len 7; hex 9000000172011c; asc     r  ;;...</span><br></pre></td></tr></table></figure>
+
+<p>锁模式兼容矩阵（横向是已持有锁，纵向是正在请求的锁）：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/17166ba5c5788189?w=1779&h=388&f=png&s=55229"></p>
+<h2 id="如何读懂死锁日志？"><a href="#如何读懂死锁日志？" class="headerlink" title="如何读懂死锁日志？"></a>如何读懂死锁日志？</h2><h3 id="show-engine-innodb-status"><a href="#show-engine-innodb-status" class="headerlink" title="show engine innodb status"></a>show engine innodb status</h3><p>可以用<code>show engine innodb status</code>，查看最近一次死锁日志哈~，执行后，死锁日志如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">2020-04-11 00:35:55 0x243c</span><br><span class="line">*** (1) TRANSACTION:</span><br><span class="line">TRANSACTION 38048, ACTIVE 92 sec inserting</span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line">LOCK WAIT 4 lock struct(s), heap size 1136, 4 row lock(s), undo log entries 2</span><br><span class="line">MySQL thread id 53, OS thread handle 2300, query id 2362 localhost ::1 root update</span><br><span class="line">insert into account values(null,&#x27;Jay&#x27;,100)</span><br><span class="line">*** (1) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 177 page no 4 n bits 80 index idx_name of table `test2`.`account` </span><br><span class="line">trx id 38048 lock_mode X locks gap before rec insert intention waiting</span><br><span class="line">Record lock, heap no 6 PHYSICAL RECORD: n_fields 2; compact format; info bits 0</span><br><span class="line"> 0: len 3; hex 576569; asc Wei;;</span><br><span class="line"> 1: len 4; hex 80000002; asc     ;;</span><br><span class="line"></span><br><span class="line">*** (2) TRANSACTION:</span><br><span class="line">TRANSACTION 38049, ACTIVE 72 sec inserting, thread declared inside InnoDB 5000</span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line">5 lock struct(s), heap size 1136, 4 row lock(s), undo log entries 2</span><br><span class="line">MySQL thread id 52, OS thread handle 9276, query id 2363 localhost ::1 root update</span><br><span class="line">insert into account  values(null,&#x27;Yan&#x27;,100)</span><br><span class="line">*** (2) HOLDS THE LOCK(S):</span><br><span class="line">RECORD LOCKS space id 177 page no 4 n bits 80 index idx_name of table `test2`.`account` </span><br><span class="line">trx id 38049 lock_mode X locks gap before rec</span><br><span class="line">Record lock, heap no 6 PHYSICAL RECORD: n_fields 2; compact format; info bits 0</span><br><span class="line"> 0: len 3; hex 576569; asc Wei;;</span><br><span class="line"> 1: len 4; hex 80000002; asc     ;;</span><br><span class="line"></span><br><span class="line">*** (2) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 177 page no 4 n bits 80 index idx_name of table `test2`.`account` </span><br><span class="line">trx id 38049 lock_mode X insert intention waiting</span><br><span class="line">Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0</span><br><span class="line"> 0: len 8; hex 73757072656d756d; asc supremum;;</span><br><span class="line"></span><br><span class="line">*** WE ROLL BACK TRANSACTION (1)</span><br></pre></td></tr></table></figure>
+<p>我们如何分析以上死锁日志呢？</p>
+<h3 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h3><p>1）找到关键词TRANSACTION，事务38048</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/17165011e5a875ea?w=1119&h=304&f=png&s=62133"></p>
+<p>2）查看正在执行的SQL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into account values(null,&#x27;Jay&#x27;,100)</span><br></pre></td></tr></table></figure>
+<p>3）正在等待锁释放(WAITING FOR THIS LOCK TO BE GRANTED)，插入意向排他锁（lock_mode X locks gap before rec insert intention waiting），普通索引（idx_name），物理记录(PHYSICAL RECORD)，间隙区间（未知，Wei）;</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c3aba9e2ee02?w=1019&h=452&f=png&s=72103"></p>
+<h3 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h3><p>1）找到关键词TRANSACTION，事务38049</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/11/17165513309de5d6?w=1123&h=288&f=png&s=59904"><br>2）查看正在执行的SQL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into account  values(null,&#x27;Yan&#x27;,100)</span><br></pre></td></tr></table></figure>
+<p>3）持有锁(HOLDS THE LOCK)，间隙锁(lock_mode X locks gap before rec)，普通索引(index idx_name)，物理记录(physical record)，区间（未知，Wei）;<br><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c468f0da8a52?w=870&h=415&f=png&s=63777"></p>
+<p>4）正在等待锁释放(waiting for this lock to be granted)，插入意向锁(lock_mode X insert intention waiting)，普通索引上(index idx_name)，物理记录(physical record)，间隙区间（未知，+∞）;</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c4da4182be07?w=1018&h=268&f=png&s=45345"></p>
+<p>5）事务1回滚(we roll back transaction 1)；</p>
+<h3 id="查看日志结果"><a href="#查看日志结果" class="headerlink" title="查看日志结果"></a>查看日志结果</h3><p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c543eeb902fb?w=1141&h=1008&f=png&s=172357"><br>查看日志可得：</p>
+<ul>
+<li>事务A正在等待的插入意向排他锁（事务A即日志的事务1，根据insert语句来对号入座的哈），正在事务B的怀里~</li>
+<li>事务B持有间隙锁，正在等待插入意向排它锁</li>
+</ul>
+<p>这里面，有些朋友可能有<strong>疑惑</strong>，</p>
+<ul>
+<li>事务A持有什么锁呢？日志根本看不出来。它又想拿什么样的插入意向排他锁呢？</li>
+<li>事务B拿了具体什么的间隙锁呢？它为什么也要拿插入意向锁？ </li>
+<li>死锁的死循环是怎么形成的？目前日志看不出死循环构成呢？</li>
+</ul>
+<p>我们接下来一小节详细分析一波，一个一个问题来~</p>
+<h2 id="死锁分析"><a href="#死锁分析" class="headerlink" title="死锁分析"></a>死锁分析</h2><h3 id="死锁死循环四要素"><a href="#死锁死循环四要素" class="headerlink" title="死锁死循环四要素"></a>死锁死循环四要素</h3><p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c61545a5326c?w=641&h=575&f=png&s=65885"></p>
+<ul>
+<li>互斥条件：指进程对所分配到的资源进行排它性使用，即在一段时间内某资源只由一个进程占用。如果此时还有其它进程请求资源，则请求者只能等待，直至占有资源的进程用毕释放。</li>
+<li>请求和保持条件：指进程已经保持至少一个资源，但又提出了新的资源请求，而该资源已被其它进程占有，此时请求进程阻塞，但又对自己已获得的其它资源保持不放。</li>
+<li>不剥夺条件：指进程已获得的资源，在未使用完之前，不能被剥夺，只能在使用完时由自己释放。</li>
+<li>环路等待条件：指在发生死锁时，必然存在一个进程——资源的环形链，即进程集合{P0，P1，P2，···，Pn}中的P0正在等待一个P1占用的资源；P1正在等待P2占用的资源，……，Pn正在等待已被P0占用的资源。</li>
+</ul>
+<h3 id="事务A持有什么锁呢？它又想拿什么样的插入意向排他锁呢？"><a href="#事务A持有什么锁呢？它又想拿什么样的插入意向排他锁呢？" class="headerlink" title="事务A持有什么锁呢？它又想拿什么样的插入意向排他锁呢？"></a>事务A持有什么锁呢？它又想拿什么样的插入意向排他锁呢？</h3><p>为了方便记录，例子用W表示Wei，J表示Jay，E表示Eason哈~</p>
+<h4 id="我们先来分析事务A中update语句的加锁情况"><a href="#我们先来分析事务A中update语句的加锁情况" class="headerlink" title="我们先来分析事务A中update语句的加锁情况~"></a>我们先来分析事务A中update语句的加锁情况~</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update  account  set balance =1000 where name =&#x27;Wei&#x27;;</span><br></pre></td></tr></table></figure>
+<p><strong>间隙锁：</strong></p>
+<ul>
+<li>Update语句会在非唯一索引的name加上左区间的间隙锁，右区间的间隙锁(因为目前表中只有name&#x3D;’Wei’的一条记录，所以没有中间的间隙锁~)，即（E,W) 和（W，+∞）</li>
+<li>为什么存在间隙锁？因为这是RR的数据库隔离级别，用来解决幻读问题用的~</li>
+</ul>
+<p><strong>记录锁</strong></p>
+<ul>
+<li>因为name是索引，所以该update语句肯定会加上W的记录锁</li>
+</ul>
+<p><strong>Next-Key锁</strong></p>
+<ul>
+<li>Next-Key锁&#x3D;记录锁+间隙锁，所以该update语句就有了（E，W]的 Next-Key锁</li>
+</ul>
+<p><strong>综上所述，事务A执行完update更新语句，会持有锁：</strong></p>
+<ul>
+<li>Next-key Lock：（E，W]</li>
+<li>Gap Lock ：（W，+∞）</li>
+</ul>
+<h4 id="我们再来分析一波事务A中insert语句的加锁情况"><a href="#我们再来分析一波事务A中insert语句的加锁情况" class="headerlink" title="我们再来分析一波事务A中insert语句的加锁情况"></a>我们再来分析一波事务A中insert语句的加锁情况</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into account values(null,&#x27;Jay&#x27;,100);</span><br></pre></td></tr></table></figure>
+<p><strong>间隙锁：</strong></p>
+<ul>
+<li>因为Jay(J在E和W之间)，所以需要请求加(E,W)的间隙锁</li>
+</ul>
+<p><strong>插入意向锁（Insert Intention）</strong></p>
+<ul>
+<li>插入意向锁是在插入一行记录操作之前设置的一种间隙锁，这个锁释放了一种插入方式的信号，即事务A需要插入意向锁(E,W)</li>
+</ul>
+<p><strong>因此</strong>，事务A的update语句和insert语句执行完，它是持有了 <strong>（E，W]的 Next-Key锁</strong>，<strong>（W，+∞）的Gap锁</strong>，想拿到 <strong>(E,W)的插入意向排它锁</strong>，等待的锁跟死锁日志是对上的，哈哈~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c6a0fa87c6c5?w=1019&h=452&f=png&s=72103"></p>
+<h3 id="事务B拥有了什么间隙锁？它为什么也要拿插入意向锁？"><a href="#事务B拥有了什么间隙锁？它为什么也要拿插入意向锁？" class="headerlink" title="事务B拥有了什么间隙锁？它为什么也要拿插入意向锁？"></a>事务B拥有了什么间隙锁？它为什么也要拿插入意向锁？</h3><h4 id="同理，我们再来分析一波事务B，update语句的加锁分析："><a href="#同理，我们再来分析一波事务B，update语句的加锁分析：" class="headerlink" title="同理，我们再来分析一波事务B，update语句的加锁分析："></a>同理，我们再来分析一波事务B，update语句的加锁分析：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update  account  set balance =1000 where name =&#x27;Eason&#x27;;</span><br></pre></td></tr></table></figure>
+<p><strong>间隙锁：</strong></p>
+<ul>
+<li>Update语句会在非唯一索引的name加上左区间的间隙锁，右区间的间隙锁(因为目前表中只有name&#x3D;’Eason’的一条记录，所以没有中间的间隙锁~)，即（-∞，E）和（E，W）</li>
+</ul>
+<p><strong>记录锁</strong></p>
+<ul>
+<li>因为name是索引，所以该update语句肯定会加上E的记录锁</li>
+</ul>
+<p><strong>Next-Key锁</strong></p>
+<ul>
+<li>Next-Key锁&#x3D;记录锁+间隙锁，所以该Update语句就有了（-∞，E]的 Next-Key锁</li>
+</ul>
+<p><strong>综上所述，事务B执行完update更新语句，会持有锁：</strong></p>
+<ul>
+<li>Next-key Lock：（-∞，E]</li>
+<li>Gap Lock ：（E，W）</li>
+</ul>
+<h4 id="我们再来分析一波B中insert语句的加锁情况"><a href="#我们再来分析一波B中insert语句的加锁情况" class="headerlink" title="我们再来分析一波B中insert语句的加锁情况"></a>我们再来分析一波B中insert语句的加锁情况</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into account  values(null,&#x27;Yan&#x27;,100);</span><br></pre></td></tr></table></figure>
+<p><strong>间隙锁：</strong></p>
+<ul>
+<li>因为Yan(Y在W之后)，所以需要请求加(W,+∞)的间隙锁</li>
+</ul>
+<p><strong>插入意向锁（Insert Intention）</strong></p>
+<ul>
+<li>插入意向锁是在插入一行记录操作之前设置的一种间隙锁，这个锁释放了一种插入方式的信号，即事务A需要插入意向锁(W,+∞)</li>
+</ul>
+<p><strong>所以</strong>，事务B的update语句和insert语句执行完，它是持有了 <strong>（-∞，E]的 Next-Key锁</strong>，<strong>（E，W）的Gap锁</strong>，想拿到 <strong>(W,+∞)的间隙锁，即插入意向排它锁</strong>，加锁情况跟死锁日志也是对上的~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c6e7d268b771?w=870&h=415&f=png&s=63777"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716c6e9aa943224?w=1018&h=268&f=png&s=45345"></p>
+<h3 id="死锁真相还原"><a href="#死锁真相还原" class="headerlink" title="死锁真相还原"></a>死锁真相还原</h3><p>接下来呢，让我们一起还原死锁真相吧<del>哈哈</del><br><img src="https://user-gold-cdn.xitu.io/2020/4/12/1716bab6dc229331?w=1600&h=606&f=png&s=598571"></p>
+<ul>
+<li>事务A执行完Update Wei的语句，持有（E，W]的Next-key Lock，（W，+∞）的Gap Lock ，插入成功~</li>
+<li>事务B执行完Update Eason语句，持有（-∞，E]的 Next-Key Lock，（E，W）的Gap Lock，插入成功~</li>
+<li>事务A执行Insert Jay的语句时，因为需要（E，W）的插入意向锁，但是（E，W）在事务B怀里，所以它陷入心塞~</li>
+<li>事务B执行Insert Yan的语句时，因为需要(W,+∞) 的插入意向锁，但是(W,+∞) 在事务A怀里，所以它也陷入心塞。</li>
+<li>事务A持有（W，+∞）的Gap Lock，在等待（E，W）的插入意向锁，事务B持有（E，W）的Gap锁，在等待(W,+∞) 的插入意向锁，所以形成了死锁的闭环<del>（Gap锁与插入意向锁会冲突的，可以看回锁介绍的锁模式兼容矩阵哈</del>）</li>
+<li>事务A,B形成了死锁闭环后，因为Innodb的底层机制，它会让其中一个事务让出资源，另外的事务执行成功，这就是为什么你最后看到事务B插入成功了，但是事务A的插入显示了Deadlock found ~</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后，遇到死锁问题，我们应该怎么分析呢？</p>
+<ul>
+<li>模拟死锁场景</li>
+<li>show engine innodb status;查看死锁日志</li>
+<li>找出死锁SQL</li>
+<li>SQL加锁分析，<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-locks-set.html">这个可以去官网看哈</a></li>
+<li>分析死锁日志（持有什么锁，等待什么锁）</li>
+<li>熟悉锁模式兼容矩阵，InnoDB存储引擎中锁的兼容性矩阵。</li>
+</ul>
+<h2 id="个人公众号"><a href="#个人公众号" class="headerlink" title="个人公众号"></a>个人公众号</h2><p><img src="https://user-gold-cdn.xitu.io/2019/7/28/16c381c89b127bbb?w=344&h=344&f=jpeg&s=8943"></p>
+<ul>
+<li>觉得写得好的小伙伴给个点赞+关注啦，谢谢~</li>
+<li>如果有写得不正确的地方，麻烦指出，感激不尽。</li>
+<li>同时非常期待小伙伴们能够关注我公众号，后面慢慢推出更好的干货~嘻嘻</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E6%85%A2%E6%85%A2%E6%9D%A5%EF%BC%8C%E4%B8%8D%E6%80%95Mysql%E6%AD%BB%E9%94%81%E5%95%A6/%E6%AD%BB%E9%94%81%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B/">http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E6%85%A2%E6%85%A2%E6%9D%A5%EF%BC%8C%E4%B8%8D%E6%80%95Mysql%E6%AD%BB%E9%94%81%E5%95%A6/%E6%AD%BB%E9%94%81%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/image/7.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/19/JavaHome/%E5%88%86%E5%B8%83%E5%BC%8F/%E5%90%8E%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%AF%87/"><img class="prev-cover" src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">后端程序员必备：分布式事务基础篇</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/19/JavaHome/README/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E5%B9%B6%E5%8F%91"><span class="toc-number">3.</span> <span class="toc-text">模拟并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.</span> <span class="toc-text">锁介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E9%94%81%E4%B8%8E%E6%8E%92%E4%BB%96%E9%94%81"><span class="toc-number">4.1.</span> <span class="toc-text">共享锁与排他锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%84%8F%E5%90%91%E9%94%81"><span class="toc-number">4.2.</span> <span class="toc-text">意向锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E9%94%81%EF%BC%88Record-Locks%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">记录锁（Record Locks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%B4%E9%9A%99%E9%94%81%EF%BC%88Gap-Locks%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">间隙锁（Gap Locks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Next-Key-Locks"><span class="toc-number">4.5.</span> <span class="toc-text">Next-Key Locks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%84%8F%E5%90%91%E9%94%81%EF%BC%88Insert-Intention%EF%BC%89"><span class="toc-number">4.6.</span> <span class="toc-text">插入意向锁（Insert Intention）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AF%BB%E6%87%82%E6%AD%BB%E9%94%81%E6%97%A5%E5%BF%97%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">如何读懂死锁日志？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#show-engine-innodb-status"><span class="toc-number">5.1.</span> <span class="toc-text">show engine innodb status</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86"><span class="toc-number">5.2.</span> <span class="toc-text">第一部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86"><span class="toc-number">5.3.</span> <span class="toc-text">第二部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97%E7%BB%93%E6%9E%9C"><span class="toc-number">5.4.</span> <span class="toc-text">查看日志结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E5%88%86%E6%9E%90"><span class="toc-number">6.</span> <span class="toc-text">死锁分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E6%AD%BB%E5%BE%AA%E7%8E%AF%E5%9B%9B%E8%A6%81%E7%B4%A0"><span class="toc-number">6.1.</span> <span class="toc-text">死锁死循环四要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1A%E6%8C%81%E6%9C%89%E4%BB%80%E4%B9%88%E9%94%81%E5%91%A2%EF%BC%9F%E5%AE%83%E5%8F%88%E6%83%B3%E6%8B%BF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E6%8F%92%E5%85%A5%E6%84%8F%E5%90%91%E6%8E%92%E4%BB%96%E9%94%81%E5%91%A2%EF%BC%9F"><span class="toc-number">6.2.</span> <span class="toc-text">事务A持有什么锁呢？它又想拿什么样的插入意向排他锁呢？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%85%88%E6%9D%A5%E5%88%86%E6%9E%90%E4%BA%8B%E5%8A%A1A%E4%B8%ADupdate%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%8A%A0%E9%94%81%E6%83%85%E5%86%B5"><span class="toc-number">6.2.1.</span> <span class="toc-text">我们先来分析事务A中update语句的加锁情况~</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%86%8D%E6%9D%A5%E5%88%86%E6%9E%90%E4%B8%80%E6%B3%A2%E4%BA%8B%E5%8A%A1A%E4%B8%ADinsert%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%8A%A0%E9%94%81%E6%83%85%E5%86%B5"><span class="toc-number">6.2.2.</span> <span class="toc-text">我们再来分析一波事务A中insert语句的加锁情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1B%E6%8B%A5%E6%9C%89%E4%BA%86%E4%BB%80%E4%B9%88%E9%97%B4%E9%9A%99%E9%94%81%EF%BC%9F%E5%AE%83%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B9%9F%E8%A6%81%E6%8B%BF%E6%8F%92%E5%85%A5%E6%84%8F%E5%90%91%E9%94%81%EF%BC%9F"><span class="toc-number">6.3.</span> <span class="toc-text">事务B拥有了什么间隙锁？它为什么也要拿插入意向锁？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E7%90%86%EF%BC%8C%E6%88%91%E4%BB%AC%E5%86%8D%E6%9D%A5%E5%88%86%E6%9E%90%E4%B8%80%E6%B3%A2%E4%BA%8B%E5%8A%A1B%EF%BC%8Cupdate%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%8A%A0%E9%94%81%E5%88%86%E6%9E%90%EF%BC%9A"><span class="toc-number">6.3.1.</span> <span class="toc-text">同理，我们再来分析一波事务B，update语句的加锁分析：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%86%8D%E6%9D%A5%E5%88%86%E6%9E%90%E4%B8%80%E6%B3%A2B%E4%B8%ADinsert%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%8A%A0%E9%94%81%E6%83%85%E5%86%B5"><span class="toc-number">6.3.2.</span> <span class="toc-text">我们再来分析一波B中insert语句的加锁情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%BB%E9%94%81%E7%9C%9F%E7%9B%B8%E8%BF%98%E5%8E%9F"><span class="toc-number">6.4.</span> <span class="toc-text">死锁真相还原</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-number">8.</span> <span class="toc-text">个人公众号</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁"><img src="/image/8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="七种方案对比分布式锁"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁">七种方案对比分布式锁</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识"><img src="/image/7.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="学习Redis相关知识"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识">学习Redis相关知识</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="程序员必备基础：Git 命令全方位学习"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习">程序员必备基础：Git 命令全方位学习</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析"><img src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库连接池内存泄漏问题分析"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析">数据库连接池内存泄漏问题分析</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池运用不当导致的问题"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题">线程池运用不当导致的问题</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

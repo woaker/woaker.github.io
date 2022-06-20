@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>谈谈Java反射：从入门到实践，再到原理 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言反射是Java底层框架的灵魂技术，学习反射非常有必要，本文将从入门概念，到实践，再到原理讲解反射，希望对大家有帮助。 反射理解官方解析Oracle 官方对反射的解释是： 123456Reflection is commonly used by programs which require the ability to examine ormodify the runtime behavior">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈谈Java反射：从入门到实践，再到原理">
+<meta property="og:url" content="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%B0%88%E8%B0%88Java%E5%8F%8D%E5%B0%84%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%86%8D%E5%88%B0%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="前言反射是Java底层框架的灵魂技术，学习反射非常有必要，本文将从入门概念，到实践，再到原理讲解反射，希望对大家有帮助。 反射理解官方解析Oracle 官方对反射的解释是： 123456Reflection is commonly used by programs which require the ability to examine ormodify the runtime behavior">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/3.jpeg">
+<meta property="article:published_time" content="2022-06-19T13:50:08.141Z">
+<meta property="article:modified_time" content="2022-06-20T13:46:41.319Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/3.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%B0%88%E8%B0%88Java%E5%8F%8D%E5%B0%84%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%86%8D%E5%88%B0%E5%8E%9F%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '谈谈Java反射：从入门到实践，再到原理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-20 21:46:41'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://t7.baidu.com/it/u=825057118,3516313570&amp;fm=193&amp;f=GIF')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">谈谈Java反射：从入门到实践，再到原理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-19T13:50:08.141Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-20T13:46:41.319Z" title="更新于 2022-06-20 21:46:41">2022-06-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="谈谈Java反射：从入门到实践，再到原理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>反射是Java底层框架的灵魂技术，学习反射非常有必要，本文将从入门概念，到实践，再到原理讲解反射，希望对大家有帮助。</p>
+<h2 id="反射理解"><a href="#反射理解" class="headerlink" title="反射理解"></a>反射理解</h2><h3 id="官方解析"><a href="#官方解析" class="headerlink" title="官方解析"></a>官方解析</h3><p><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/index.html">Oracle 官方对反射</a>的解释是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Reflection is commonly used by programs which require the ability to examine or</span><br><span class="line">modify the runtime behavior of applications running in the Java virtual machine.</span><br><span class="line">This is a relatively advanced feature and should be used only by developers who</span><br><span class="line">have a strong grasp of the fundamentals of the language. With that caveat in</span><br><span class="line">mind, reflection is a powerful technique and can enable applications to perform</span><br><span class="line">operations which would otherwise be impossible.</span><br></pre></td></tr></table></figure>
+
+<p>Java 的<strong>反射机制</strong>是指在运行状态中，对于任意一个类都能够知道这个类所有的属性和方法； 并且对于任意一个对象，都能够调用它的任意一个方法；这种动态获取信息以及动态调用对象方法的功能成为Java语言的反射机制。</p>
+<h3 id="白话理解"><a href="#白话理解" class="headerlink" title="白话理解"></a>白话理解</h3><h4 id="正射"><a href="#正射" class="headerlink" title="正射"></a>正射</h4><p>万物有阴必有阳，有正必有反。既然有反射，就必有“正射”。</p>
+<p>那么<strong>正射</strong>是什么呢？</p>
+<p>我们在编写代码时，当需要使用到某一个类的时候，都会先了解这个类是做什么的。然后实例化这个类，接着用实例化好的对象进行操作，这就是正射。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Student student = new Student();</span><br><span class="line">student.doHomework(&quot;数学&quot;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h4><p>反射就是，一开始并不知道我们要初始化的类对象是什么，自然也无法使用 new 关键字来创建对象了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(&quot;reflection.Student&quot;);</span><br><span class="line">Method method = clazz.getMethod(&quot;doHomework&quot;, String.class);</span><br><span class="line">Constructor constructor = clazz.getConstructor();</span><br><span class="line">Object object = constructor.newInstance();</span><br><span class="line">method.invoke(object, &quot;语文&quot;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="正射与反射对比"><a href="#正射与反射对比" class="headerlink" title="正射与反射对比"></a>正射与反射对比</h4><p>以上两段代码，执行效果是一样的，如图</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/13/16efff4ccf899e66?w=1071&h=716&f=png&s=91450"></p>
+<p>但是，其实现的过程还是有很大的差别的：</p>
+<ul>
+<li>第一段代码在未运行前就已经知道了要运行的类是<code>Student</code>；</li>
+<li>第二段代码则是到整个程序运行的时候，从字符串<code>reflection.Student</code>，才知道要操作的类是<code>Student</code>。</li>
+</ul>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>反射就是在运行时才知道要操作的类是什么，并且可以在运行时获取类的完整构造，并调用对应的方法。</p>
+<h2 id="Class-对象理解"><a href="#Class-对象理解" class="headerlink" title="Class 对象理解"></a>Class 对象理解</h2><p>要理解Class对象，我们先来了解一下<strong>RTTI</strong>吧。<br><strong>RTTI（Run-Time Type Identification）运行时类型识别</strong>，其作用是在运行时识别一个对象的类型和类的信息。</p>
+<p>Java是如何让我们在运行时识别对象和类的信息的？主要有两种方式：<br>一种是传统的<strong>RRTI</strong>，它假定我们在编译期已知道了所有类型。<br>另一种是反射机制，它允许我们在运行时发现和使用类的信息。</p>
+<p><strong>每个类都有一个Class对象</strong>，每当编译一个新类就产生一个Class对象（更恰当地说，是被保存在一个同名的.class文件中）。比如创建一个Student类，那么，JVM就会创建一个Student对应Class类的Class对象，该Class对象保存了Student类相关的类型信息。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f286b0e2fce054?w=1066&h=538&f=png&s=60629"></p>
+<p><strong>Class类的对象作用</strong>是运行时提供或获得某个对象的类型信息</p>
+<h2 id="反射的基本使用"><a href="#反射的基本使用" class="headerlink" title="反射的基本使用"></a>反射的基本使用</h2><h3 id="获取-Class-类对象"><a href="#获取-Class-类对象" class="headerlink" title="获取 Class 类对象"></a>获取 Class 类对象</h3><p>获取反射中的Class对象有三种方法。</p>
+<p><strong>第一种，使用 Class.forName 静态方法。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class class1 = Class.forName(&quot;reflection.TestReflection&quot;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>第二种，使用类的.class 方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class class2 = TestReflection.class;</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三种，使用实例对象的 getClass() 方法。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TestReflection testReflection = new TestReflection();</span><br><span class="line">Class class3 = testReflection.getClass();</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/16/16f0c05f6b2a341a?w=1065&h=628&f=png&s=85470"></p>
+<h3 id="反射创造对象，获取方法，成员变量，构造器"><a href="#反射创造对象，获取方法，成员变量，构造器" class="headerlink" title="反射创造对象，获取方法，成员变量，构造器"></a>反射创造对象，获取方法，成员变量，构造器</h3><p>本小节学习反射的基本API用法，如获取方法，成员变量等。</p>
+<h4 id="反射创造对象"><a href="#反射创造对象" class="headerlink" title="反射创造对象"></a>反射创造对象</h4><p>通过反射创建类对象主要有两种方式：<br><img src="https://user-gold-cdn.xitu.io/2019/12/19/16f1b85fc34ce537?w=657&h=366&f=png&s=23704"></p>
+<p><strong>实例代码:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//方式一</span><br><span class="line">Class class1 = Class.forName(&quot;reflection.Student&quot;);</span><br><span class="line">Student student = (Student) class1.newInstance();</span><br><span class="line">System.out.println(student);</span><br><span class="line"></span><br><span class="line">//方式二</span><br><span class="line">Constructor constructor = class1.getConstructor();</span><br><span class="line">Student student1 = (Student) constructor.newInstance();</span><br><span class="line">System.out.println(student1);</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/19/16f1ede509708fec?w=868&h=525&f=png&s=68487"></p>
+<h4 id="反射获取类的构造器"><a href="#反射获取类的构造器" class="headerlink" title="反射获取类的构造器"></a>反射获取类的构造器</h4><p><img src="https://user-gold-cdn.xitu.io/2019/12/18/16f1662225a43b9e?w=938&h=479&f=png&s=52644"></p>
+<p><strong>看一个例子吧：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class class1 = Class.forName(&quot;reflection.Student&quot;);</span><br><span class="line">Constructor[] constructors = class1.getDeclaredConstructors();</span><br><span class="line">for (int i = 0; i &lt; constructors.length; i++) &#123;</span><br><span class="line">    System.out.println(constructors[i]);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/18/16f165e1e8d36c90?w=1104&h=641&f=png&s=81960"></p>
+<h4 id="反射获取类的成员变量"><a href="#反射获取类的成员变量" class="headerlink" title="反射获取类的成员变量"></a>反射获取类的成员变量</h4><p><img src="https://user-gold-cdn.xitu.io/2019/12/18/16f19b116e71c366?w=1018&h=528&f=png&s=52897"></p>
+<p><strong>看demo：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// student 一个私有属性age，一个公有属性email</span><br><span class="line">public class Student &#123;</span><br><span class="line"></span><br><span class="line">    private Integer age;</span><br><span class="line"></span><br><span class="line">    public String email;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class TestReflection &#123;</span><br><span class="line">    public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException &#123;</span><br><span class="line">        Class class1 = Class.forName(&quot;reflection.Student&quot;);</span><br><span class="line">        Field email = class1.getField(&quot;email&quot;);</span><br><span class="line">        System.out.println(email);</span><br><span class="line">        Field age = class1.getField(&quot;age&quot;);</span><br><span class="line">        System.out.println(age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>运行结果：</strong></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/18/16f19bc4e032ace2?w=1385&h=663&f=png&s=94943"><br>即<code>getField(String name)</code> 根据参数变量名，返回一个具体的具有public属性的成员变量，如果该变量<strong>不是public属性</strong>，则报异常。</p>
+<h4 id="反射获取类的方法"><a href="#反射获取类的方法" class="headerlink" title="反射获取类的方法"></a>反射获取类的方法</h4><p><img src="https://user-gold-cdn.xitu.io/2019/12/19/16f19c250c645069?w=1022&h=463&f=png&s=43225"></p>
+<p><strong>demo</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Student &#123;</span><br><span class="line"></span><br><span class="line">    private void testPrivateMethod() &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    public void testPublicMethod() &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class TestReflection &#123;</span><br><span class="line">    public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException &#123;</span><br><span class="line">        Class class1 = Class.forName(&quot;reflection.Student&quot;);</span><br><span class="line"></span><br><span class="line">        Method[] methods = class1.getMethods();</span><br><span class="line">        for (int i = 0; i &lt; methods.length; i++) &#123;</span><br><span class="line">            System.out.println(methods[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>运行结果：</strong></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/19/16f19c70f7446654?w=1346&h=721&f=png&s=112136"></p>
+<h2 id="反射的实现原理"><a href="#反射的实现原理" class="headerlink" title="反射的实现原理"></a>反射的实现原理</h2><p>通过上一小节学习，我们已经知道反射的基本API用法了。接下来，跟着一个例子，学习反射方法的执行链路。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class TestReflection &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        Class clazz = Class.forName(&quot;reflection.TestReflection&quot;);</span><br><span class="line">        Method method = clazz.getMethod(&quot;target&quot;, String.class);</span><br><span class="line">        method.invoke(null, &quot;666&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void target(String str) &#123;</span><br><span class="line">        //打印堆栈信息</span><br><span class="line">        new Exception(&quot;#&quot; +str).printStackTrace();</span><br><span class="line">        System.out.println(&quot;invoke target method&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>堆栈信息反映出反射调用链路：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">java.lang.Exception: #666</span><br><span class="line">invoke target method</span><br><span class="line">	at reflection.TestReflection.target(TestReflection.java:17)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line">	at reflection.TestReflection.main(TestReflection.java:11)</span><br></pre></td></tr></table></figure>
+<p><strong>invoke方法执行时序图</strong></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f27996f9e5ed0f?w=1794&h=1030&f=png&s=154261"></p>
+<p><strong>我们跟着反射链路去看一下源码，先看Method的invoke方法：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public Object invoke(Object obj, Object... args)</span><br><span class="line">    throws IllegalAccessException, IllegalArgumentException,</span><br><span class="line">       InvocationTargetException</span><br><span class="line">&#123;</span><br><span class="line">    //校验权限</span><br><span class="line">    if (!override) &#123;</span><br><span class="line">        if (!Reflection.quickCheckMemberAccess(clazz, modifiers)) &#123;</span><br><span class="line">            Class&lt;?&gt; caller = Reflection.getCallerClass();</span><br><span class="line">            checkAccess(caller, clazz, obj, modifiers);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    MethodAccessor ma = methodAccessor;             // read volatile</span><br><span class="line">    if (ma == null) &#123;</span><br><span class="line">        ma = acquireMethodAccessor(); //获取MethodAccessor</span><br><span class="line">    &#125;</span><br><span class="line">    //返回MethodAccessor.invoke</span><br><span class="line">    return ma.invoke(obj, args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由上可知道，Method 的 invoke 方法，其实是返回接口MethodAccessor的invoke方法。MethodAccessor接口有三个实现类，到底调用的是哪个类的 invoke 方法呢？<br><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f2882973a9ed4b?w=1232&h=466&f=png&s=55007"></p>
+<p>进入acquireMethodAccessor方法，可以看到MethodAccessor由ReflectionFactory 的 newMethodAccessor方法决定。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f288699bf4fce4?w=963&h=536&f=png&s=56491"></p>
+<p>再进ReflectionFactory的newMethodAccessor方法，我们可以看到返回的是DelegatingMethodAccessorImpl对象，也就是说调用的是它的invoke方法。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f289806c3e4768?w=1975&h=416&f=png&s=63263"></p>
+<p>再看DelegatingMethodAccessorImpl的invoke方法</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f26933b822b50e?w=1395&h=577&f=png&s=63941"></p>
+<p>DelegatingMethodAccessorImpl的invoke方法返回的是MethodAccessorImpl的invoke方法，而MethodAccessorImpl的invoke方法，由它的子类NativeMethodAccessorImpl重写，这时候返回的是本地方法invoke0，如下</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f269db5ee96133?w=1925&h=762&f=png&s=113499"></p>
+<p>因此，Method的invoke方法，是由本地方法invoke0决定的，再底层就是c++相关了，有兴趣的朋友可以继续往下研究。</p>
+<h2 id="反射的一些应用以及问题"><a href="#反射的一些应用以及问题" class="headerlink" title="反射的一些应用以及问题"></a>反射的一些应用以及问题</h2><h3 id="反射应用"><a href="#反射应用" class="headerlink" title="反射应用"></a>反射应用</h3><p>反射是Java框架的灵魂技术，很多框架都使用了反射技术，如spring，Mybatis，Hibernate等。</p>
+<h4 id="JDBC-的数据库的连接"><a href="#JDBC-的数据库的连接" class="headerlink" title="JDBC 的数据库的连接"></a>JDBC 的数据库的连接</h4><p>在JDBC连接数据库中，一般包括<strong>加载驱动，获得数据库连接</strong>等步骤。而加载驱动，就是引入相关Jar包后，通过<strong>Class.forName()</strong> 即反射技术，加载数据库的驱动程序。</p>
+<h4 id="Spring-框架的使用"><a href="#Spring-框架的使用" class="headerlink" title="Spring 框架的使用"></a>Spring 框架的使用</h4><p>Spring 通过 XML 配置模式装载 Bean，也是反射的一个典型例子。</p>
+<p><strong>装载过程：</strong></p>
+<ul>
+<li>将程序内XML 配置文件加载入内存中</li>
+<li>Java类解析xml里面的内容，得到相关字节码信息</li>
+<li>使用反射机制，得到Class实例</li>
+<li>动态配置实例的属性，使用</li>
+</ul>
+<p><strong>这样做当然是有好处的：</strong></p>
+<p>不用每次都去new实例了，并且可以修改配置文件，比较灵活。</p>
+<h3 id="反射存在的问题"><a href="#反射存在的问题" class="headerlink" title="反射存在的问题"></a>反射存在的问题</h3><h4 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h4><p>java反射的性能并不好，原因主要是编译器没法对反射相关的代码做优化。<br>有兴趣的朋友，可以看一下这个文章<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow">java-reflection-why-is-it-so-slow</a></p>
+<h4 id="安全问题"><a href="#安全问题" class="headerlink" title="安全问题"></a>安全问题</h4><p>我们知道单例模式的设计过程中，会强调<strong>将构造器设计为私有</strong>，因为这样可以防止从外部构造对象。但是反射可以获取类中的域、方法、构造器，<strong>修改访问权限</strong>。所以这样并不一定是安全的。</p>
+<p>看个例子吧，通过反射使用私有构造器实例化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class Student &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    private Student(String name) &#123;</span><br><span class="line">        System.out.println(&quot;我是私有构造器，我被实例化了&quot;);</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    public void doHomework(String subject) &#123;</span><br><span class="line">        System.out.println(&quot;我的名字是&quot; + name);</span><br><span class="line">        System.out.println(&quot;我在做&quot;+subject+&quot;作业&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">public class TestReflection &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        Class clazz = Class.forName(&quot;reflection.Student&quot;);</span><br><span class="line">        // 获取私有构造方法对象</span><br><span class="line">        Constructor constructor = clazz.getDeclaredConstructor(String.class);</span><br><span class="line">        // true指示反射的对象在使用时应该取消Java语言访问检查。</span><br><span class="line">        constructor.setAccessible(true);</span><br><span class="line">        Student student = (Student) constructor.newInstance(&quot;jay@huaxiao&quot;);</span><br><span class="line">        student.doHomework(&quot;数学&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果：</strong></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/12/21/16f283232305ee69?w=1165&h=605&f=png&s=104011"><br>显然，反射不管你是不是私有，一样可以调用。<br>所以，使用反射通常需要程序的运行没有<strong>安全限制</strong>。如果一个程序对安全性有强制要求，最好不要使用反射啦。</p>
+<h2 id="参考与感谢"><a href="#参考与感谢" class="headerlink" title="参考与感谢"></a>参考与感谢</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c8de67db8adb">反射的实现原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangyanming123/article/details/51355251">通过反射获取私有构造方法并使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html">大白话说Java反射：入门、使用、原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Wenlong_L/article/details/82811996">设计模式之单例模式六（防反射攻击）</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000010162647">Reflection：Java反射机制的应用场景</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/javazejian/article/details/70768369">深入理解Java类型信息(Class对象)与反射机制</a></li>
+<li>《Java编程思想》</li>
+</ul>
+<h2 id="个人公众号"><a href="#个人公众号" class="headerlink" title="个人公众号"></a>个人公众号</h2><p><img src="https://user-gold-cdn.xitu.io/2019/7/28/16c381c89b127bbb?w=344&h=344&f=jpeg&s=8943"></p>
+<ul>
+<li>如果你是个爱学习的好孩子，可以关注我公众号，一起学习讨论。</li>
+<li>如果你觉得本文有哪些不正确的地方，可以评论，也可以关注我公众号，私聊我，大家一起学习进步哈。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%B0%88%E8%B0%88Java%E5%8F%8D%E5%B0%84%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%86%8D%E5%88%B0%E5%8E%9F%E7%90%86/">http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%B0%88%E8%B0%88Java%E5%8F%8D%E5%B0%84%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%86%8D%E5%88%B0%E5%8E%9F%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/../image/3.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%A7%A6%E5%8F%91%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%85%AD%E5%A4%A7%E6%97%B6%E6%9C%BA/"><img class="prev-cover" src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">触发类加载的六大时机</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%A7%A3%E6%9E%90/"><img class="next-cover" src="https://t7.baidu.com/it/u=3117450743,1239962790&amp;fm=193&amp;f=GIF" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">线程池解析</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%90%86%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">反射理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E8%A7%A3%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">官方解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BD%E8%AF%9D%E7%90%86%E8%A7%A3"><span class="toc-number">2.2.</span> <span class="toc-text">白话理解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E5%B0%84"><span class="toc-number">2.2.1.</span> <span class="toc-text">正射</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84"><span class="toc-number">2.2.2.</span> <span class="toc-text">反射</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A3%E5%B0%84%E4%B8%8E%E5%8F%8D%E5%B0%84%E5%AF%B9%E6%AF%94"><span class="toc-number">2.2.3.</span> <span class="toc-text">正射与反射对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">2.2.4.</span> <span class="toc-text">结论</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class-%E5%AF%B9%E8%B1%A1%E7%90%86%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">Class 对象理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">反射的基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96-Class-%E7%B1%BB%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.1.</span> <span class="toc-text">获取 Class 类对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%88%9B%E9%80%A0%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%EF%BC%8C%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%EF%BC%8C%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">反射创造对象，获取方法，成员变量，构造器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%88%9B%E9%80%A0%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.2.1.</span> <span class="toc-text">反射创造对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E8%8E%B7%E5%8F%96%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">4.2.2.</span> <span class="toc-text">反射获取类的构造器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E8%8E%B7%E5%8F%96%E7%B1%BB%E7%9A%84%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">4.2.3.</span> <span class="toc-text">反射获取类的成员变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E8%8E%B7%E5%8F%96%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.4.</span> <span class="toc-text">反射获取类的方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">反射的实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BA%94%E7%94%A8%E4%BB%A5%E5%8F%8A%E9%97%AE%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">反射的一些应用以及问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%BA%94%E7%94%A8"><span class="toc-number">6.1.</span> <span class="toc-text">反射应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#JDBC-%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="toc-number">6.1.1.</span> <span class="toc-text">JDBC 的数据库的连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Spring-%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">6.1.2.</span> <span class="toc-text">Spring 框架的使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">6.2.</span> <span class="toc-text">反射存在的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="toc-number">6.2.1.</span> <span class="toc-text">性能问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-number">6.2.2.</span> <span class="toc-text">安全问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E6%84%9F%E8%B0%A2"><span class="toc-number">7.</span> <span class="toc-text">参考与感谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-number">8.</span> <span class="toc-text">个人公众号</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁"><img src="/image/8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="七种方案对比分布式锁"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁">七种方案对比分布式锁</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识"><img src="/image/7.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="学习Redis相关知识"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识">学习Redis相关知识</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="程序员必备基础：Git 命令全方位学习"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习">程序员必备基础：Git 命令全方位学习</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析"><img src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库连接池内存泄漏问题分析"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析">数据库连接池内存泄漏问题分析</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池运用不当导致的问题"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题">线程池运用不当导致的问题</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

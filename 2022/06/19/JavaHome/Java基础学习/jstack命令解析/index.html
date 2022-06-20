@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>jstack命令学习 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言如果有一天，你的Java程序长时间停顿，也许是它病了，需要用jstack拍个片子分析分析，才能诊断具体什么病症，是死锁综合征，还是死循环等其他病症，本文我们一起来学习jstack命令~  jstack 的功能 jstack用法 线程状态等基础回顾 实战案例1：jstack 分析死锁 实战案例2：jstack 分析CPU 过高  jstack 的功能jstack是JVM自带的Java堆栈跟踪工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jstack命令学习">
+<meta property="og:url" content="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/jstack%E5%91%BD%E4%BB%A4%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="前言如果有一天，你的Java程序长时间停顿，也许是它病了，需要用jstack拍个片子分析分析，才能诊断具体什么病症，是死锁综合征，还是死循环等其他病症，本文我们一起来学习jstack命令~  jstack 的功能 jstack用法 线程状态等基础回顾 实战案例1：jstack 分析死锁 实战案例2：jstack 分析CPU 过高  jstack 的功能jstack是JVM自带的Java堆栈跟踪工具">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF">
+<meta property="article:published_time" content="2022-06-19T13:50:08.140Z">
+<meta property="article:modified_time" content="2022-06-20T11:37:30.499Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/jstack%E5%91%BD%E4%BB%A4%E8%A7%A3%E6%9E%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'jstack命令学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-20 19:37:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://t7.baidu.com/it/u=825057118,3516313570&amp;fm=193&amp;f=GIF')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">jstack命令学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-19T13:50:08.140Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-20T11:37:30.499Z" title="更新于 2022-06-20 19:37:30">2022-06-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="jstack命令学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果有一天，你的Java程序长时间停顿，也许是它病了，需要用jstack拍个片子分析分析，才能诊断具体什么病症，是死锁综合征，还是死循环等其他病症，本文我们一起来学习jstack命令~</p>
+<ul>
+<li>jstack 的功能</li>
+<li>jstack用法</li>
+<li>线程状态等基础回顾</li>
+<li>实战案例1：jstack 分析死锁</li>
+<li>实战案例2：jstack 分析CPU 过高</li>
+</ul>
+<h2 id="jstack-的功能"><a href="#jstack-的功能" class="headerlink" title="jstack 的功能"></a>jstack 的功能</h2><p>jstack是JVM自带的Java堆栈跟踪工具，它用于打印出给定的java进程ID、core file、远程调试服务的Java堆栈信息.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jstack prints Java stack traces of Java threads for a given Java process or</span><br><span class="line">core file or a remote debug server. </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>jstack命令用于生成虚拟机当前时刻的线程快照。</li>
+<li>线程快照是当前虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是定位线程出现长时间停顿的原因，<br>如线程间死锁、死循环、请求外部资源导致的长时间等待等问题。</li>
+<li>线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做什么事情，或者等待什么资源。</li>
+<li>如果java程序崩溃生成core文件，jstack工具可以用来获得core文件的java stack和native stack的信息，从而可以轻松地知道java程序是如何崩溃和在程序何处发生问题。</li>
+<li>另外，jstack工具还可以附属到正在运行的java程序中，看到当时运行的java程序的java stack和native stack的信息, 如果现在运行的java程序呈现hung的状态，jstack是非常有用的。</li>
+</ul>
+</blockquote>
+<h2 id="jstack用法"><a href="#jstack用法" class="headerlink" title="jstack用法"></a>jstack用法</h2><p><strong>jstack 命令格式如下</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">jstack [ option ] pid </span><br><span class="line">jstack [ option ] executable core </span><br><span class="line">jstack [ option ] [server-id@]remote-hostname-or-IP </span><br></pre></td></tr></table></figure>
+<ul>
+<li>executable Java executable from which the core dump was produced.(可能是产生core dump的java可执行程序)</li>
+<li>core 将被打印信息的core dump文件</li>
+<li>remote-hostname-or-IP 远程debug服务的主机名或ip</li>
+<li>server-id 唯一id,假如一台主机上多个远程debug服务</li>
+</ul>
+<p><strong>最常用的是</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack [option] &lt;pid&gt;  // 打印某个进程的堆栈信息</span><br></pre></td></tr></table></figure>
+<p><strong>option参数说明如下：</strong></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/5/8/171efde05078a6bb?w=874&h=298&f=png&s=125941"></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-F</td>
+<td>当正常输出的请求不被响应时，强制输出线程堆栈</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>如果调用到本地方法的话，可以显示C&#x2F;C++的堆栈</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>除堆栈外，显示关于锁的附加信息，在发生死锁时可以用jstack -l pid来观察锁持有情况</td>
+</tr>
+</tbody></table>
+<h2 id="线程状态等基础回顾"><a href="#线程状态等基础回顾" class="headerlink" title="线程状态等基础回顾"></a>线程状态等基础回顾</h2><h3 id="线程状态简介"><a href="#线程状态简介" class="headerlink" title="线程状态简介"></a>线程状态简介</h3><p>jstack用于生成线程快照的，我们分析线程的情况，需要复习一下线程状态吧，拿小凳子坐好，复习一下啦~<br><img src="https://user-gold-cdn.xitu.io/2020/5/3/171d9db3c2b90ad3?w=1280&h=617&f=png&s=254427"></p>
+<p><strong>Java语言定义了6种线程池状态：</strong></p>
+<ul>
+<li>New：创建后尚未启动的线程处于这种状态，不会出现在Dump中。</li>
+<li>RUNNABLE：包括Running和Ready。线程开启start（）方法，会进入该状态，在虚拟机内执行的。</li>
+<li>Waiting：无限的等待另一个线程的特定操作。</li>
+<li>Timed Waiting：有时限的等待另一个线程的特定操作。</li>
+<li>阻塞（Blocked）：在程序等待进入同步区域的时候，线程将进入这种状态，在等待监视器锁。</li>
+<li>结束（Terminated）：已终止线程的线程状态，线程已经结束执行。</li>
+</ul>
+<p><strong>Dump文件的线程状态一般其实就以下3种：</strong></p>
+<ul>
+<li>RUNNABLE，线程处于执行中 </li>
+<li>BLOCKED，线程被阻塞 </li>
+<li>WAITING，线程正在等待</li>
+</ul>
+<h3 id="Monitor-监视锁"><a href="#Monitor-监视锁" class="headerlink" title="Monitor 监视锁"></a>Monitor 监视锁</h3><p>因为Java程序一般都是多线程运行的，Java多线程跟监视锁环环相扣，所以我们分析线程状态时，也需要回顾一下Monitor监视锁知识。</p>
+<p>有关于线程同步关键字Synchronized与监视锁的爱恨情仇，有兴趣的伙伴可以看一下我这篇文章<br><a target="_blank" rel="noopener" href="https://juejin.im/post/5d5374076fb9a06ac76da894#heading-18">Synchronized解析——如果你愿意一层一层剥开我的心</a></p>
+<p>Monitor的工作原理图如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fe505a1154da0?w=1280&h=765&f=png&s=265369"></p>
+<ul>
+<li>线程想要获取monitor,首先会进入Entry Set队列，它是Waiting Thread，线程状态是Waiting for monitor entry。</li>
+<li>当某个线程成功获取对象的monitor后,进入Owner区域，它就是Active Thread。</li>
+<li>如果线程调用了wait()方法，则会进入Wait Set队列，它会释放monitor锁，它也是Waiting Thread，线程状态in Object.wait()</li>
+<li>如果其他线程调用 notify() &#x2F; notifyAll() ，会唤醒Wait Set中的某个线程，该线程再次尝试获取monitor锁，成功即进入Owner区域。</li>
+</ul>
+<h3 id="Dump-文件分析关注重点"><a href="#Dump-文件分析关注重点" class="headerlink" title="Dump 文件分析关注重点"></a>Dump 文件分析关注重点</h3><ul>
+<li>runnable，线程处于执行中 </li>
+<li>deadlock，死锁（重点关注）</li>
+<li>blocked，线程被阻塞 （重点关注）</li>
+<li>Parked，停止</li>
+<li>locked，对象加锁</li>
+<li>waiting，线程正在等待</li>
+<li>waiting to lock 等待上锁</li>
+<li>Object.wait()，对象等待中</li>
+<li>waiting for monitor entry 等待获取监视器（重点关注）</li>
+<li>Waiting on condition，等待资源（重点关注），最常见的情况是线程在等待网络的读写</li>
+</ul>
+<h2 id="实战案例1：jstack-分析死锁问题"><a href="#实战案例1：jstack-分析死锁问题" class="headerlink" title="实战案例1：jstack 分析死锁问题"></a>实战案例1：jstack 分析死锁问题</h2><ul>
+<li>什么是死锁？</li>
+<li>如何用jstack排查死锁？</li>
+</ul>
+<h3 id="什么是死锁？"><a href="#什么是死锁？" class="headerlink" title="什么是死锁？"></a>什么是死锁？</h3><p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fdedc6f195055?w=731&h=730&f=png&s=75164"></p>
+<p>死锁是指两个或两个以上的线程在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力作用，它们都将无法进行下去。</p>
+<h3 id="如何用如何用jstack排查死锁问题"><a href="#如何用如何用jstack排查死锁问题" class="headerlink" title="如何用如何用jstack排查死锁问题"></a>如何用如何用jstack排查死锁问题</h3><p>先来看一段会产生死锁的Java程序，源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Java 死锁demo</span><br><span class="line"> */</span><br><span class="line">public class DeathLockTest &#123;</span><br><span class="line">    private static Lock lock1 = new ReentrantLock();</span><br><span class="line">    private static Lock lock2 = new ReentrantLock();</span><br><span class="line"></span><br><span class="line">    public static void deathLock() &#123;</span><br><span class="line">        Thread t1 = new Thread() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    lock1.lock();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + &quot; get the lock1&quot;);</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                    lock2.lock();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + &quot; get the lock2&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Thread t2 = new Thread() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    lock2.lock();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + &quot; get the lock2&quot;);</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                    lock1.lock();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + &quot; get the lock1&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        //设置线程名字，方便分析堆栈信息</span><br><span class="line">        t1.setName(&quot;mythread-jay&quot;);</span><br><span class="line">        t2.setName(&quot;mythread-tianluo&quot;);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        deathLock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fdbeb51a543c1?w=795&h=209&f=png&s=24069"><br>显然，线程jay和线程tianluo都是只执行到一半，就陷入了阻塞等待状态~</p>
+<h3 id="jstack排查Java死锁步骤"><a href="#jstack排查Java死锁步骤" class="headerlink" title="jstack排查Java死锁步骤"></a>jstack排查Java死锁步骤</h3><ul>
+<li>在终端中输入jsp查看当前运行的java程序</li>
+<li>使用 jstack -l pid 查看线程堆栈信息</li>
+<li>分析堆栈信息</li>
+</ul>
+<h3 id="在终端中输入jsp查看当前运行的java程序"><a href="#在终端中输入jsp查看当前运行的java程序" class="headerlink" title="在终端中输入jsp查看当前运行的java程序"></a>在终端中输入jsp查看当前运行的java程序</h3><p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fdc5ad1be5bf0?w=877&h=171&f=png&s=21046"><br>通过使用 jps 命令获取需要监控的进程的pid，我们找到了<code>23780 DeathLockTest</code></p>
+<h3 id="使用-jstack-l-pid-查看线程堆栈信息"><a href="#使用-jstack-l-pid-查看线程堆栈信息" class="headerlink" title="使用 jstack -l pid 查看线程堆栈信息"></a>使用 jstack -l pid 查看线程堆栈信息</h3><p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fddacc8bd2aa9?w=1177&h=181&f=png&s=32290"><br>由上图，可以清晰看到<strong>死锁</strong>信息：</p>
+<ul>
+<li>mythread-tianluo 等待这个锁 “0x00000000d61ae3a0”，这个锁是由于mythread-jay线程持有。</li>
+<li>mythread-jay线程等待这个锁“0x00000000d61ae3d0”,这个锁是由mythread-tianluo 线程持有。</li>
+</ul>
+<h3 id="还原死锁真相"><a href="#还原死锁真相" class="headerlink" title="还原死锁真相"></a>还原死锁真相</h3><p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fdd465657c327?w=1312&h=625&f=png&s=143955"><br><strong>“mythread-tianluo”线程堆栈信息分析如下：</strong></p>
+<ul>
+<li>mythread-tianluo的线程处于等待（waiting）状态，持有“0x00000000d61ae3d0”锁，等待“0x00000000d61ae3a0”的锁</li>
+</ul>
+<p><strong>“mythread-jay”线程堆栈信息分析如下：</strong></p>
+<ul>
+<li>mythread-tianluo的线程处于等待（waiting）状态，持有“0x00000000d61ae3a0”锁，等待“0x00000000d61ae3d0”的锁</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171febb0f72f1efb?w=604&h=602&f=png&s=67435"></p>
+<h2 id="实战案例2：jstack-分析CPU过高问题"><a href="#实战案例2：jstack-分析CPU过高问题" class="headerlink" title="实战案例2：jstack 分析CPU过高问题"></a>实战案例2：jstack 分析CPU过高问题</h2><p>来个导致CPU过高的demo程序，一个死循环，哈哈~</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 有个导致CPU过高程序的demo，死循环</span><br><span class="line"> */</span><br><span class="line">public class JstackCase &#123;</span><br><span class="line"></span><br><span class="line">     private static ExecutorService executorService = Executors.newFixedThreadPool(5);</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">        Task task1 = new Task();</span><br><span class="line">        Task task2 = new Task();</span><br><span class="line">        executorService.execute(task1);</span><br><span class="line">        executorService.execute(task2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Object lock = new Object();</span><br><span class="line"></span><br><span class="line">    static class Task implements Runnable&#123;</span><br><span class="line"></span><br><span class="line">        public void run() &#123;</span><br><span class="line">            synchronized (lock)&#123;</span><br><span class="line">                long sum = 0L;</span><br><span class="line">                while (true)&#123;</span><br><span class="line">                    sum += 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="jstack-分析CPU过高步骤"><a href="#jstack-分析CPU过高步骤" class="headerlink" title="jstack 分析CPU过高步骤"></a>jstack 分析CPU过高步骤</h3><ul>
+<li><ol>
+<li>top</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>top -Hp pid</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>jstack pid</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>jstack -l [PID] &gt;&#x2F;tmp&#x2F;log.txt</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>分析堆栈信息</li>
+</ol>
+</li>
+</ul>
+<h3 id="1-top"><a href="#1-top" class="headerlink" title="1.top"></a>1.top</h3><p>在服务器上，我们可以通过top命令查看各个进程的cpu使用情况，它默认是按cpu使用率由高到低排序的<br><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fcebd6b26a42a?w=793&h=532&f=png&s=319420"><br>由上图中，我们可以找出pid为21340的java进程，它占用了最高的cpu资源，凶手就是它，哈哈！</p>
+<h3 id="2-top-Hp-pid"><a href="#2-top-Hp-pid" class="headerlink" title="2. top -Hp pid"></a>2. top -Hp pid</h3><p>通过top -Hp 21340可以查看该进程下，各个线程的cpu使用情况，如下：<br><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fcf02e458cc8d?w=842&h=219&f=png&s=145135"><br>可以发现pid为21350的线程，CPU资源占用最高<del>，嘻嘻，小本本把它记下来，接下来拿jstack给它拍片子</del></p>
+<h3 id="3-jstack-pid"><a href="#3-jstack-pid" class="headerlink" title="3. jstack pid"></a>3. jstack pid</h3><p>通过top命令定位到cpu占用率较高的线程之后，接着使用jstack pid命令来查看当前java进程的堆栈状态，<code>jstack 21350</code>后，内容如下：<br><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fcf603e5adf63?w=1114&h=409&f=png&s=278796"></p>
+<h3 id="4-jstack-l-PID-gt-x2F-tmp-x2F-log-txt"><a href="#4-jstack-l-PID-gt-x2F-tmp-x2F-log-txt" class="headerlink" title="4. jstack -l [PID] &gt;&#x2F;tmp&#x2F;log.txt"></a>4. jstack -l [PID] &gt;&#x2F;tmp&#x2F;log.txt</h3><p>其实，前3个步骤，堆栈信息已经出来啦。但是一般在生成环境，我们可以把这些堆栈信息打到一个文件里，再回头仔细分析哦~</p>
+<h3 id="5-分析堆栈信息"><a href="#5-分析堆栈信息" class="headerlink" title="5. 分析堆栈信息"></a>5. 分析堆栈信息</h3><p>我们把占用cpu资源较高的线程pid（本例子是21350），将该pid转成16进制的值</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fd4e1e7da64e4?w=903&h=280&f=png&s=22071"><br>在thread dump中，每个线程都有一个nid，我们找到对应的nid（5366），发现一直在跑（24行）</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/5/10/171fd50679c83f44?w=1114&h=409&f=png&s=278796"></p>
+<p>这个时候，可以去检查代码是否有问题啦~ 当然，也建议隔段时间再执行一次stack命令，再一份获取thread dump，毕竟两次拍片结果（jstack）对比，更准确嘛~</p>
+<h2 id="参考与感谢"><a href="#参考与感谢" class="headerlink" title="参考与感谢"></a>参考与感谢</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/025cb069cb69">jvm 性能调优工具之 jstack</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6690f7e92f27">如何使用jstack分析线程状态</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.hollischuang.com/archives/110">Java命令学习系列（二）——Jstack</a></li>
+</ul>
+<h2 id="个人公众号"><a href="#个人公众号" class="headerlink" title="个人公众号"></a>个人公众号</h2><p><img src="https://user-gold-cdn.xitu.io/2020/5/12/1720639baa43485e?w=900&h=500&f=png&s=133410"></p>
+<ul>
+<li>觉得写得好的小伙伴给个点赞+关注啦，谢谢~</li>
+<li>如果有写得不正确的地方，麻烦指出，感激不尽。</li>
+<li>同时非常期待小伙伴们能够关注我公众号，后面慢慢推出更好的干货~嘻嘻</li>
+<li>github地址：<a target="_blank" rel="noopener" href="https://github.com/whx123/JavaHome">https://github.com/whx123/JavaHome</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/jstack%E5%91%BD%E4%BB%A4%E8%A7%A3%E6%9E%90/">http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/jstack%E5%91%BD%E4%BB%A4%E8%A7%A3%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/if-else%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96%E7%9A%84%E5%85%AB%E7%A7%8D%E6%96%B9%E6%A1%88/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E6%9C%89%E5%85%B3%E4%BA%8EJava%20Map%EF%BC%8C%E5%BA%94%E8%AF%A5%E6%8E%8C%E6%8F%A1%E7%9A%848%E4%B8%AA%E9%97%AE%E9%A2%98/"><img class="next-cover" src="https://t7.baidu.com/it/u=1571943286,138954520&amp;fm=193&amp;f=GIF" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java map 应该掌握的8个问题</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jstack-%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">2.</span> <span class="toc-text">jstack 的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jstack%E7%94%A8%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">jstack用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E7%AD%89%E5%9F%BA%E7%A1%80%E5%9B%9E%E9%A1%BE"><span class="toc-number">4.</span> <span class="toc-text">线程状态等基础回顾</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E7%AE%80%E4%BB%8B"><span class="toc-number">4.1.</span> <span class="toc-text">线程状态简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Monitor-%E7%9B%91%E8%A7%86%E9%94%81"><span class="toc-number">4.2.</span> <span class="toc-text">Monitor 监视锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dump-%E6%96%87%E4%BB%B6%E5%88%86%E6%9E%90%E5%85%B3%E6%B3%A8%E9%87%8D%E7%82%B9"><span class="toc-number">4.3.</span> <span class="toc-text">Dump 文件分析关注重点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B1%EF%BC%9Ajstack-%E5%88%86%E6%9E%90%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">实战案例1：jstack 分析死锁问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%BB%E9%94%81%EF%BC%9F"><span class="toc-number">5.1.</span> <span class="toc-text">什么是死锁？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8%E5%A6%82%E4%BD%95%E7%94%A8jstack%E6%8E%92%E6%9F%A5%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">如何用如何用jstack排查死锁问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstack%E6%8E%92%E6%9F%A5Java%E6%AD%BB%E9%94%81%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.3.</span> <span class="toc-text">jstack排查Java死锁步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%BB%88%E7%AB%AF%E4%B8%AD%E8%BE%93%E5%85%A5jsp%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E7%9A%84java%E7%A8%8B%E5%BA%8F"><span class="toc-number">5.4.</span> <span class="toc-text">在终端中输入jsp查看当前运行的java程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-jstack-l-pid-%E6%9F%A5%E7%9C%8B%E7%BA%BF%E7%A8%8B%E5%A0%86%E6%A0%88%E4%BF%A1%E6%81%AF"><span class="toc-number">5.5.</span> <span class="toc-text">使用 jstack -l pid 查看线程堆栈信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%98%E5%8E%9F%E6%AD%BB%E9%94%81%E7%9C%9F%E7%9B%B8"><span class="toc-number">5.6.</span> <span class="toc-text">还原死锁真相</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B2%EF%BC%9Ajstack-%E5%88%86%E6%9E%90CPU%E8%BF%87%E9%AB%98%E9%97%AE%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">实战案例2：jstack 分析CPU过高问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jstack-%E5%88%86%E6%9E%90CPU%E8%BF%87%E9%AB%98%E6%AD%A5%E9%AA%A4"><span class="toc-number">6.1.</span> <span class="toc-text">jstack 分析CPU过高步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-top"><span class="toc-number">6.2.</span> <span class="toc-text">1.top</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-top-Hp-pid"><span class="toc-number">6.3.</span> <span class="toc-text">2. top -Hp pid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-jstack-pid"><span class="toc-number">6.4.</span> <span class="toc-text">3. jstack pid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-jstack-l-PID-gt-x2F-tmp-x2F-log-txt"><span class="toc-number">6.5.</span> <span class="toc-text">4. jstack -l [PID] &gt;&#x2F;tmp&#x2F;log.txt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%86%E6%9E%90%E5%A0%86%E6%A0%88%E4%BF%A1%E6%81%AF"><span class="toc-number">6.6.</span> <span class="toc-text">5. 分析堆栈信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E6%84%9F%E8%B0%A2"><span class="toc-number">7.</span> <span class="toc-text">参考与感谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-number">8.</span> <span class="toc-text">个人公众号</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁"><img src="/image/8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="七种方案对比分布式锁"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁">七种方案对比分布式锁</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识"><img src="/image/7.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="学习Redis相关知识"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识">学习Redis相关知识</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="程序员必备基础：Git 命令全方位学习"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习">程序员必备基础：Git 命令全方位学习</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析"><img src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库连接池内存泄漏问题分析"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析">数据库连接池内存泄漏问题分析</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池运用不当导致的问题"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题">线程池运用不当导致的问题</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

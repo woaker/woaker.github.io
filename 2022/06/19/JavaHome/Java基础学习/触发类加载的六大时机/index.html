@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>触发类加载的六大时机 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言什么情况下会触发类加载的进行呢？本文将结合代码demo谈谈几种情况，希望对大家有帮助。 类加载时机什么情况需要开始类加载过程的第一阶段：加载？Java虚拟机规范中并没有进行强制约束，这点可以交给虚拟机的具体实现来自由把握。但是对于初始化阶段，虚拟机规范则严格规定了以下几种情况必须立即对类进行初始化，如果类没有进行过初始化，则需要先触发其初始化。  创建类的实例为了验证类加载，我们先配置一个J">
+<meta property="og:type" content="article">
+<meta property="og:title" content="触发类加载的六大时机">
+<meta property="og:url" content="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%A7%A6%E5%8F%91%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%85%AD%E5%A4%A7%E6%97%B6%E6%9C%BA/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="前言什么情况下会触发类加载的进行呢？本文将结合代码demo谈谈几种情况，希望对大家有帮助。 类加载时机什么情况需要开始类加载过程的第一阶段：加载？Java虚拟机规范中并没有进行强制约束，这点可以交给虚拟机的具体实现来自由把握。但是对于初始化阶段，虚拟机规范则严格规定了以下几种情况必须立即对类进行初始化，如果类没有进行过初始化，则需要先触发其初始化。  创建类的实例为了验证类加载，我们先配置一个J">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF">
+<meta property="article:published_time" content="2022-06-19T13:50:08.141Z">
+<meta property="article:modified_time" content="2022-06-20T14:03:06.092Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%A7%A6%E5%8F%91%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%85%AD%E5%A4%A7%E6%97%B6%E6%9C%BA/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '触发类加载的六大时机',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-20 22:03:06'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://t7.baidu.com/it/u=825057118,3516313570&amp;fm=193&amp;f=GIF')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">触发类加载的六大时机</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-19T13:50:08.141Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-20T14:03:06.092Z" title="更新于 2022-06-20 22:03:06">2022-06-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="触发类加载的六大时机"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d59927154281d2?w=500&h=334&f=jpeg&s=30619"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>什么情况下会触发类加载的进行呢？本文将结合代码demo谈谈几种情况，希望对大家有帮助。</p>
+<h2 id="类加载时机"><a href="#类加载时机" class="headerlink" title="类加载时机"></a>类加载时机</h2><p>什么情况需要开始类加载过程的第一阶段：加载？Java虚拟机规范中并没有进行强制约束，这点可以交给虚拟机的具体实现来自由把握。但是对于初始化阶段，虚拟机规范则严格规定了以下几种情况必须立即对类进行初始化，如果类没有进行过初始化，则需要先触发其初始化。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d593cdb1dee573?w=815&h=650&f=png&s=73353"></p>
+<h2 id="创建类的实例"><a href="#创建类的实例" class="headerlink" title="创建类的实例"></a>创建类的实例</h2><p>为了验证类加载，我们先配置一个JVM参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+TraceClassLoading 监控类的加载</span><br></pre></td></tr></table></figure>
+<p>在IDE配置如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d58ccf239f17d5?w=1269&h=840&f=png&s=96736"></p>
+<p>demo代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class ClassLoadInstance &#123;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        System.out.println(&quot;ClassLoadInstance类初始化时就会被执行！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ClassLoadInstance() &#123;</span><br><span class="line">      System.out.println(&quot;ClassLoadInstance构造函数！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ClassLoadTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ClassLoadInstance instance = new ClassLoadInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d58d7a7735d914?w=1218&h=119&f=png&s=23340"></p>
+<p><strong>结论：</strong></p>
+<p>new ClassLoadInstance实例时，发现ClassLoadInstance被加载了，因此 new创建实例对象，会触发类加载进行。</p>
+<h2 id="访问类的静态变量"><a href="#访问类的静态变量" class="headerlink" title="访问类的静态变量"></a>访问类的静态变量</h2><p>demo代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class ClassLoadStaticVariable &#123;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        System.out.println(&quot;ClassLoadStaticVariable类初始化时就会被执行！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static int i = 100;</span><br><span class="line"></span><br><span class="line">    public ClassLoadStaticVariable() &#123;</span><br><span class="line">      System.out.println(&quot;ClassLoadStaticVariable构造函数！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ClassLoadTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(ClassLoadStaticVariable.i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d58e23d0d91b82?w=1240&h=112&f=png&s=17651"></p>
+<p><strong>结论：</strong></p>
+<p>访问类ClassLoadStaticVariable的静态变量i时，发现ClassLoadStaticVariable类被加载啦，因此访问类的静态变量会触发类加载。</p>
+<p><strong>注意：</strong> </p>
+<p>访问final修饰的静态变量时，不会触发类加载，因为在编译期已经将此常量放在常量池了。</p>
+<h2 id="访问类的静态方法"><a href="#访问类的静态方法" class="headerlink" title="访问类的静态方法"></a>访问类的静态方法</h2><p>demo代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class ClassLoadStaticMethod &#123;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        System.out.println(&quot;ClassLoadStaticMethod类初始化时就会被执行！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void method()&#123;</span><br><span class="line">        System.out.println(&quot;静态方法被调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ClassLoadStaticMethod() &#123;</span><br><span class="line">      System.out.println(&quot;ClassLoadStaticMethod构造函数！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ClassLoadTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ClassLoadStaticMethod.method();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d58effc2119fa4?w=1299&h=109&f=png&s=21427"></p>
+<p>结论：</p>
+<p>访问类ClassLoadStaticMethod的静态方法method时，发现ClassLoadStaticMethod类被加载啦，因此访问类的静态方法会触发类加载。</p>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>demo代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">package classload;</span><br><span class="line"></span><br><span class="line">public class ClassLoadStaticReflect &#123;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        System.out.println(&quot;ClassLoadStaticReflect类初始化时就会被执行！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void method()&#123;</span><br><span class="line">        System.out.println(&quot;静态方法被调用&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ClassLoadStaticReflect() &#123;</span><br><span class="line">      System.out.println(&quot;ClassLoadStaticReflect构造函数！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ClassLoadTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws ClassNotFoundException &#123;</span><br><span class="line">        Class.forName(&quot;classload.ClassLoadStaticReflect&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d5900d7dfcb244?w=1227&h=82&f=png&s=17698"></p>
+<p><strong>结论：</strong></p>
+<p>反射得到类ClassLoadStaticReflect时，发现ClassLoadStaticReflect类被加载啦，因此反射会触发类加载。</p>
+<h2 id="当初始化一个类时，发现其父类还未初始化，则先触发父类的初始化"><a href="#当初始化一个类时，发现其父类还未初始化，则先触发父类的初始化" class="headerlink" title="当初始化一个类时，发现其父类还未初始化，则先触发父类的初始化"></a>当初始化一个类时，发现其父类还未初始化，则先触发父类的初始化</h2><p>demo代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//父类</span><br><span class="line">public class ClassLoadSuper &#123;</span><br><span class="line">    static &#123;</span><br><span class="line">        System.out.println(&quot;ClassLoadSuper类初始化时就会被执行！这是父类&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static int superNum = 100;</span><br><span class="line"></span><br><span class="line">    public ClassLoadSuper() &#123;</span><br><span class="line">        System.out.println(&quot;父类ClassLoadSuper构造函数！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//子类</span><br><span class="line">public class ClassLoadSub extends ClassLoadSuper &#123;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        System.out.println(&quot;ClassLoadSub类初始化时就会被执行！这是子类&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static int subNum = 100;</span><br><span class="line"></span><br><span class="line">    public ClassLoadSub() &#123;</span><br><span class="line">        System.out.println(&quot;子类ClassLoadSub构造函数！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ClassLoadTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws ClassNotFoundException &#123;</span><br><span class="line">        ClassLoadSub classLoadSub = new ClassLoadSub();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d5913a74736e7d?w=1259&h=209&f=png&s=45708"><br>看了运行结果，是不是发现，网上那道经典面试题（<strong>讲讲类的实例化顺序</strong>？）也很清晰啦。<br>先父类静态变量&#x2F;静态代码块-&gt; 再子类静态变量&#x2F;静态代码块-&gt;父类构造器-&gt;子类构造器</p>
+<p><strong>结论：</strong></p>
+<p>实例化子类ClassLoadSub的时候，发现父类ClassLoadSuper先被加载，因此当初始化一个类时，发现其父类还未初始化，则先触发父类的初始化</p>
+<h2 id="虚拟机启动时，定义了main-方法的那个类先初始化"><a href="#虚拟机启动时，定义了main-方法的那个类先初始化" class="headerlink" title="虚拟机启动时，定义了main()方法的那个类先初始化"></a>虚拟机启动时，定义了main()方法的那个类先初始化</h2><p>demo代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package classload;</span><br><span class="line"></span><br><span class="line">public class ClassLoadTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args)  &#123;</span><br><span class="line">       System.out.println(ClassLoadSub.subNum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d5922bdec72ac7?w=1391&h=371&f=png&s=83213"></p>
+<p><strong>结论：</strong></p>
+<p>虚拟机启动时，即使有ClassLoadSub，ClassLoadSuper，ClassLoadTest等类被加载， 但ClassLoadTest最先被加载，即定义了main()方法的那个类会先触发类加载。</p>
+<h2 id="练习与小结"><a href="#练习与小结" class="headerlink" title="练习与小结"></a>练习与小结</h2><p>触发类加载的六大时机，我们都分析完啦，是不是不做个题都觉得意犹未尽呢？接下来，我们来分析类加载一道经典面试题吧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class SingleTon &#123;  </span><br><span class="line">    private static SingleTon singleTon = new SingleTon();  </span><br><span class="line">    public static int count1;  </span><br><span class="line">    public static int count2 = 0;  </span><br><span class="line">  </span><br><span class="line">    private SingleTon() &#123;  </span><br><span class="line">        count1++;  </span><br><span class="line">        count2++;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public static SingleTon getInstance() &#123;  </span><br><span class="line">        return singleTon;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">public class ClassLoadTest &#123;  </span><br><span class="line">    public static void main(String[] args) &#123;  </span><br><span class="line">        SingleTon singleTon = SingleTon.getInstance();  </span><br><span class="line">        System.out.println(&quot;count1=&quot; + singleTon.count1);  </span><br><span class="line">        System.out.println(&quot;count2=&quot; + singleTon.count2);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/22/16d592b67bfbed36?w=1332&h=268&f=png&s=50004"></p>
+<p><strong>分析：</strong></p>
+<ol>
+<li>SingleTon.getInstance()，调用静态方法，触发SingleTon类加载。</li>
+<li>SingleTon类加载初始化，按顺序初始化静态变量。</li>
+<li>先执行private static SingleTon singleTon &#x3D; new SingleTon(); ，调用构造器后，count1，count2均为1；</li>
+<li>按顺序执行 public static int count1; 没有赋值，所以count1依旧为1；</li>
+<li>按顺序执行  public static int count2 &#x3D; 0;所以count2变为0.</li>
+</ol>
+<h2 id="个人公众号"><a href="#个人公众号" class="headerlink" title="个人公众号"></a>个人公众号</h2><p><img src="https://user-gold-cdn.xitu.io/2019/7/28/16c381c89b127bbb?w=344&h=344&f=jpeg&s=8943"></p>
+<p>欢迎大家关注，大家一起学习，一起讨论。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%A7%A6%E5%8F%91%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%85%AD%E5%A4%A7%E6%97%B6%E6%9C%BA/">http://example.com/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%A7%A6%E5%8F%91%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%85%AD%E5%A4%A7%E6%97%B6%E6%9C%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E6%B3%9B%E5%9E%8B%E8%A7%A3%E6%9E%90/"><img class="prev-cover" src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">泛型解析</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/19/JavaHome/Java%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E8%B0%88%E8%B0%88Java%E5%8F%8D%E5%B0%84%EF%BC%9A%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5%EF%BC%8C%E5%86%8D%E5%88%B0%E5%8E%9F%E7%90%86/"><img class="next-cover" src="/../image/3.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">谈谈Java反射：从入门到实践，再到原理</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%97%B6%E6%9C%BA"><span class="toc-number">2.</span> <span class="toc-text">类加载时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B1%BB%E7%9A%84%E5%AE%9E%E4%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">创建类的实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">4.</span> <span class="toc-text">访问类的静态变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">访问类的静态方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84"><span class="toc-number">6.</span> <span class="toc-text">反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%93%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E7%B1%BB%E6%97%B6%EF%BC%8C%E5%8F%91%E7%8E%B0%E5%85%B6%E7%88%B6%E7%B1%BB%E8%BF%98%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%8C%E5%88%99%E5%85%88%E8%A7%A6%E5%8F%91%E7%88%B6%E7%B1%BB%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">7.</span> <span class="toc-text">当初始化一个类时，发现其父类还未初始化，则先触发父类的初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E6%97%B6%EF%BC%8C%E5%AE%9A%E4%B9%89%E4%BA%86main-%E6%96%B9%E6%B3%95%E7%9A%84%E9%82%A3%E4%B8%AA%E7%B1%BB%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">8.</span> <span class="toc-text">虚拟机启动时，定义了main()方法的那个类先初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0%E4%B8%8E%E5%B0%8F%E7%BB%93"><span class="toc-number">9.</span> <span class="toc-text">练习与小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-number">10.</span> <span class="toc-text">个人公众号</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁"><img src="/image/8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="七种方案对比分布式锁"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁">七种方案对比分布式锁</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识"><img src="/image/7.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="学习Redis相关知识"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识">学习Redis相关知识</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="程序员必备基础：Git 命令全方位学习"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习">程序员必备基础：Git 命令全方位学习</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析"><img src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库连接池内存泄漏问题分析"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析">数据库连接池内存泄漏问题分析</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池运用不当导致的问题"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题">线程池运用不当导致的问题</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

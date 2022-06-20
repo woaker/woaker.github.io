@@ -1,0 +1,516 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言个人珍藏的80道Java多线程&#x2F;并发经典面试题，现在给出11-20的答案解析哈，并且上传github哈~  https:&#x2F;&#x2F;github.com&#x2F;whx123&#x2F;JavaHome  个人珍藏的80道多线程并发面试题（1-10答案解析） 11、为什么要用线程池？Java的线程池内部机制，参数作用，几种工作阻塞队列，线程池类型以及使用场景回答这些点：  为什么要用线程池？ Java的线程池">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/2022/06/19/JavaHome/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/Java%20%E5%B9%B6%E5%8F%91%20&&%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E4%B8%AA%E4%BA%BA%E7%8F%8D%E8%97%8F%E7%9A%8480%E9%81%93%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%8811-20%E7%AD%94%E6%A1%88%E8%A7%A3%E6%9E%90%EF%BC%89/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="前言个人珍藏的80道Java多线程&#x2F;并发经典面试题，现在给出11-20的答案解析哈，并且上传github哈~  https:&#x2F;&#x2F;github.com&#x2F;whx123&#x2F;JavaHome  个人珍藏的80道多线程并发面试题（1-10答案解析） 11、为什么要用线程池？Java的线程池内部机制，参数作用，几种工作阻塞队列，线程池类型以及使用场景回答这些点：  为什么要用线程池？ Java的线程池">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF">
+<meta property="article:published_time" content="2022-06-19T13:50:08.146Z">
+<meta property="article:modified_time" content="2022-06-20T13:56:24.183Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://t7.baidu.com/it/u=1723468391,764687099&fm=193&f=GIF"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/19/JavaHome/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/Java%20%E5%B9%B6%E5%8F%91%20&amp;&amp;%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E4%B8%AA%E4%BA%BA%E7%8F%8D%E8%97%8F%E7%9A%8480%E9%81%93%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%8811-20%E7%AD%94%E6%A1%88%E8%A7%A3%E6%9E%90%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-20 21:56:24'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://t7.baidu.com/it/u=825057118,3516313570&amp;fm=193&amp;f=GIF')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-19T13:50:08.146Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-20T13:56:24.183Z" title="更新于 2022-06-20 21:56:24">2022-06-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>个人珍藏的80道Java多线程&#x2F;并发经典面试题，现在给出11-20的答案解析哈，并且上传github哈~</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/whx123/JavaHome">https://github.com/whx123/JavaHome</a></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/6854573221258199048">个人珍藏的80道多线程并发面试题（1-10答案解析）</a></p>
+<h3 id="11、为什么要用线程池？Java的线程池内部机制，参数作用，几种工作阻塞队列，线程池类型以及使用场景"><a href="#11、为什么要用线程池？Java的线程池内部机制，参数作用，几种工作阻塞队列，线程池类型以及使用场景" class="headerlink" title="11、为什么要用线程池？Java的线程池内部机制，参数作用，几种工作阻塞队列，线程池类型以及使用场景"></a>11、为什么要用线程池？Java的线程池内部机制，参数作用，几种工作阻塞队列，线程池类型以及使用场景</h3><p>回答这些点：</p>
+<ul>
+<li>为什么要用线程池？</li>
+<li>Java的线程池原理</li>
+<li>线程池核心参数</li>
+<li>几种工作阻塞队列</li>
+<li>线程池使用不当的问题</li>
+<li>线程池类型以及使用场景</li>
+</ul>
+<h4 id="为什么要用线程池？"><a href="#为什么要用线程池？" class="headerlink" title="为什么要用线程池？"></a>为什么要用线程池？</h4><p>线程池：一个管理线程的池子。</p>
+<ul>
+<li>管理线程，避免增加创建线程和销毁线程的资源损耗。</li>
+<li>提高响应速度。</li>
+<li>重复利用。</li>
+</ul>
+<h4 id="Java的线程池执行原理"><a href="#Java的线程池执行原理" class="headerlink" title="Java的线程池执行原理"></a>Java的线程池执行原理</h4><p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/efe9ed82093e4c8bab768eac79dffed3~tplv-k3u1fbpfcp-zoom-1.image"><br>为了形象描述线程池执行，打个比喻：</p>
+<ul>
+<li>核心线程比作公司正式员工</li>
+<li>非核心线程比作外包员工</li>
+<li>阻塞队列比作需求池</li>
+<li>提交任务比作提需求<br><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6ed3df3db91941e9b8d3e1078fdd02b5~tplv-k3u1fbpfcp-zoom-1.image"></li>
+</ul>
+<h4 id="线程池核心参数"><a href="#线程池核心参数" class="headerlink" title="线程池核心参数"></a>线程池核心参数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize,</span><br><span class="line">   long keepAliveTime,</span><br><span class="line">   TimeUnit unit,</span><br><span class="line">   BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">   ThreadFactory threadFactory,</span><br><span class="line">   RejectedExecutionHandler handler) </span><br></pre></td></tr></table></figure>
+<ul>
+<li>corePoolSize： 线程池核心线程数最大值</li>
+<li>maximumPoolSize： 线程池最大线程数大小</li>
+<li>keepAliveTime： 线程池中非核心线程空闲的存活时间大小</li>
+<li>unit： 线程空闲存活时间单位</li>
+<li>workQueue： 存放任务的阻塞队列</li>
+<li>threadFactory： 用于设置创建线程的工厂，可以给创建的线程设置有意义的名字，可方便排查问题。</li>
+<li>handler：线城池的饱和策略事件，主要有四种类型拒绝策略。</li>
+</ul>
+<p><strong>四种拒绝策略</strong></p>
+<ul>
+<li>AbortPolicy(抛出一个异常，默认的)</li>
+<li>DiscardPolicy(直接丢弃任务)</li>
+<li>DiscardOldestPolicy（丢弃队列里最老的任务，将当前这个任务继续提交给线程池）</li>
+<li>CallerRunsPolicy（交给线程池调用所在的线程进行处理)</li>
+</ul>
+<h4 id="几种工作阻塞队列"><a href="#几种工作阻塞队列" class="headerlink" title="几种工作阻塞队列"></a>几种工作阻塞队列</h4><ul>
+<li>ArrayBlockingQueue（用数组实现的有界阻塞队列，按FIFO排序量）</li>
+<li>LinkedBlockingQueue（基于链表结构的阻塞队列，按FIFO排序任务，容量可以选择进行设置，不设置的话，将是一个无边界的阻塞队列）</li>
+<li>DelayQueue（一个任务定时周期的延迟执行的队列）</li>
+<li>PriorityBlockingQueue（具有优先级的无界阻塞队列）</li>
+<li>SynchronousQueue（一个不存储元素的阻塞队列，每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态）</li>
+</ul>
+<h4 id="线程池使用不当的问题"><a href="#线程池使用不当的问题" class="headerlink" title="线程池使用不当的问题"></a>线程池使用不当的问题</h4><p>线程池适用不当可能导致内存飙升问题哦</p>
+<p>有兴趣可以看我这篇文章哈:<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903930502070285">源码角度分析-newFixedThreadPool线程池导致的内存飙升问题</a></p>
+<h4 id="线程池类型以及使用场景"><a href="#线程池类型以及使用场景" class="headerlink" title="线程池类型以及使用场景"></a>线程池类型以及使用场景</h4><ul>
+<li>newFixedThreadPool<blockquote>
+<p>适用于处理CPU密集型的任务，确保CPU在长期被工作线程使用的情况下，尽可能的少的分配线程，即适用执行长期的任务。</p>
+</blockquote>
+</li>
+<li>newCachedThreadPool<blockquote>
+<p>用于并发执行大量短期的小任务。</p>
+</blockquote>
+</li>
+<li>newSingleThreadExecutor<blockquote>
+<p>适用于串行执行任务的场景，一个任务一个任务地执行。</p>
+</blockquote>
+</li>
+<li>newScheduledThreadPool<blockquote>
+<p>周期性执行任务的场景，需要限制线程数量的场景</p>
+</blockquote>
+</li>
+<li>newWorkStealingPool <blockquote>
+<p>建一个含有足够多线程的线程池，来维持相应的并行级别，它会通过工作窃取的方式，使得多核的 CPU 不会闲置，总会有活着的线程让 CPU 去运行,本质上就是一个 ForkJoinPool。)</p>
+</blockquote>
+</li>
+</ul>
+<p>有兴趣可以看我这篇文章哈:<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903889678893063">面试必备：Java线程池解析</a></p>
+<h3 id="12、谈谈volatile关键字的理解"><a href="#12、谈谈volatile关键字的理解" class="headerlink" title="12、谈谈volatile关键字的理解"></a>12、谈谈volatile关键字的理解</h3><p>volatile是面试官非常喜欢问的一个问题，可以回答以下这几点：</p>
+<ul>
+<li>vlatile变量的作用</li>
+<li>现代计算机的内存模型（嗅探技术，MESI协议，总线）</li>
+<li>Java内存模型（JMM）</li>
+<li>什么是可见性？</li>
+<li>指令重排序</li>
+<li>volatile的内存语义</li>
+<li>as-if-serial</li>
+<li>Happens-before</li>
+<li>volatile可以解决原子性嘛？为什么？</li>
+<li>volatile底层原理，如何保证可见性和禁止指令重排（内存屏障）</li>
+</ul>
+<h4 id="vlatile变量的作用？"><a href="#vlatile变量的作用？" class="headerlink" title="vlatile变量的作用？"></a>vlatile变量的作用？</h4><ul>
+<li>保证变量对所有线程可见性</li>
+<li>禁止指令重排</li>
+</ul>
+<h4 id="现代计算机的内存模型"><a href="#现代计算机的内存模型" class="headerlink" title="现代计算机的内存模型"></a>现代计算机的内存模型</h4><p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b4bb647387f34af09ce1096ef916be9a~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<ul>
+<li>其中高速缓存包括L1，L2，L3缓存~</li>
+<li>缓存一致性协议，可以了解MESI协议</li>
+<li>总线（Bus）是计算机各种功能部件之间传送信息的公共通信干线，CPU和其他功能部件是通过总线通信的。</li>
+<li>处理器使用嗅探技术保证它的内部缓存、系统内存和其他处理器的缓存数据在总线上保持一致。</li>
+</ul>
+<h4 id="Java内存模型（JMM）"><a href="#Java内存模型（JMM）" class="headerlink" title="Java内存模型（JMM）"></a>Java内存模型（JMM）</h4><p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/275f5b038d1d4e9ba308ab129df4aef3~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h4 id="什么是可见性？"><a href="#什么是可见性？" class="headerlink" title="什么是可见性？"></a>什么是可见性？</h4><p>可见性就是当一个线程 修改一个共享变量时，另外一个线程能读到这个修改的值。</p>
+<h4 id="指令重排序"><a href="#指令重排序" class="headerlink" title="指令重排序"></a>指令重排序</h4><p>指令重排是指在程序执行过程中,为了提高性能, 编译器和CPU可能会对指令进行重新排序。<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/063d5ff09b604add8bbb25b3d9346169~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h4 id="volatile的内存语义"><a href="#volatile的内存语义" class="headerlink" title="volatile的内存语义"></a>volatile的内存语义</h4><ul>
+<li>当写一个 volatile 变量时，JMM 会把该线程对应的本地内存中的共享变量值刷新到主内存。</li>
+<li>当读一个 volatile 变量时，JMM 会把该线程对应的本地内存置为无效。线程接下来将从主内存中读取共享变量。</li>
+</ul>
+<h4 id="as-if-serial"><a href="#as-if-serial" class="headerlink" title="as-if-serial"></a>as-if-serial</h4><p>如果在本线程内观察，所有的操作都是有序的；即不管怎么重排序（编译器和处理器为了提高并行度），（单线程）程序的执行结果不会被改变。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">double pi  = 3.14;    //A</span><br><span class="line">double r   = 1.0;     //B</span><br><span class="line">double area = pi * r * r; //C</span><br></pre></td></tr></table></figure>
+<p>步骤C依赖于步骤A和B，因为指令重排的存在，程序执行顺讯可能是A-&gt;B-&gt;C,也可能是B-&gt;A-&gt;C,但是C不能在A或者B前面执行，这将违反as-if-serial语义。<br><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/50dd857cc9d94ec8853531fdeae52497~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h4 id="Happens-before"><a href="#Happens-before" class="headerlink" title="Happens-before"></a>Happens-before</h4><p>Java语言中，有一个先行发生原则（happens-before）：</p>
+<ul>
+<li><strong>程序次序规则</strong>：在一个线程内，按照控制流顺序，书写在前面的操作先行发生于书写在后面的操作。</li>
+<li><strong>管程锁定规则</strong>：一个unLock操作先行发生于后面对同一个锁额lock操作</li>
+<li><strong>volatile变量规则</strong>：对一个变量的写操作先行发生于后面对这个变量的读操作</li>
+<li><strong>线程启动规则</strong>：Thread对象的start()方法先行发生于此线程的每个一个动作</li>
+<li><strong>线程终止规则</strong>：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行</li>
+<li><strong>线程中断规则</strong>：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生</li>
+<li><strong>对象终结规则</strong>：一个对象的初始化完成先行发生于他的finalize()方法的开始</li>
+<li><strong>传递性</strong>：如果操作A先行发生于操作B，而操作B又先行发生于操作C，则可以得出操作A先行发生于操作C</li>
+</ul>
+<h4 id="volatile可以解决原子性嘛？为什么？"><a href="#volatile可以解决原子性嘛？为什么？" class="headerlink" title="volatile可以解决原子性嘛？为什么？"></a>volatile可以解决原子性嘛？为什么？</h4><p>不可以，可以直接举i++那个例子，原子性需要synchronzied或者lock保证</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">    public volatile int race = 0;</span><br><span class="line">     </span><br><span class="line">    public void increase() &#123;</span><br><span class="line">        race++;</span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        final Test test = new Test();</span><br><span class="line">        for(int i=0;i&lt;10;i++)&#123;</span><br><span class="line">            new Thread()&#123;</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    for(int j=0;j&lt;100;j++)</span><br><span class="line">                        test.increase();</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;.start();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        //等待所有累加线程结束</span><br><span class="line">        while(Thread.activeCount()&gt;1)  </span><br><span class="line">            Thread.yield();</span><br><span class="line">        System.out.println(test.race);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="volatile底层原理，如何保证可见性和禁止指令重排（内存屏障）"><a href="#volatile底层原理，如何保证可见性和禁止指令重排（内存屏障）" class="headerlink" title="volatile底层原理，如何保证可见性和禁止指令重排（内存屏障）"></a>volatile底层原理，如何保证可见性和禁止指令重排（内存屏障）</h4><p>volatile 修饰的变量，转成汇编代码，会发现多出一个lock前缀指令。lock指令相当于一个内存屏障，它保证以下这几点：</p>
+<ul>
+<li>1.重排序时不能把后面的指令重排序到内存屏障之前的位置</li>
+<li>2.将本处理器的缓存写入内存</li>
+<li>3.如果是写入动作，会导致其他处理器中对应的缓存无效。</li>
+</ul>
+<p>2、3点保证可见性，第1点禁止指令重排~</p>
+<p>有兴趣的朋友可以看我这篇文章哈:<a target="_blank" rel="noopener" href="https://juejin.im/post/6859390417314512909">Java程序员面试必备：Volatile全方位解析</a></p>
+<h3 id="13、AQS组件，实现原理"><a href="#13、AQS组件，实现原理" class="headerlink" title="13、AQS组件，实现原理"></a>13、AQS组件，实现原理</h3><p>AQS，即AbstractQueuedSynchronizer，是构建锁或者其他同步组件的基础框架，它使用了一个int成员变量表示同步状态，通过内置的FIFO队列来完成资源获取线程的排队工作。可以回答以下这几个关键点哈：</p>
+<ul>
+<li>state 状态的维护。</li>
+<li>CLH队列</li>
+<li>ConditionObject通知</li>
+<li>模板方法设计模式</li>
+<li>独占与共享模式。</li>
+<li>自定义同步器。</li>
+<li>AQS全家桶的一些延伸，如：ReentrantLock等。</li>
+</ul>
+<h4 id="state-状态的维护"><a href="#state-状态的维护" class="headerlink" title="state 状态的维护"></a>state 状态的维护</h4><ul>
+<li>state，int变量，锁的状态，用volatile修饰，保证多线程中的可见性。</li>
+<li>getState()和setState()方法采用final修饰，限制AQS的子类重写它们两。</li>
+<li>compareAndSetState（）方法采用乐观锁思想的CAS算法操作确保线程安全,保证状态<br>设置的原子性。</li>
+</ul>
+<p>对CAS有兴趣的朋友，可以看下我这篇文章哈~<br><a target="_blank" rel="noopener" href="https://juejin.im/post/6844903869340712967#comment">CAS乐观锁解决并发问题的一次实践</a></p>
+<h4 id="CLH队列"><a href="#CLH队列" class="headerlink" title="CLH队列"></a>CLH队列</h4><p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3f37b908ad9b482fb60de6478817a7dc~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<blockquote>
+<p><strong>CLH(Craig, Landin, and Hagersten locks) 同步队列</strong> 是一个FIFO双向队列，其内部通过节点head和tail记录队首和队尾元素，队列元素的类型为Node。AQS依赖它来完成同步状态state的管理，当前线程如果获取同步状态失败时，AQS则会将当前线程已经等待状态等信息构造成一个节点（Node）并将其加入到CLH同步队列，同时会阻塞当前线程，当同步状态释放时，会把首节点唤醒（公平锁），使其再次尝试获取同步状态。</p>
+</blockquote>
+<h4 id="ConditionObject通知"><a href="#ConditionObject通知" class="headerlink" title="ConditionObject通知"></a>ConditionObject通知</h4><p>我们都知道，synchronized控制同步的时候，可以配合Object的wait()、notify()，notifyAll() 系列方法可以实现等待&#x2F;通知模式。而Lock呢？它提供了条件Condition接口，配合await(),signal(),signalAll() 等方法也可以实现等待&#x2F;通知机制。ConditionObject实现了Condition接口，给AQS提供条件变量的支持 。</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/385e31246e8c4e1e8e8a9dacb183da74~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p>ConditionObject队列与CLH队列的爱恨情仇：</p>
+<ul>
+<li>调用了await()方法的线程，会被加入到conditionObject等待队列中，并且唤醒CLH队列中head节点的下一个节点。</li>
+<li>线程在某个ConditionObject对象上调用了singnal()方法后，等待队列中的firstWaiter会被加入到AQS的CLH队列中，等待被唤醒。</li>
+<li>当线程调用unLock()方法释放锁时，CLH队列中的head节点的下一个节点(在本例中是firtWaiter)，会被唤醒。</li>
+</ul>
+<h4 id="模板方法设计模式"><a href="#模板方法设计模式" class="headerlink" title="模板方法设计模式"></a>模板方法设计模式</h4><p>什么是模板设计模式？</p>
+<blockquote>
+<p>在一个方法中定义一个算法的骨架，而将一些步骤延迟到子类中。模板方法使得子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤。</p>
+</blockquote>
+<p>AQS的典型设计模式就是模板方法设计模式啦。AQS全家桶（ReentrantLock，Semaphore）的衍生实现，就体现出这个设计模式。如AQS提供tryAcquire，tryAcquireShared等模板方法，给子类实现自定义的同步器。</p>
+<h4 id="独占与共享模式"><a href="#独占与共享模式" class="headerlink" title="独占与共享模式"></a>独占与共享模式</h4><ul>
+<li>独占式: 同一时刻仅有一个线程持有同步状态，如ReentrantLock。又可分为公平锁和非公平锁。</li>
+<li>共享模式:多个线程可同时执行，如Semaphore&#x2F;CountDownLatch等都是共享式的产物。</li>
+</ul>
+<h4 id="自定义同步器"><a href="#自定义同步器" class="headerlink" title="自定义同步器"></a>自定义同步器</h4><p>你要实现自定义锁的话，首先需要确定你要实现的是独占锁还是共享锁，定义原子变量state的含义，再定义一个内部类去继承AQS，重写对应的模板方法即可啦</p>
+<h4 id="AQS全家桶的一些延伸。"><a href="#AQS全家桶的一些延伸。" class="headerlink" title="AQS全家桶的一些延伸。"></a>AQS全家桶的一些延伸。</h4><p>Semaphore，CountDownLatch，ReentrantLock</p>
+<p>可以看下之前我这篇文章哈，<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903903188746247">AQS解析与实战</a></p>
+<h3 id="14、什么是多线程环境下的伪共享"><a href="#14、什么是多线程环境下的伪共享" class="headerlink" title="14、什么是多线程环境下的伪共享"></a>14、什么是多线程环境下的伪共享</h3><ul>
+<li>什么是伪共享</li>
+<li>如何解决伪共享问题</li>
+</ul>
+<h4 id="什么是伪共享"><a href="#什么是伪共享" class="headerlink" title="什么是伪共享"></a>什么是伪共享</h4><p>伪共享定义？</p>
+<blockquote>
+<p>CPU的缓存是以缓存行(cache line)为单位进行缓存的，当多个线程修改相互独立的变量，而这些变量又处于同一个缓存行时就会影响彼此的性能。这就是伪共享</p>
+</blockquote>
+<p>现代计算机计算模型，大家都有印象吧？我之前这篇文章也有讲过，有兴趣可以看一下哈，<a target="_blank" rel="noopener" href="https://juejin.im/post/6859390417314512909">Java程序员面试必备：Volatile全方位解析</a></p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a3bcae0d0fb44b1b9fb2db5093e6dd5d~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<ul>
+<li>CPU执行速度比内存速度快好几个数量级，为了提高执行效率，现代计算机模型演变出CPU、缓存（L1，L2，L3），内存的模型。</li>
+<li>CPU执行运算时，如先从L1缓存查询数据，找不到再去L2缓存找，依次类推，直到在内存获取到数据。</li>
+<li>为了避免频繁从内存获取数据，聪明的科学家设计出缓存行，缓存行大小为64字节。</li>
+</ul>
+<p>也正是因为缓存行，就导致伪共享问题的存在，如图所示：<br><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/886ab0227a174842a2976581472eec06~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p>假设数据a、b被加载到同一个缓存行。</p>
+<ul>
+<li>当线程1修改了a的值，这时候CPU1就会通知其他CPU核，当前缓存行（Cache line）已经失效。</li>
+<li>这时候，如果线程2发起修改b，因为缓存行已经失效了，所以<strong>core2 这时会重新从主内存中读取该 Cache line 数据</strong>。读完后，因为它要修改b的值，那么CPU2就通知其他CPU核，当前缓存行（Cache line）又已经失效。</li>
+<li>酱紫，如果同一个Cache line的内容被多个线程读写，就很容易产生相互竞争，频繁回写主内存，会大大降低性能。</li>
+</ul>
+<h4 id="如何解决伪共享问题"><a href="#如何解决伪共享问题" class="headerlink" title="如何解决伪共享问题"></a>如何解决伪共享问题</h4><p>既然伪共享是因为相互独立的变量存储到相同的Cache line导致的，一个缓存行大小是64字节。那么，我们就可以<strong>使用空间换时间</strong>，即数据填充的方式，把独立的变量分散到不同的Cache line~</p>
+<p>共享内存demo例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public class FalseShareTest  &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        Rectangle rectangle = new Rectangle();</span><br><span class="line">        long beginTime = System.currentTimeMillis();</span><br><span class="line">        Thread thread1 = new Thread(() -&gt; &#123;</span><br><span class="line">            for (int i = 0; i &lt; 100000000; i++) &#123;</span><br><span class="line">                rectangle.a = rectangle.a + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        Thread thread2 = new Thread(() -&gt; &#123;</span><br><span class="line">            for (int i = 0; i &lt; 100000000; i++) &#123;</span><br><span class="line">                rectangle.b = rectangle.b + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">        thread1.join();</span><br><span class="line">        thread2.join();</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;执行时间&quot; + (System.currentTimeMillis() - beginTime));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Rectangle &#123;</span><br><span class="line">    volatile long a;</span><br><span class="line">    volatile long b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">执行时间2815</span><br></pre></td></tr></table></figure>
+<p>一个long类型是8字节，我们在变量a和b之间不上7个long类型变量呢，输出结果是啥呢？如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Rectangle &#123;</span><br><span class="line">    volatile long a;</span><br><span class="line">    long a1,a2,a3,a4,a5,a6,a7;</span><br><span class="line">    volatile long b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">执行时间1113</span><br></pre></td></tr></table></figure>
+<p>可以发现利用填充数据的方式，让读写的变量分割到不同缓存行，可以很好挺高性能~</p>
+<h3 id="15、-说一下-Runnable和-Callable有什么区别？"><a href="#15、-说一下-Runnable和-Callable有什么区别？" class="headerlink" title="15、 说一下 Runnable和 Callable有什么区别？"></a>15、 说一下 Runnable和 Callable有什么区别？</h3><ul>
+<li>Callable接口方法是call()，Runnable的方法是run()；</li>
+<li>Callable接口call方法有返回值，支持泛型，Runnable接口run方法无返回值。</li>
+<li>Callable接口call()方法允许抛出异常；而Runnable接口run()方法不能继续上抛异常；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@FunctionalInterface</span><br><span class="line">public interface Callable&lt;V&gt; &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 支持泛型V，有返回值，允许抛出异常</span><br><span class="line">     */</span><br><span class="line">    V call() throws Exception;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@FunctionalInterface</span><br><span class="line">public interface Runnable &#123;</span><br><span class="line">    /**</span><br><span class="line">     *  没有返回值，不能继续上抛异常</span><br><span class="line">     */</span><br><span class="line">    public abstract void run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>看下demo代码吧，这样应该好理解一点哈~</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> *  @Author 捡田螺的小男孩</span><br><span class="line"> *  @date 2020-08-18</span><br><span class="line"> */</span><br><span class="line">public class CallableRunnableTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(5);</span><br><span class="line"></span><br><span class="line">        Callable &lt;String&gt; callable =new Callable&lt;String&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public String call() throws Exception &#123;</span><br><span class="line">                return &quot;你好，callable&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        //支持泛型</span><br><span class="line">        Future&lt;String&gt; futureCallable = executorService.submit(callable);</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(futureCallable.get());</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Runnable runnable = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;你好呀,runnable&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        Future&lt;?&gt; futureRunnable = executorService.submit(runnable);</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(futureRunnable.get());</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        executorService.shutdown();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">你好，callable</span><br><span class="line">你好呀,runnable</span><br><span class="line">null</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="16、wait-notify-和suspend-resume-之间的区别"><a href="#16、wait-notify-和suspend-resume-之间的区别" class="headerlink" title="16、wait(),notify()和suspend(),resume()之间的区别"></a>16、wait(),notify()和suspend(),resume()之间的区别</h3><ul>
+<li>wait() 使得线程进入阻塞等待状态，并且释放锁</li>
+<li>notify()唤醒一个处于等待状态的线程，它一般跟wait（）方法配套使用。</li>
+<li>suspend()使得线程进入阻塞状态，并且不会自动恢复，必须对应的resume() 被调用，才能使得线程重新进入可执行状态。suspend()方法很容易引起死锁问题。</li>
+<li>resume()方法跟suspend()方法配套使用。</li>
+</ul>
+<p><strong>suspend()不建议使用</strong>,suspend()方法在调用后，线程不会释放已经占有的资 源（比如锁），而是占有着资源进入睡眠状态，这样容易引发死锁问题。</p>
+<h3 id="17-Condition接口及其实现原理"><a href="#17-Condition接口及其实现原理" class="headerlink" title="17.Condition接口及其实现原理"></a>17.Condition接口及其实现原理</h3><ul>
+<li>Condition接口与Object监视器方法对比</li>
+<li>Condition接口使用demo</li>
+<li>Condition实现原理</li>
+</ul>
+<h4 id="Condition接口与Object监视器方法对比"><a href="#Condition接口与Object监视器方法对比" class="headerlink" title="Condition接口与Object监视器方法对比"></a>Condition接口与Object监视器方法对比</h4><p>Java对象（Object），提供wait()、notify()，notifyAll() 系列方法，配合synchronized，可以实现等待&#x2F;通知模式。而Condition接口配合Lock，通过await(),signal(),signalAll() 等方法，也可以实现类似的等待&#x2F;通知机制。</p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>对象监视方法</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前置条件</td>
+<td>获得对象的锁</td>
+<td>调用Lock.lock()获取锁,调用Lock.newCondition()获得Condition对象</td>
+</tr>
+<tr>
+<td>调用方式</td>
+<td>直接调用，object.wait()</td>
+<td>直接调用，condition.await()</td>
+</tr>
+<tr>
+<td>等待队列数</td>
+<td>1个</td>
+<td>多个</td>
+</tr>
+<tr>
+<td>当前线程释放锁并进入等待状态</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>在等待状态中不响应中断</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>当前线程释放锁并进入超时等待状态</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>当前线程释放锁并进入等待状态到将来的某个时间</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>唤醒等待队列中的一个线程</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>唤醒等待队列中的全部线程</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+</tbody></table>
+<h4 id="Condition接口使用demo"><a href="#Condition接口使用demo" class="headerlink" title="Condition接口使用demo"></a>Condition接口使用demo</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class ConditionTest &#123;</span><br><span class="line">    Lock lock = new ReentrantLock();</span><br><span class="line">    Condition condition = lock.newCondition();</span><br><span class="line"></span><br><span class="line">    public void conditionWait() throws InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        try &#123;</span><br><span class="line">            condition.await();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void conditionSignal() throws InterruptedException &#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        try &#123;</span><br><span class="line">            condition.signal();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Condition实现原理"><a href="#Condition实现原理" class="headerlink" title="Condition实现原理"></a>Condition实现原理</h4><p>其实，同步队列和等待队列中节点类型都是同步器的静态内部类 AbstractQueuedSynchronizer.Node，接下来我们图解一下Condition的实现原理~</p>
+<p><strong>等待队列的基本结构图</strong><br><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a6f62d7c11ea4907b84924c4a02cee7f~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<blockquote>
+<p>一个Condition包含一个等待队列，Condition拥有首节点（firstWaiter）和尾节点 （lastWaiter）。当前线程调用Condition.await()方法，将会以当前线程构造节点，并将节点从尾部加入等待队</p>
+</blockquote>
+<p><strong>AQS 结构图</strong></p>
+<p>ConditionI是跟Lock一起结合使用的，底层跟同步器（AQS）相关。同步器拥有一个同步队列和多个等待队列~<br><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f342c548da8c42d6a60a0c19aeee8489~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p><strong>等待</strong></p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/677bf2a7edd8447b9f21e626e6667aa3~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<blockquote>
+<p> 当调用await()方法时，相当于同步队列的首节点（获取了锁的节点）移动到Condition的等待队列中。</p>
+</blockquote>
+<p><strong>通知</strong></p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bac0705fa308413b97eed7a9d8b938c6~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<blockquote>
+<p>调用Condition的signal()方法，将会唤醒在等待队列中等待时间最长的节点（首节点），在<br>唤醒节点之前，会将节点移到同步队列中。</p>
+</blockquote>
+<h3 id="18、线程池如何调优，最大数目如何确认？"><a href="#18、线程池如何调优，最大数目如何确认？" class="headerlink" title="18、线程池如何调优，最大数目如何确认？"></a>18、线程池如何调优，最大数目如何确认？</h3><p>在《Java Concurrency in Practice》一书中，有一个评估线程池线程大小的公式</p>
+<blockquote>
+<p> <strong>Nthreads&#x3D;Ncpu<em>Ucpu</em>(1+w&#x2F;c)</strong></p>
+<ul>
+<li>Ncpu &#x3D; CPU总核数</li>
+</ul>
+</blockquote>
+<ul>
+<li>Ucpu &#x3D;cpu使用率，0~1</li>
+<li>W&#x2F;C&#x3D;等待时间与计算时间的比率</li>
+</ul>
+<p>假设cpu 100%运转，则公式为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Nthreads=Ncpu*(1+w/c)</span><br></pre></td></tr></table></figure>
+
+<p><strong>估算的话，酱紫：</strong></p>
+<ul>
+<li>如果是<strong>IO密集型应用</strong>（如数据库数据交互、文件上传下载、网络数据传输等等），IO操作一般比较耗时，等待时间与计算时间的比率（w&#x2F;c）会大于1，所以最佳线程数估计就是 Nthreads&#x3D;Ncpu*（1+1）&#x3D; 2Ncpu 。</li>
+<li>如果是<strong>CPU密集型应用</strong>（如算法比较复杂的程序），最理想的情况，没有等待，w&#x3D;0，Nthreads&#x3D;Ncpu。又对于计算密集型的任务，在拥有N个处理器的系统上，当线程池的大小为N+1时，通常能实现最优的效率。所以 Nthreads &#x3D; Ncpu+1</li>
+</ul>
+<p>有具体指参考呢？举个例子</p>
+<blockquote>
+<p>比如平均每个线程CPU运行时间为0.5s，而线程等待时间（非CPU运行时间，比如IO）为1.5s，CPU核心数为8，那么根据上面这个公式估算得到：线程池大小&#x3D;(1+1.5&#x2F;05)*8 &#x3D;32。</p>
+</blockquote>
+<p>参考了网上这篇文章，写得很棒，有兴趣的朋友可以去看一下哈：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dennyzhangdd/p/6909771.html">根据CPU核心数确定线程池并发线程数</a></li>
+</ul>
+<h3 id="19、-假设有T1、T2、T3三个线程，你怎样保证T2在T1执行完后执行，T3在T2执行完后执行？"><a href="#19、-假设有T1、T2、T3三个线程，你怎样保证T2在T1执行完后执行，T3在T2执行完后执行？" class="headerlink" title="19、 假设有T1、T2、T3三个线程，你怎样保证T2在T1执行完后执行，T3在T2执行完后执行？"></a>19、 假设有T1、T2、T3三个线程，你怎样保证T2在T1执行完后执行，T3在T2执行完后执行？</h3><p>可以使用<strong>join方法</strong>解决这个问题。比如在线程A中，调用线程B的join方法表示的意思就是<strong>：A等待B线程执行完毕后（释放CPU执行权），在继续执行。</strong></p>
+<p>代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">public class ThreadTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">        Thread spring = new Thread(new SeasonThreadTask(&quot;春天&quot;));</span><br><span class="line">        Thread summer = new Thread(new SeasonThreadTask(&quot;夏天&quot;));</span><br><span class="line">        Thread autumn = new Thread(new SeasonThreadTask(&quot;秋天&quot;));</span><br><span class="line"></span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            //春天线程先启动</span><br><span class="line">            spring.start();</span><br><span class="line">            //主线程等待线程spring执行完，再往下执行</span><br><span class="line">            spring.join();</span><br><span class="line">            //夏天线程再启动</span><br><span class="line">            summer.start();</span><br><span class="line">            //主线程等待线程summer执行完，再往下执行</span><br><span class="line">            summer.join();</span><br><span class="line">            //秋天线程最后启动</span><br><span class="line">            autumn.start();</span><br><span class="line">            //主线程等待线程autumn执行完，再往下执行</span><br><span class="line">            autumn.join();</span><br><span class="line">        &#125; catch (InterruptedException e)</span><br><span class="line">        &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class SeasonThreadTask implements Runnable&#123;</span><br><span class="line"></span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    public SeasonThreadTask(String name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        for (int i = 1; i &lt;4; i++) &#123;</span><br><span class="line">            System.out.println(this.name + &quot;来了: &quot; + i + &quot;次&quot;);</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(100);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">春天来了: 1次</span><br><span class="line">春天来了: 2次</span><br><span class="line">春天来了: 3次</span><br><span class="line">夏天来了: 1次</span><br><span class="line">夏天来了: 2次</span><br><span class="line">夏天来了: 3次</span><br><span class="line">秋天来了: 1次</span><br><span class="line">秋天来了: 2次</span><br><span class="line">秋天来了: 3次</span><br></pre></td></tr></table></figure>
+<h3 id="20-LockSupport作用是？"><a href="#20-LockSupport作用是？" class="headerlink" title="20. LockSupport作用是？"></a>20. LockSupport作用是？</h3><ul>
+<li>LockSupport作用</li>
+<li>park和unpark，与wait，notify的区别</li>
+<li>Object blocker作用？</li>
+</ul>
+<p>LockSupport是个工具类，它的主要作用是挂起和唤醒线程， 该工具类是创建锁和其他同步类的基础。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static void park(); //挂起当前线程，调用unpark(Thread thread)或者当前线程被中断，才能从park方法返回</span><br><span class="line">public static void parkNanos(Object blocker, long nanos);  // 挂起当前线程，有超时时间的限制</span><br><span class="line">public static void parkUntil(Object blocker, long deadline); // 挂起当前线程，直到某个时间</span><br><span class="line">public static void park(Object blocker); //挂起当前线程</span><br><span class="line">public static void unpark(Thread thread); // 唤醒当前thread线程</span><br></pre></td></tr></table></figure>
+
+<p>看个例子吧：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">public class LockSupportTest &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">        CarThread carThread = new CarThread();</span><br><span class="line">        carThread.setName(&quot;劳斯劳斯&quot;);</span><br><span class="line">        carThread.start();</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            Thread.currentThread().sleep(2000);</span><br><span class="line">            carThread.park();</span><br><span class="line">            Thread.currentThread().sleep(2000);</span><br><span class="line">            carThread.unPark();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static class CarThread extends Thread&#123;</span><br><span class="line"></span><br><span class="line">        private boolean isStop = false;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(this.getName() + &quot;正在行驶中&quot;);</span><br><span class="line"></span><br><span class="line">            while (true) &#123;</span><br><span class="line"></span><br><span class="line">                if (isStop) &#123;</span><br><span class="line">                    System.out.println(this.getName() + &quot;车停下来了&quot;);</span><br><span class="line">                    LockSupport.park(); //挂起当前线程</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(this.getName() + &quot;车还在正常跑&quot;);</span><br><span class="line"></span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(1000L);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void park() &#123;</span><br><span class="line">            isStop = true;</span><br><span class="line">            System.out.println(&quot;停车啦，检查酒驾&quot;);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void unPark()&#123;</span><br><span class="line">            isStop = false;</span><br><span class="line">            LockSupport.unpark(this); //唤醒当前线程</span><br><span class="line">            System.out.println(&quot;老哥你没酒驾，继续开吧&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">劳斯劳斯正在行驶中</span><br><span class="line">劳斯劳斯车还在正常跑</span><br><span class="line">劳斯劳斯车还在正常跑</span><br><span class="line">停车啦，检查酒驾</span><br><span class="line">劳斯劳斯车停下来了</span><br><span class="line">老哥你没酒驾，继续开吧</span><br><span class="line">劳斯劳斯车还在正常跑</span><br><span class="line">劳斯劳斯车还在正常跑</span><br><span class="line">劳斯劳斯车还在正常跑</span><br><span class="line">劳斯劳斯车还在正常跑</span><br><span class="line">劳斯劳斯车还在正常跑</span><br><span class="line">劳斯劳斯车还在正常跑</span><br></pre></td></tr></table></figure>
+
+<p>LockSupport的park和unpark的实现，有点类似wait和notify的功能。但是</p>
+<blockquote>
+<ul>
+<li>park不需要获取对象锁</li>
+<li>中断的时候park不会抛出InterruptedException异常，需要在park之后自行判断中断状态</li>
+<li>使用park和unpark的时候，可以不用担心park的时序问题造成死锁</li>
+<li>LockSupport不需要在同步代码块里</li>
+<li>unpark却可以唤醒一个指定的线程，notify只能随机选择一个线程唤醒</li>
+</ul>
+</blockquote>
+<p>Object blocker作用？</p>
+<blockquote>
+<p>方便在线程dump的时候看到具体的阻塞对象的信息。</p>
+</blockquote>
+<h3 id="公众号"><a href="#公众号" class="headerlink" title="公众号"></a>公众号</h3><p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/07e9fd0521c244adab8556fee99a2011~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h3 id="参考与感谢"><a href="#参考与感谢" class="headerlink" title="参考与感谢"></a>参考与感谢</h3><ul>
+<li>《java并发编程的艺术》</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/6844903841964507150">杂谈 什么是伪共享（false sharing）？</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dennyzhangdd/p/6909771.html">根据CPU核心数确定线程池并发线程数</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f1f2cd289205">LockSupport的用法及原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/f9CTFc4H9Q0x4K-02beUoQ">探讨缓存行与伪共享</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/19/JavaHome/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/Java%20%E5%B9%B6%E5%8F%91%20&amp;&amp;%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E4%B8%AA%E4%BA%BA%E7%8F%8D%E8%97%8F%E7%9A%8480%E9%81%93%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%8811-20%E7%AD%94%E6%A1%88%E8%A7%A3%E6%9E%90%EF%BC%89/">http://example.com/2022/06/19/JavaHome/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/Java%20%E5%B9%B6%E5%8F%91%20&amp;&amp;%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E4%B8%AA%E4%BA%BA%E7%8F%8D%E8%97%8F%E7%9A%8480%E9%81%93%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%8811-20%E7%AD%94%E6%A1%88%E8%A7%A3%E6%9E%90%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/19/JavaHome/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/Java%E9%9B%86%E5%90%88/Java%E9%9B%86%E5%90%88%E9%9D%A2%E8%AF%95%E9%A2%98%E7%AD%94%E6%A1%88/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2022/06/19/JavaHome/Java%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E7%BB%93%E5%8F%B7/Java%20%E5%B9%B6%E5%8F%91%20&amp;&amp;%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/44.%20%E5%81%8F%E5%90%91%E9%94%81%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E9%87%8D%E9%87%8F%E7%BA%A7%E9%94%81/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%9FJava%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6%EF%BC%8C%E5%8F%82%E6%95%B0%E4%BD%9C%E7%94%A8%EF%BC%8C%E5%87%A0%E7%A7%8D%E5%B7%A5%E4%BD%9C%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%EF%BC%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%B1%BB%E5%9E%8B%E4%BB%A5%E5%8F%8A%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">11、为什么要用线程池？Java的线程池内部机制，参数作用，几种工作阻塞队列，线程池类型以及使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%9F"><span class="toc-number">1.1.1.</span> <span class="toc-text">为什么要用线程池？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Java%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.2.</span> <span class="toc-text">Java的线程池执行原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0"><span class="toc-number">1.1.3.</span> <span class="toc-text">线程池核心参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%A0%E7%A7%8D%E5%B7%A5%E4%BD%9C%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97"><span class="toc-number">1.1.4.</span> <span class="toc-text">几种工作阻塞队列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%BD%93%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.5.</span> <span class="toc-text">线程池使用不当的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%B1%BB%E5%9E%8B%E4%BB%A5%E5%8F%8A%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.6.</span> <span class="toc-text">线程池类型以及使用场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12%E3%80%81%E8%B0%88%E8%B0%88volatile%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">12、谈谈volatile关键字的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vlatile%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="toc-number">1.2.1.</span> <span class="toc-text">vlatile变量的作用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">现代计算机的内存模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%EF%BC%88JMM%EF%BC%89"><span class="toc-number">1.2.3.</span> <span class="toc-text">Java内存模型（JMM）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%AF%E8%A7%81%E6%80%A7%EF%BC%9F"><span class="toc-number">1.2.4.</span> <span class="toc-text">什么是可见性？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.5.</span> <span class="toc-text">指令重排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89"><span class="toc-number">1.2.6.</span> <span class="toc-text">volatile的内存语义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#as-if-serial"><span class="toc-number">1.2.7.</span> <span class="toc-text">as-if-serial</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Happens-before"><span class="toc-number">1.2.8.</span> <span class="toc-text">Happens-before</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile%E5%8F%AF%E4%BB%A5%E8%A7%A3%E5%86%B3%E5%8E%9F%E5%AD%90%E6%80%A7%E5%98%9B%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.2.9.</span> <span class="toc-text">volatile可以解决原子性嘛？为什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%8C%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%8F%AF%E8%A7%81%E6%80%A7%E5%92%8C%E7%A6%81%E6%AD%A2%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%EF%BC%88%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%EF%BC%89"><span class="toc-number">1.2.10.</span> <span class="toc-text">volatile底层原理，如何保证可见性和禁止指令重排（内存屏障）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13%E3%80%81AQS%E7%BB%84%E4%BB%B6%EF%BC%8C%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">13、AQS组件，实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#state-%E7%8A%B6%E6%80%81%E7%9A%84%E7%BB%B4%E6%8A%A4"><span class="toc-number">1.3.1.</span> <span class="toc-text">state 状态的维护</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CLH%E9%98%9F%E5%88%97"><span class="toc-number">1.3.2.</span> <span class="toc-text">CLH队列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ConditionObject%E9%80%9A%E7%9F%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">ConditionObject通知</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.4.</span> <span class="toc-text">模板方法设计模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8B%AC%E5%8D%A0%E4%B8%8E%E5%85%B1%E4%BA%AB%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.5.</span> <span class="toc-text">独占与共享模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%90%8C%E6%AD%A5%E5%99%A8"><span class="toc-number">1.3.6.</span> <span class="toc-text">自定义同步器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AQS%E5%85%A8%E5%AE%B6%E6%A1%B6%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BB%B6%E4%BC%B8%E3%80%82"><span class="toc-number">1.3.7.</span> <span class="toc-text">AQS全家桶的一些延伸。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E4%BC%AA%E5%85%B1%E4%BA%AB"><span class="toc-number">1.4.</span> <span class="toc-text">14、什么是多线程环境下的伪共享</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BC%AA%E5%85%B1%E4%BA%AB"><span class="toc-number">1.4.1.</span> <span class="toc-text">什么是伪共享</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E4%BC%AA%E5%85%B1%E4%BA%AB%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.2.</span> <span class="toc-text">如何解决伪共享问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15%E3%80%81-%E8%AF%B4%E4%B8%80%E4%B8%8B-Runnable%E5%92%8C-Callable%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.5.</span> <span class="toc-text">15、 说一下 Runnable和 Callable有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16%E3%80%81wait-notify-%E5%92%8Csuspend-resume-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.6.</span> <span class="toc-text">16、wait(),notify()和suspend(),resume()之间的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-Condition%E6%8E%A5%E5%8F%A3%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.7.</span> <span class="toc-text">17.Condition接口及其实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Condition%E6%8E%A5%E5%8F%A3%E4%B8%8EObject%E7%9B%91%E8%A7%86%E5%99%A8%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94"><span class="toc-number">1.7.1.</span> <span class="toc-text">Condition接口与Object监视器方法对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Condition%E6%8E%A5%E5%8F%A3%E4%BD%BF%E7%94%A8demo"><span class="toc-number">1.7.2.</span> <span class="toc-text">Condition接口使用demo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Condition%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.7.3.</span> <span class="toc-text">Condition实现原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18%E3%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%A6%82%E4%BD%95%E8%B0%83%E4%BC%98%EF%BC%8C%E6%9C%80%E5%A4%A7%E6%95%B0%E7%9B%AE%E5%A6%82%E4%BD%95%E7%A1%AE%E8%AE%A4%EF%BC%9F"><span class="toc-number">1.8.</span> <span class="toc-text">18、线程池如何调优，最大数目如何确认？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#19%E3%80%81-%E5%81%87%E8%AE%BE%E6%9C%89T1%E3%80%81T2%E3%80%81T3%E4%B8%89%E4%B8%AA%E7%BA%BF%E7%A8%8B%EF%BC%8C%E4%BD%A0%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81T2%E5%9C%A8T1%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%90%8E%E6%89%A7%E8%A1%8C%EF%BC%8CT3%E5%9C%A8T2%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%90%8E%E6%89%A7%E8%A1%8C%EF%BC%9F"><span class="toc-number">1.9.</span> <span class="toc-text">19、 假设有T1、T2、T3三个线程，你怎样保证T2在T1执行完后执行，T3在T2执行完后执行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#20-LockSupport%E4%BD%9C%E7%94%A8%E6%98%AF%EF%BC%9F"><span class="toc-number">1.10.</span> <span class="toc-text">20. LockSupport作用是？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-number">1.11.</span> <span class="toc-text">公众号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E6%84%9F%E8%B0%A2"><span class="toc-number">1.12.</span> <span class="toc-text">参考与感谢</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁"><img src="/image/8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="七种方案对比分布式锁"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁">七种方案对比分布式锁</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识"><img src="/image/7.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="学习Redis相关知识"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识">学习Redis相关知识</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="程序员必备基础：Git 命令全方位学习"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习">程序员必备基础：Git 命令全方位学习</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析"><img src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库连接池内存泄漏问题分析"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析">数据库连接池内存泄漏问题分析</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池运用不当导致的问题"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题">线程池运用不当导致的问题</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言之前分析一个死锁问题，发现自己对数据库隔离级别理解还不够清楚，所以趁着这几天假期，整理一下MySQL事务的四大隔离级别相关知识，希望对大家有帮助~  事务什么是事务？事务，由一个有限的数据库操作序列构成，这些操作要么全部执行,要么全部不执行，是一个不可分割的工作单位。  假如A转账给B 100 元，先从A的账户里扣除 100 元，再在 B 的账户上加上 100 元。如果扣完A的100元后，还没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E4%B8%80%E6%96%87%E5%BD%BB%E5%BA%95%E8%AF%BB%E6%87%82MySQL%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="前言之前分析一个死锁问题，发现自己对数据库隔离级别理解还不够清楚，所以趁着这几天假期，整理一下MySQL事务的四大隔离级别相关知识，希望对大家有帮助~  事务什么是事务？事务，由一个有限的数据库操作序列构成，这些操作要么全部执行,要么全部不执行，是一个不可分割的工作单位。  假如A转账给B 100 元，先从A的账户里扣除 100 元，再在 B 的账户上加上 100 元。如果扣完A的100元后，还没">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+<meta property="article:published_time" content="2022-06-19T13:50:08.164Z">
+<meta property="article:modified_time" content="2022-06-19T13:50:08.164Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E4%B8%80%E6%96%87%E5%BD%BB%E5%BA%95%E8%AF%BB%E6%87%82MySQL%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-19 21:50:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-19T13:50:08.164Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-19T13:50:08.164Z" title="更新于 2022-06-19 21:50:08">2022-06-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前分析一个死锁问题，发现自己对数据库隔离级别理解还不够清楚，所以趁着这几天假期，整理一下MySQL事务的四大隔离级别相关知识，希望对大家有帮助~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/171498a008c91b4c?w=985&h=620&f=png&s=57841"></p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h3 id="什么是事务？"><a href="#什么是事务？" class="headerlink" title="什么是事务？"></a>什么是事务？</h3><p>事务，由一个有限的数据库操作序列构成，这些操作要么全部执行,要么全部不执行，是一个不可分割的工作单位。</p>
+<blockquote>
+<p>假如A转账给B 100 元，先从A的账户里扣除 100 元，再在 B 的账户上加上 100 元。如果扣完A的100元后，还没来得及给B加上，银行系统异常了，最后导致A的余额减少了，B的余额却没有增加。所以就需要事务，将A的钱回滚回去，就是这么简单。</p>
+</blockquote>
+<h3 id="事务的四大特性"><a href="#事务的四大特性" class="headerlink" title="事务的四大特性"></a>事务的四大特性</h3><p><img src="https://user-gold-cdn.xitu.io/2020/3/30/1712b5213446a402?w=626&h=466&f=png&s=127652"></p>
+<ul>
+<li><strong>原子性：</strong> 事务作为一个整体被执行，包含在其中的对数据库的操作要么全部都执行，要么都不执行。</li>
+<li><strong>一致性：</strong> 指在事务开始之前和事务结束以后，数据不会被破坏，假如A账户给B账户转10块钱，不管成功与否，A和B的总金额是不变的。</li>
+<li><strong>隔离性：</strong> 多个事务并发访问时，事务之间是相互隔离的，一个事务不应该被其他事务干扰，多个并发事务之间要相互隔离。。</li>
+<li><strong>持久性：</strong> 表示事务完成提交后，该事务对数据库所作的操作更改，将持久地保存在数据库之中。</li>
+</ul>
+<h2 id="事务并发存在的问题"><a href="#事务并发存在的问题" class="headerlink" title="事务并发存在的问题"></a>事务并发存在的问题</h2><p>事务并发执行存在什么问题呢，换句话说就是，一个事务是怎么干扰到其他事务的呢？看例子吧~</p>
+<p>假设现在有表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `account` (</span><br><span class="line">  `id` int(11) NOT NULL,</span><br><span class="line">  `name` varchar(255) DEFAULT NULL,</span><br><span class="line">  `balance` int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `un_name_idx` (`name`) USING BTREE</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure>
+<p>表中有数据：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/2/171381960fd0f119?w=1368&h=316&f=png&s=35205"></p>
+<h3 id="脏读（dirty-read）"><a href="#脏读（dirty-read）" class="headerlink" title="脏读（dirty read）"></a>脏读（dirty read）</h3><p>假设现在有两个事务A、B：</p>
+<ul>
+<li>假设现在A的余额是100，事务A正在准备查询Jay的余额</li>
+<li>这时候，事务B先扣减Jay的余额，扣了10</li>
+<li>最后A 读到的是扣减后的余额</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/2/1713824c77723cd4?w=2249&h=488&f=png&s=119766"></p>
+<p>由上图可以发现，事务A、B交替执行，事务A被事务B干扰到了，因为事务A读取到事务B未提交的数据,这就是<strong>脏读</strong>。</p>
+<h3 id="不可重复读（unrepeatable-read）"><a href="#不可重复读（unrepeatable-read）" class="headerlink" title="不可重复读（unrepeatable read）"></a>不可重复读（unrepeatable read）</h3><p>假设现在有两个事务A和B：</p>
+<ul>
+<li>事务A先查询Jay的余额，查到结果是100</li>
+<li>这时候事务B 对Jay的账户余额进行扣减，扣去10后，提交事务</li>
+<li>事务A再去查询Jay的账户余额发现变成了90</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/2/1713829b86401900?w=2205&h=744&f=png&s=179865"></p>
+<p>事务A又被事务B干扰到了！在事务A范围内，两个相同的查询，读取同一条记录，却返回了不同的数据，这就是<strong>不可重复读</strong>。</p>
+<h3 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h3><p>假设现在有两个事务A、B：</p>
+<ul>
+<li>事务A先查询id大于2的账户记录，得到记录id&#x3D;2和id&#x3D;3的两条记录</li>
+<li>这时候，事务B开启，插入一条id&#x3D;4的记录，并且提交了</li>
+<li>事务A再去执行相同的查询，却得到了id&#x3D;2,3,4的3条记录了。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/2/171382b2bdd28029?w=2239&h=688&f=png&s=158963"></p>
+<p>事务A查询一个范围的结果集，另一个并发事务B往这个范围中插入&#x2F;删除了数据，并静悄悄地提交，然后事务A再次查询相同的范围，两次读取得到的结果集不一样了，这就是<strong>幻读</strong>。</p>
+<h2 id="事务的四大隔离级别实践"><a href="#事务的四大隔离级别实践" class="headerlink" title="事务的四大隔离级别实践"></a>事务的四大隔离级别实践</h2><p>既然并发事务存在<strong>脏读、不可重复、幻读</strong>等问题，InnoDB实现了哪几种事务的隔离级别应对呢？</p>
+<ul>
+<li>读未提交（Read Uncommitted）</li>
+<li>读已提交（Read Committed）</li>
+<li>可重复读（Repeatable Read）</li>
+<li>串行化（Serializable）</li>
+</ul>
+<h3 id="读未提交（Read-Uncommitted）"><a href="#读未提交（Read-Uncommitted）" class="headerlink" title="读未提交（Read Uncommitted）"></a>读未提交（Read Uncommitted）</h3><p>想学习一个知识点，最好的方式就是实践之。好了，我们去数据库给它设置<strong>读未提交</strong>隔离级别，实践一下吧~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/17148fd0f161aea8?w=1240&h=606&f=png&s=90024"></p>
+<p>先把事务隔离级别设置为read uncommitted，开启事务A，查询id&#x3D;1的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level read uncommitted;</span><br><span class="line">begin;</span><br><span class="line">select * from account where id =1;</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/17148f9415ffc166?w=538&h=215&f=png&s=15480"><br>这时候，另开一个窗口打开mysql，也把当前事务隔离级别设置为read uncommitted，开启事务B，执行更新操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level read uncommitted;</span><br><span class="line">begin;</span><br><span class="line">update account set balance=balance+20 where id =1;</span><br></pre></td></tr></table></figure>
+<p>接着回事务A的窗口，再查account表id&#x3D;1的数据，结果如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/17148faf1e5d5f48?w=520&h=162&f=png&s=10474"></p>
+<p>可以发现，在<strong>读未提交（Read Uncommitted）</strong> 隔离级别下，一个事务会读到其他事务未提交的数据的，即存在<strong>脏读</strong>问题。事务B都还没commit到数据库呢，事务A就读到了，感觉都乱套了。。。实际上，读未提交是隔离级别最低的一种。</p>
+<h3 id="已提交读（READ-COMMITTED）"><a href="#已提交读（READ-COMMITTED）" class="headerlink" title="已提交读（READ COMMITTED）"></a>已提交读（READ COMMITTED）</h3><p>为了避免脏读，数据库有了比<strong>读未提交</strong>更高的隔离级别，即<strong>已提交读</strong>。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/17148c908b12084b?w=1394&h=655&f=png&s=104468"></p>
+<p>把当前事务隔离级别设置为已提交读（READ COMMITTED），开启事务A，查询account中id&#x3D;1的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level read committed;</span><br><span class="line">begin;</span><br><span class="line">select * from account where id =1;</span><br></pre></td></tr></table></figure>
+
+<p>另开一个窗口打开mysql，也把事务隔离级别设置为read committed，开启事务B，执行以下操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level read committed;</span><br><span class="line">begin;</span><br><span class="line">update account set balance=balance+20 where id =1;</span><br></pre></td></tr></table></figure>
+<p>接着回事务A的窗口，再查account数据，发现数据没变：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/3/1713d69e118832d2?w=408&h=154&f=png&s=9410"></p>
+<p>我们再去到事务B的窗口执行commit操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">commit;</span><br></pre></td></tr></table></figure>
+<p>最后回到事务A窗口查询，发现数据变了：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/3/1713d68ad5a2fd47?w=436&h=153&f=png&s=9828"></p>
+<p>由此可以得出结论，隔离级别设置为<strong>已提交读（READ COMMITTED）</strong> 时，已经不会出现脏读问题了，当前事务只能读取到其他事务提交的数据。但是，你站在事务A的角度想想，存在其他问题吗？</p>
+<p><strong>提交读的隔离级别会有什么问题呢？</strong></p>
+<p>在同一个事务A里，相同的查询sql，读取同一条记录（id&#x3D;1），读到的结果是不一样的，即<strong>不可重复读</strong>。所以，隔离级别设置为read committed的时候，还会存在<strong>不可重复读</strong>的并发问题。</p>
+<h3 id="可重复读（Repeatable-Read）"><a href="#可重复读（Repeatable-Read）" class="headerlink" title="可重复读（Repeatable Read）"></a>可重复读（Repeatable Read）</h3><p>如果你的老板要求，在同个事务中，查询结果必须是一致的，即老板要求你解决不可重复的并发问题，怎么办呢？老板，臣妾办不到？来实践一下<strong>可重复读（Repeatable Read）</strong> 这个隔离级别吧~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/4/17144b324064255a?w=1340&h=616&f=png&s=87958"></p>
+<p>哈哈，步骤1、2、6的查询结果都是一样的，即<strong>repeatable read解决了不可重复读问题</strong>，是不是心里美滋滋的呢，终于解决老板的难题了~</p>
+<p><strong>RR级别是否解决了幻读问题呢？</strong></p>
+<p>再来看看网上的一个热点问题，有关于RR级别下，是否解决了幻读问题？我们来实践一下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/1714911d7b42c350?w=1518&h=615&f=png&s=102713"><br>由图可得，步骤2和步骤6查询结果集没有变化，看起来RR级别是已经解决幻读问题了~<br>但是呢，<strong>RR级别还是存在这种现象</strong>：<br><img src="https://user-gold-cdn.xitu.io/2020/4/4/17142571375bd709?w=1348&h=715&f=png&s=118174"></p>
+<p>其实，上图如果事务A中，没有<code>update account set balance=200 where id=5;</code>这步操作，<code>select * from account where id&gt;2</code>查询到的结果集确实是不变，这种情况没有<strong>幻读</strong>问题。但是，有了update这个骚操作，同一个事务，相同的sql，查出的结果集不同，这个是符合了<strong>幻读</strong>的定义~</p>
+<p>这个问题，亲爱的朋友，你觉得它算幻读问题吗？</p>
+<h3 id="串行化（Serializable）"><a href="#串行化（Serializable）" class="headerlink" title="串行化（Serializable）"></a>串行化（Serializable）</h3><p>前面三种数据库隔离级别，都有一定的并发问题，现在放大招吧，实践SERIALIZABLE隔离级别。</p>
+<p>把事务隔离级别设置为Serializable，开启事务A，查询account表数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level serializable;</span><br><span class="line">select @@tx_isolation;</span><br><span class="line">begin;</span><br><span class="line">select * from account;</span><br></pre></td></tr></table></figure>
+<p>另开一个窗口打开mysql，也把事务隔离级别设置为Serializable，开启事务B，执行插入一条数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set session transaction isolation level serializable;</span><br><span class="line">select @@tx_isolation;</span><br><span class="line">begin;</span><br><span class="line">insert into account(id,name,balance) value(6,&#x27;Li&#x27;,100);</span><br></pre></td></tr></table></figure>
+<p>执行结果如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/4/1714282f3cb7f7fa?w=1444&h=637&f=png&s=104234"></p>
+<p>由图可得，当数据库隔离级别设置为serializable的时候，事务B对表的写操作，在等事务A的读操作。其实，这是隔离级别中最严格的，读写都不允许并发。它保证了最好的安全性，性能却是个问题~</p>
+<h2 id="MySql隔离级别的实现原理"><a href="#MySql隔离级别的实现原理" class="headerlink" title="MySql隔离级别的实现原理"></a>MySql隔离级别的实现原理</h2><p>实现隔离机制的方法主要有两种：</p>
+<ul>
+<li>读写锁</li>
+<li>一致性快照读，即 MVCC</li>
+</ul>
+<p>MySql使用不同的锁策略(Locking Strategy)&#x2F;MVCC来实现四种不同的隔离级别。RR、RC的实现原理跟MVCC有关，RU和Serializable跟锁有关。</p>
+<h3 id="读未提交（Read-Uncommitted）-1"><a href="#读未提交（Read-Uncommitted）-1" class="headerlink" title="读未提交（Read Uncommitted）"></a>读未提交（Read Uncommitted）</h3><p><strong>官方说法：</strong></p>
+<blockquote>
+<p>SELECT statements are performed in a nonlocking fashion, but a possible earlier version of a row might be used. Thus, using this isolation level, such reads are not consistent. </p>
+</blockquote>
+<p>读未提交，采取的是读不加锁原理。</p>
+<ul>
+<li>事务读不加锁，不阻塞其他事务的读和写</li>
+<li>事务写阻塞其他事务写，但不阻塞其他事务读；</li>
+</ul>
+<h3 id="串行化（Serializable"><a href="#串行化（Serializable" class="headerlink" title="串行化（Serializable)"></a>串行化（Serializable)</h3><p><strong>官方的说法:</strong></p>
+<blockquote>
+<p>InnoDB implicitly converts all plain SELECT statements to SELECT … FOR SHARE if autocommit is disabled. If autocommit is enabled, the SELECT is its own transaction. It therefore is known to be read only and can be serialized if performed as a consistent (nonlocking) read and need not block for other transactions. (To force a plain SELECT to block if other transactions have modified the selected rows, disable autocommit.)</p>
+</blockquote>
+<ul>
+<li>所有SELECT语句会隐式转化为<code>SELECT ... FOR SHARE</code>，即加共享锁。</li>
+<li>读加共享锁，写加排他锁，读写互斥。如果有未提交的事务正在修改某些行，所有select这些行的语句都会阻塞。</li>
+</ul>
+<h3 id="MVCC的实现原理"><a href="#MVCC的实现原理" class="headerlink" title="MVCC的实现原理"></a>MVCC的实现原理</h3><p>MVCC，中文叫<strong>多版本并发控制</strong>，它是通过读取历史版本的数据，来降低并发事务冲突，从而提高并发性能的一种机制。它的实现依赖于<strong>隐式字段、undo日志、快照读&amp;当前读、Read View</strong>，因此，我们先来了解这几个知识点。 </p>
+<h4 id="隐式字段"><a href="#隐式字段" class="headerlink" title="隐式字段"></a>隐式字段</h4><p>对于InnoDB存储引擎，每一行记录都有两个隐藏列<strong>DB_TRX_ID、DB_ROLL_PTR</strong>，如果表中没有主键和非NULL唯一键时，则还会有第三个隐藏的主键列<strong>DB_ROW_ID</strong>。</p>
+<ul>
+<li>DB_TRX_ID，记录每一行最近一次修改（修改&#x2F;更新）它的事务ID，大小为6字节；</li>
+<li>DB_ROLL_PTR，这个隐藏列就相当于一个指针，指向回滚段的undo日志，大小为7字节；</li>
+<li>DB_ROW_ID，单调递增的行ID，大小为6字节；</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/1714794c14a7e14f?w=1250&h=144&f=png&s=13429"></p>
+<h4 id="undo日志"><a href="#undo日志" class="headerlink" title="undo日志"></a>undo日志</h4><blockquote>
+<ul>
+<li>事务未提交的时候，修改数据的镜像（修改前的旧版本），存到undo日志里。以便事务回滚时，恢复旧版本数据，撤销未提交事务数据对数据库的影响。</li>
+<li>undo日志是逻辑日志。可以这样认为，当delete一条记录时，undo log中会记录一条对应的insert记录，当update一条记录时，它记录一条对应相反的update记录。</li>
+<li>存储undo日志的地方，就是<strong>回滚段</strong>。</li>
+</ul>
+</blockquote>
+<p>多个事务并行操作某一行数据时，不同事务对该行数据的修改会产生多个版本，然后通过回滚指针（DB_ROLL_PTR）连一条<strong>Undo日志链</strong>。</p>
+<p>我们通过例子来看一下~</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from account ;</span><br><span class="line">+----+------+---------+</span><br><span class="line">| id | name | balance |</span><br><span class="line">+----+------+---------+</span><br><span class="line">|  1 | Jay  |     100 |</span><br><span class="line">+----+------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>假设表accout现在只有一条记录，插入该该记录的事务Id为100</li>
+<li>如果事务B（事务Id为200），对id&#x3D;1的该行记录进行更新，把balance值修改为90</li>
+</ul>
+<p>事务B修改后，形成的<strong>Undo Log链</strong>如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/171478d1a4a873d6?w=1107&h=345&f=png&s=29689"></p>
+<h4 id="快照读-amp-当前读"><a href="#快照读-amp-当前读" class="headerlink" title="快照读&amp;当前读"></a>快照读&amp;当前读</h4><p><strong>快照读：</strong> </p>
+<p>读取的是记录数据的可见版本（有旧的版本），不加锁,普通的select语句都是快照读,如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from account where id&gt;2;</span><br></pre></td></tr></table></figure>
+
+<p><strong>当前读：</strong></p>
+<p>读取的是记录数据的最新版本，显示加锁的都是当前读</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from account where id&gt;2 lock in share mode;</span><br><span class="line">select * from  account where id&gt;2 for update;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Read-View"><a href="#Read-View" class="headerlink" title="Read View"></a>Read View</h4><ul>
+<li>Read View就是事务执行<strong>快照读</strong>时，产生的读视图。</li>
+<li>事务执行快照读时，会生成数据库系统当前的一个快照，记录当前系统中还有哪些活跃的读写事务，把它们放到一个列表里。</li>
+<li>Read View主要是用来做可见性判断的，即判断当前事务可见哪个版本的数据~</li>
+</ul>
+<p>为了下面方便讨论Read View可见性规则，先定义几个变量</p>
+<blockquote>
+<ul>
+<li>m_ids:当前系统中那些活跃的读写事务ID,它数据结构为一个List。</li>
+<li>min_limit_id:m_ids事务列表中，最小的事务ID</li>
+<li>max_limit_id:m_ids事务列表中，最大的事务ID</li>
+</ul>
+</blockquote>
+<ul>
+<li>如果DB_TRX_ID &lt; min_limit_id，表明生成该版本的事务在生成ReadView前已经提交(因为事务ID是递增的)，所以该版本可以被当前事务访问。</li>
+<li>如果DB_TRX_ID &gt; m_ids列表中最大的事务id，表明生成该版本的事务在生成ReadView后才生成，所以该版本不可以被当前事务访问。</li>
+<li>如果 min_limit_id &#x3D;&lt;DB_TRX_ID&lt;&#x3D; max_limit_id,需要判断m_ids.contains(DB_TRX_ID)，如果在，则代表Read View生成时刻，这个事务还在活跃，还没有Commit，你修改的数据，当前事务也是看不见的；如果不在，则说明，你这个事务在Read View生成之前就已经Commit了，修改的结果，当前事务是能看见的。</li>
+</ul>
+<p><strong>注意啦！！</strong> RR跟RC隔离级别，最大的区别就是：<strong>RC每次读取数据前都生成一个ReadView，而RR只在第一次读取数据时生成一个ReadView</strong>。</p>
+<h3 id="已提交读（READ-COMMITTED）-存在不可重复读问题的分析历程"><a href="#已提交读（READ-COMMITTED）-存在不可重复读问题的分析历程" class="headerlink" title="已提交读（READ COMMITTED） 存在不可重复读问题的分析历程"></a>已提交读（READ COMMITTED） 存在不可重复读问题的分析历程</h3><p>我觉得理解一个新的知识点，最好的方法就是<strong>居于目前存在的问题&#x2F;现象，去分析它</strong>的来龙去脉~ RC的实现也跟MVCC有关，RC是存在重复读并发问题的，所以我们来分析一波RC吧，先看一下执行流程<br><img src="https://user-gold-cdn.xitu.io/2020/4/5/17148cab92213e82?w=1394&h=655&f=png&s=104468"><br>假设现在系统里有A，B两个事务在执行，事务ID分别为100、200，并且假设存在的老数据，插入事务ID是50哈~</p>
+<p><strong>事务A 先执行查询1的操作</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 事务A，Transaction ID 100</span><br><span class="line">begin ;</span><br><span class="line">查询1：select *  from account WHERE id = 1; </span><br></pre></td></tr></table></figure>
+<p><strong>事务 B 执行更新操作，id &#x3D;1记录的undo日志链如下</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">update account set balance =balance+20 where id =1;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/17149227dbd59f46?w=1128&h=351&f=png&s=30032"><br><strong>回到事务A，执行查询2的操作</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">begin ;</span><br><span class="line">查询1：select *  from account WHERE id = 1; </span><br><span class="line">查询2：select *  from account WHERE id = 1; </span><br></pre></td></tr></table></figure>
+<p><strong>查询2执行分析：</strong></p>
+<ul>
+<li>事务A在执行到SELECT语句时，重新生成一个ReadView，因为事务B（200）在活跃，所以ReadView的m_ids列表内容就是[200]</li>
+<li>由上图undo日志链可得，最新版本的balance为1000，它的事务ID为200，在活跃事务列表里，所以当前事务（事务A）不可见。</li>
+<li>我们继续找下一个版本，balance为100这行记录，事务Id为50，小于活跃事务ID列表最小记录200，所以这个版本可见，因此，查询2的结果，就是返回balance&#x3D;100这个记录~~</li>
+</ul>
+<p><strong>我们回到事务B，执行提交操作，这时候undo日志链不变</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">update account set balance =balance+20 where id =1;</span><br><span class="line">commit</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/1714924077c2775d?w=1120&h=352&f=png&s=30100"></p>
+<p> <strong>再次回到事务A，执行查询3的操作</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">begin ;</span><br><span class="line">查询1：select *  from account WHERE id = 1; </span><br><span class="line">查询2：select *  from account WHERE id = 1; </span><br><span class="line">查询3：select *  from account WHERE id = 1; </span><br></pre></td></tr></table></figure>
+<p><strong>查询3执行分析：</strong></p>
+<ul>
+<li>事务A在执行到SELECT语句时，重新生成一个ReadView，因为事务B（200）已经提交，不载活跃，所以ReadView的m_ids列表内容就是空的了。</li>
+<li>所以事务A直接读取最新纪录，读取到balance &#x3D;120这个版本的数据。</li>
+</ul>
+<p>所以，这就是RC存在不可重复读问题的过程啦<del>有不理解的地方可以多读几遍哈</del></p>
+<h3 id="可重复读（Repeatable-Read）解决不可重复读问题的一次分析"><a href="#可重复读（Repeatable-Read）解决不可重复读问题的一次分析" class="headerlink" title="可重复读（Repeatable Read）解决不可重复读问题的一次分析"></a>可重复读（Repeatable Read）解决不可重复读问题的一次分析</h3><p>我们再来分析一波，RR隔离级别是如何解决不可重复读并发问题的吧~</p>
+<p>你可能会觉得两个并发事务的例子太简单了，好的！我们现在来点刺激的，开启三个事务~</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/171488edb21fe523?w=1861&h=570&f=png&s=136117"><br>假设现在系统里有A，B，C两个事务在执行，事务ID分别为100、200，300，存量数据插入的事务ID是50~</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 事务A，Transaction ID 100</span><br><span class="line">begin ;</span><br><span class="line">UPDATE account SET balance = 1000  WHERE id = 1;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 事务B，Transaction ID 200</span><br><span class="line">begin ; //开个事务，占坑先</span><br></pre></td></tr></table></figure>
+<p><strong>这时候，account表中，id &#x3D;1记录的undo日志链如下：</strong><br><img src="https://user-gold-cdn.xitu.io/2020/4/5/1714881ff86628eb?w=1111&h=369&f=png&s=30641"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 事务C，Transaction ID 300</span><br><span class="line">begin ;</span><br><span class="line">//查询1：select * from  account WHERE id = 1;</span><br></pre></td></tr></table></figure>
+<p><strong>查询1执行过程分析：</strong></p>
+<ul>
+<li>事务C在执行SELECT语句时，会先生成一个ReadView。因为事务A（100）、B（200）在活跃，所以ReadView的m_ids列表内容就是[100, 200]。</li>
+<li>由上图undo日志链可得，最新版本的balance为1000，它的事务ID为100，在活跃事务列表里，所以当前事务（事务C）不可见。</li>
+<li>我们继续找下一个版本，balance为100这行记录，事务Id为50，小于活跃事务ID列表最小记录100，所以这个版本可见，因此，查询1的结果，就是返回balance&#x3D;100这个记录~~</li>
+</ul>
+<p><strong>接着，我们把事务A提交一下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 事务A，Transaction ID 100</span><br><span class="line">begin ;</span><br><span class="line">UPDATE account SET balance = 1000  WHERE id = 1;</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
+<p><strong>在事务B中，执行更新操作，把id&#x3D;1的记录balance修改为2000，更新完后，undo 日志链如下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 事务B，Transaction ID 200</span><br><span class="line">begin ; //开个事务，占坑先</span><br><span class="line">UPDATE account SET balance = 2000  WHERE id = 1;</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/17148a0b1e007c1f?w=1213&h=499&f=png&s=42893"></p>
+<p><strong>回到事务C，执行查询2</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 事务C，Transaction ID 300</span><br><span class="line">begin ;</span><br><span class="line">//查询1：select * from  account WHERE id = 1;</span><br><span class="line">//查询2：select * from  account WHERE id = 1;</span><br></pre></td></tr></table></figure>
+<p><strong>查询2:执行分析：</strong></p>
+<ul>
+<li>在RR 级别下，执行查询2的时候，因为<strong>前面ReadView已经生成过了，所以直接服用之前的ReadView</strong>，活跃事务列表为[100,200].</li>
+<li>由上图undo日志链可得，最新版本的balance为2000，它的事务ID为200，在活跃事务列表里，所以当前事务（事务C）不可见。</li>
+<li>我们继续找下一个版本，balance为1000这行记录，事务Id为100,也在活跃事务列表里，所以当前事务（事务C）不可见。</li>
+<li>继续找下一个版本，balance为100这行记录，事务Id为50，小于活跃事务ID列表最小记录100，所以这个版本可见，因此，查询2的结果，也是返回balance&#x3D;100这个记录~~</li>
+</ul>
+<h3 id="锁相关概念补充（附）："><a href="#锁相关概念补充（附）：" class="headerlink" title="锁相关概念补充（附）："></a>锁相关概念补充（附）：</h3><h4 id="共享锁与排他锁"><a href="#共享锁与排他锁" class="headerlink" title="共享锁与排他锁"></a>共享锁与排他锁</h4><p>InnoDB 实现了标准的行级锁，包括两种：共享锁（简称 s 锁）、排它锁（简称 x 锁）。</p>
+<ul>
+<li>共享锁（S锁）：允许持锁事务读取一行。</li>
+<li>排他锁（X锁）：允许持锁事务更新或者删除一行。</li>
+</ul>
+<p>如果事务 T1 持有行 r 的 s 锁，那么另一个事务 T2 请求 r 的锁时，会做如下处理：</p>
+<ul>
+<li>T2 请求 s 锁立即被允许，结果 T1 T2 都持有 r 行的 s 锁</li>
+<li>T2 请求 x 锁不能被立即允许</li>
+</ul>
+<p>如果 T1 持有 r 的 x 锁，那么 T2 请求 r 的 x、s 锁都不能被立即允许，T2 必须等待T1释放 x 锁才可以，因为X锁与任何的锁都不兼容。</p>
+<h4 id="记录锁（Record-Locks）"><a href="#记录锁（Record-Locks）" class="headerlink" title="记录锁（Record Locks）"></a>记录锁（Record Locks）</h4><ul>
+<li>记录锁是最简单的行锁，<strong>仅仅锁住一行</strong>。如：<code>SELECT c1 FROM t WHERE c1 = 10 FOR UPDATE</code></li>
+<li>记录锁<strong>永远都是加在索引上</strong>的，即使一个表没有索引，InnoDB也会隐式的创建一个索引，并使用这个索引实施记录锁。</li>
+<li>会阻塞其他事务对其插入、更新、删除</li>
+</ul>
+<p>记录锁的事务数据（关键词：<code>lock_mode X locks rec but not gap</code>），记录如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RECORD LOCKS space id 58 page no 3 n bits 72 index `PRIMARY` of table `test`.`t` </span><br><span class="line">trx id 10078 lock_mode X locks rec but not gap</span><br><span class="line">Record lock, heap no 2 PHYSICAL RECORD: n_fields 3; compact format; info bits 0</span><br><span class="line"> 0: len 4; hex 8000000a; asc     ;;</span><br><span class="line"> 1: len 6; hex 00000000274f; asc     &#x27;O;;</span><br><span class="line"> 2: len 7; hex b60000019d0110; asc        ;;</span><br></pre></td></tr></table></figure>
+<h4 id="间隙锁（Gap-Locks）"><a href="#间隙锁（Gap-Locks）" class="headerlink" title="间隙锁（Gap Locks）"></a>间隙锁（Gap Locks）</h4><ul>
+<li>间隙锁是一种加在两个索引之间的锁，或者加在第一个索引之前，或最后一个索引之后的间隙。</li>
+<li>使用间隙锁锁住的是一个区间，而不仅仅是这个区间中的每一条数据。</li>
+<li>间隙锁只阻止其他事务插入到间隙中，他们不阻止其他事务在同一个间隙上获得间隙锁，所以 gap x lock 和 gap s lock 有相同的作用。</li>
+</ul>
+<h4 id="Next-Key-Locks"><a href="#Next-Key-Locks" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h4><ul>
+<li>Next-key锁是记录锁和间隙锁的组合，它指的是加在某条记录以及这条记录前面间隙上的锁。</li>
+</ul>
+<h3 id="RC级别存在幻读分析"><a href="#RC级别存在幻读分析" class="headerlink" title="RC级别存在幻读分析"></a>RC级别存在幻读分析</h3><p>因为RC是存在幻读问题的，所以我们先切到RC隔离级别，分析一波~</p>
+<p>假设account表有4条数据。</p>
+<ul>
+<li>开启事务A，执行当前读，查询id&gt;2的所有记录。</li>
+<li>再开启事务B，插入id&#x3D;5的一条数据。</li>
+<li>事务B插入数据成功后，再修改id&#x3D;3的记录</li>
+<li>回到事务A,再次执行id&gt;2的当前读查询</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/171496a6382f56e7?w=1640&h=601&f=png&s=120697"></p>
+<ul>
+<li>事务B可以插入id&#x3D;5的数据，却更新不了id&#x3D;3的数据，陷入阻塞。证明事务A在执行当前读的时候在id &#x3D;3和id&#x3D;4这两条记录上加了锁，但是并没有对 id &gt; 2 这个范围加锁~ </li>
+<li>事务B陷入阻塞后，切回事务A执行当前读操作时，死锁出现。因为事务B在 insert 的时候，会在新纪录（id&#x3D;5）上加锁，所以事务A再次执行当前读，想获取id&gt; 3 的记录，就需要在 id&#x3D;3,4,5 这3条记录上加锁，但是 id &#x3D; 5这条记录已经被事务B 锁住了，于是事务A被事务B阻塞，同时事务B还在等待 事务A释放 id &#x3D; 3上的锁，最终产生了死锁。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/5/171497ae540bdebf?w=1800&h=955&f=png&s=195481"></p>
+<p>因此，我们可以发现，RC隔离级别下，加锁的select, update, delete等语句，使用的是记录锁，其他事务的插入依然可以执行，因此会存在幻读~</p>
+<h3 id="RR-级别解决幻读分析"><a href="#RR-级别解决幻读分析" class="headerlink" title="RR 级别解决幻读分析"></a>RR 级别解决幻读分析</h3><p>因为RR是解决幻读问题的，怎么解决的呢，分析一波吧~</p>
+<p>假设account表有4条数据，RR级别。</p>
+<ul>
+<li>开启事务A，执行当前读，查询id&gt;2的所有记录。</li>
+<li>再开启事务B，插入id&#x3D;5的一条数据。<br><img src="https://user-gold-cdn.xitu.io/2020/4/5/17149563ecc072ba?w=1515&h=652&f=png&s=106753"><br>可以发现，事务B执行插入操作时，阻塞了~因为事务A在执行select … lock in share mode的时候，不仅在 id &#x3D; 3,4 这2条记录上加了锁，而且在id &gt; 2 这个范围上也加了间隙锁。</li>
+</ul>
+<p>因此，我们可以发现，RR隔离级别下，加锁的select, update, delete等语句，会使用间隙锁+ 临键锁，锁住索引记录之间的范围，避免范围间插入记录，以避免产生幻影行记录。</p>
+<h2 id="参考与感谢"><a href="#参考与感谢" class="headerlink" title="参考与感谢"></a>参考与感谢</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.aneasystone.com/archives/2017/10/solving-dead-locks-one.html"> 解决死锁之路 - 学习事务与隔离级别</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4e3edbedb9a8">五分钟搞清楚MySQL事务隔离级别</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/x_7E2R2i27Ci5O7kLQF0UA">4种事务的隔离级别，InnoDB如何巧妙实现？</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5c9b1b7df265da60e21c0b57#heading-6">MySQL事务隔离级别和MVCC</a></li>
+<li><a target="_blank" rel="noopener" href="https://chenjiayang.me/2019/06/22/mysql-innodb-mvcc/">MySQL InnoDB MVCC 机制的原理及实现</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8845ddca3b23">MVCC多版本并发控制</a></li>
+</ul>
+<h2 id="个人公众号"><a href="#个人公众号" class="headerlink" title="个人公众号"></a>个人公众号</h2><p><img src="https://user-gold-cdn.xitu.io/2019/7/28/16c381c89b127bbb?w=344&h=344&f=jpeg&s=8943"></p>
+<ul>
+<li>觉得写得好的小伙伴给个点赞+关注啦，谢谢~</li>
+<li>如果有写得不正确的地方，麻烦指出，感激不尽。</li>
+<li>同时非常期待小伙伴们能够关注我公众号，后面慢慢推出更好的干货~嘻嘻</li>
+<li>github地址：<a target="_blank" rel="noopener" href="https://github.com/whx123/JavaHome">https://github.com/whx123/JavaHome</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E4%B8%80%E6%96%87%E5%BD%BB%E5%BA%95%E8%AF%BB%E6%87%82MySQL%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">http://example.com/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E4%B8%80%E6%96%87%E5%BD%BB%E5%BA%95%E8%AF%BB%E6%87%82MySQL%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/order%20by%E8%AF%A6%E8%A7%A3/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2022/06/19/JavaHome/Mysql%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/%E4%B9%A6%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8FSQL%E7%9A%8430%E6%9D%A1%E5%BB%BA%E8%AE%AE/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">什么是事务？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="toc-number">2.2.</span> <span class="toc-text">事务的四大特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E5%B9%B6%E5%8F%91%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">事务并发存在的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%84%8F%E8%AF%BB%EF%BC%88dirty-read%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">脏读（dirty read）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%88unrepeatable-read%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">不可重复读（unrepeatable read）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%BB%E8%AF%BB"><span class="toc-number">3.3.</span> <span class="toc-text">幻读</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.</span> <span class="toc-text">事务的四大隔离级别实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4%EF%BC%88Read-Uncommitted%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">读未提交（Read Uncommitted）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E6%8F%90%E4%BA%A4%E8%AF%BB%EF%BC%88READ-COMMITTED%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">已提交读（READ COMMITTED）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%88Repeatable-Read%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">可重复读（Repeatable Read）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%B2%E8%A1%8C%E5%8C%96%EF%BC%88Serializable%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">串行化（Serializable）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySql%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">MySql隔离级别的实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E6%9C%AA%E6%8F%90%E4%BA%A4%EF%BC%88Read-Uncommitted%EF%BC%89-1"><span class="toc-number">5.1.</span> <span class="toc-text">读未提交（Read Uncommitted）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%B2%E8%A1%8C%E5%8C%96%EF%BC%88Serializable"><span class="toc-number">5.2.</span> <span class="toc-text">串行化（Serializable)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MVCC%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">5.3.</span> <span class="toc-text">MVCC的实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%90%E5%BC%8F%E5%AD%97%E6%AE%B5"><span class="toc-number">5.3.1.</span> <span class="toc-text">隐式字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undo%E6%97%A5%E5%BF%97"><span class="toc-number">5.3.2.</span> <span class="toc-text">undo日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%AB%E7%85%A7%E8%AF%BB-amp-%E5%BD%93%E5%89%8D%E8%AF%BB"><span class="toc-number">5.3.3.</span> <span class="toc-text">快照读&amp;当前读</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Read-View"><span class="toc-number">5.3.4.</span> <span class="toc-text">Read View</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E6%8F%90%E4%BA%A4%E8%AF%BB%EF%BC%88READ-COMMITTED%EF%BC%89-%E5%AD%98%E5%9C%A8%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E9%97%AE%E9%A2%98%E7%9A%84%E5%88%86%E6%9E%90%E5%8E%86%E7%A8%8B"><span class="toc-number">5.4.</span> <span class="toc-text">已提交读（READ COMMITTED） 存在不可重复读问题的分析历程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%EF%BC%88Repeatable-Read%EF%BC%89%E8%A7%A3%E5%86%B3%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB%E9%97%AE%E9%A2%98%E7%9A%84%E4%B8%80%E6%AC%A1%E5%88%86%E6%9E%90"><span class="toc-number">5.5.</span> <span class="toc-text">可重复读（Repeatable Read）解决不可重复读问题的一次分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%81%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E8%A1%A5%E5%85%85%EF%BC%88%E9%99%84%EF%BC%89%EF%BC%9A"><span class="toc-number">5.6.</span> <span class="toc-text">锁相关概念补充（附）：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E9%94%81%E4%B8%8E%E6%8E%92%E4%BB%96%E9%94%81"><span class="toc-number">5.6.1.</span> <span class="toc-text">共享锁与排他锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E9%94%81%EF%BC%88Record-Locks%EF%BC%89"><span class="toc-number">5.6.2.</span> <span class="toc-text">记录锁（Record Locks）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%B4%E9%9A%99%E9%94%81%EF%BC%88Gap-Locks%EF%BC%89"><span class="toc-number">5.6.3.</span> <span class="toc-text">间隙锁（Gap Locks）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Next-Key-Locks"><span class="toc-number">5.6.4.</span> <span class="toc-text">Next-Key Locks</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RC%E7%BA%A7%E5%88%AB%E5%AD%98%E5%9C%A8%E5%B9%BB%E8%AF%BB%E5%88%86%E6%9E%90"><span class="toc-number">5.7.</span> <span class="toc-text">RC级别存在幻读分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RR-%E7%BA%A7%E5%88%AB%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB%E5%88%86%E6%9E%90"><span class="toc-number">5.8.</span> <span class="toc-text">RR 级别解决幻读分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E6%84%9F%E8%B0%A2"><span class="toc-number">6.</span> <span class="toc-text">参考与感谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-number">7.</span> <span class="toc-text">个人公众号</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁"><img src="/image/8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="七种方案对比分布式锁"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%B8%83%E7%A7%8D%E6%96%B9%E6%A1%88%E5%AF%B9%E6%AF%94%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" title="七种方案对比分布式锁">七种方案对比分布式锁</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识"><img src="/image/7.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="学习Redis相关知识"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%BC%93%E5%AD%98Redis%E6%80%BB%E7%BB%93/%E4%BD%BF%E7%94%A8Redis%E7%9A%8421%E4%B8%AA%E6%B3%A8%E6%84%8F%E7%82%B9/" title="学习Redis相关知识">学习Redis相关知识</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="程序员必备基础：Git 命令全方位学习"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%B7%A5%E5%85%B7%E7%AF%87/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E5%9F%BA%E7%A1%80%EF%BC%9AGit%20%E5%91%BD%E4%BB%A4%E5%85%A8%E6%96%B9%E4%BD%8D%E5%AD%A6%E4%B9%A0/" title="程序员必备基础：Git 命令全方位学习">程序员必备基础：Git 命令全方位学习</a><time datetime="2022-06-19T13:50:08.178Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析"><img src="https://t7.baidu.com/it/u=1723468391,764687099&amp;fm=193&amp;f=GIF" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据库连接池内存泄漏问题分析"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" title="数据库连接池内存泄漏问题分析">数据库连接池内存泄漏问题分析</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题"><img src="/image/5.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线程池运用不当导致的问题"/></a><div class="content"><a class="title" href="/2022/06/19/JavaHome/%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%BF%90%E7%94%A8%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/" title="线程池运用不当导致的问题">线程池运用不当导致的问题</a><time datetime="2022-06-19T13:50:08.177Z" title="发表于 2022-06-19 21:50:08">2022-06-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
