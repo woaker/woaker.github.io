@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>深入 Hystrix 线程池隔离与接口限流 | 每天都不一样</title><meta name="keywords" content="java,study,interview"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深入 Hystrix 线程池隔离与接口限流前面讲了 Hystrix 的 request cache 请求缓存、fallback 优雅降级、circuit breaker 断路器快速熔断，这一讲，我们来详细说说 Hystrix 的线程池隔离与接口限流。  Hystrix 通过判断线程池或者信号量是否已满，超出容量的请求，直接 Reject 走降级，从而达到限流的作用。 限流是限制对后端的服务的访问量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入 Hystrix 线程池隔离与接口限流">
+<meta property="og:url" content="http://example.com/2022/07/02/advanced-java/docs/high-availability/hystrix-thread-pool-current-limiting/index.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="深入 Hystrix 线程池隔离与接口限流前面讲了 Hystrix 的 request cache 请求缓存、fallback 优雅降级、circuit breaker 断路器快速熔断，这一讲，我们来详细说说 Hystrix 的线程池隔离与接口限流。  Hystrix 通过判断线程池或者信号量是否已满，超出容量的请求，直接 Reject 走降级，从而达到限流的作用。 限流是限制对后端的服务的访问量">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/13.jpeg">
+<meta property="article:published_time" content="2022-07-02T01:48:10.936Z">
+<meta property="article:modified_time" content="2022-07-02T04:46:10.947Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="study">
+<meta property="article:tag" content="interview">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/13.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/07/02/advanced-java/docs/high-availability/hystrix-thread-pool-current-limiting/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '深入 Hystrix 线程池隔离与接口限流',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-07-02 12:46:10'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/image/13.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深入 Hystrix 线程池隔离与接口限流</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-02T01:48:10.936Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-07-02T04:46:10.947Z" title="更新于 2022-07-02 12:46:10">2022-07-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/interview/">interview</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深入 Hystrix 线程池隔离与接口限流"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="深入-Hystrix-线程池隔离与接口限流"><a href="#深入-Hystrix-线程池隔离与接口限流" class="headerlink" title="深入 Hystrix 线程池隔离与接口限流"></a>深入 Hystrix 线程池隔离与接口限流</h2><p>前面讲了 Hystrix 的 request cache 请求缓存、fallback 优雅降级、circuit breaker 断路器快速熔断，这一讲，我们来详细说说 Hystrix 的线程池隔离与接口限流。</p>
+<p><img src="/images/hystrix-process.png" alt="hystrix-process"></p>
+<p>Hystrix 通过判断线程池或者信号量是否已满，超出容量的请求，直接 Reject 走降级，从而达到限流的作用。</p>
+<p>限流是限制对后端的服务的访问量，比如说你对 MySQL、Redis、Zookeeper 以及其它各种后端中间件的资源的访问的限制，其实是为了避免过大的流量直接打死后端的服务。</p>
+<h3 id="线程池隔离技术的设计"><a href="#线程池隔离技术的设计" class="headerlink" title="线程池隔离技术的设计"></a>线程池隔离技术的设计</h3><p>Hystrix 采用了 Bulkhead Partition 舱壁隔离技术，来将外部依赖进行资源隔离，进而避免任何外部依赖的故障导致本服务崩溃。</p>
+<p><strong>舱壁隔离</strong>，是说将船体内部空间区隔划分成若干个隔舱，一旦某几个隔舱发生破损进水，水流不会在其间相互流动，如此一来船舶在受损时，依然能具有足够的浮力和稳定性，进而减低立即沉船的危险。</p>
+<p><img src="/images/bulkhead-partition.jpg" alt="bulkhead-partition"></p>
+<p>Hystrix 对每个外部依赖用一个单独的线程池，这样的话，如果对那个外部依赖调用延迟很严重，最多就是耗尽那个依赖自己的线程池而已，不会影响其他的依赖调用。</p>
+<h3 id="Hystrix-应用线程池机制的场景"><a href="#Hystrix-应用线程池机制的场景" class="headerlink" title="Hystrix 应用线程池机制的场景"></a>Hystrix 应用线程池机制的场景</h3><ul>
+<li>每个服务都会调用几十个后端依赖服务，那些后端依赖服务通常是由很多不同的团队开发的。</li>
+<li>每个后端依赖服务都会提供它自己的 client 调用库，比如说用 thrift 的话，就会提供对应的 thrift 依赖。</li>
+<li>client 调用库随时会变更。</li>
+<li>client 调用库随时可能会增加新的网络请求的逻辑。</li>
+<li>client 调用库可能会包含诸如自动重试、数据解析、内存中缓存等逻辑。</li>
+<li>client 调用库一般都对调用者来说是个黑盒，包括实现细节、网络访问、默认配置等等。</li>
+<li>在真实的生产环境中，经常会出现调用者，突然间惊讶的发现，client 调用库发生了某些变化。</li>
+<li>即使 client 调用库没有改变，依赖服务本身可能有会发生逻辑上的变化。</li>
+<li>有些依赖的 client 调用库可能还会拉取其他的依赖库，而且可能那些依赖库配置的不正确。</li>
+<li>大多数网络请求都是同步调用的。</li>
+<li>调用失败和延迟，也有可能会发生在 client 调用库本身的代码中，不一定就是发生在网络请求中。</li>
+</ul>
+<p>简单来说，就是你必须默认 client 调用库很不靠谱，而且随时可能发生各种变化，所以就要用强制隔离的方式来确保任何服务的故障不会影响当前服务。</p>
+<h3 id="线程池机制的优点"><a href="#线程池机制的优点" class="headerlink" title="线程池机制的优点"></a>线程池机制的优点</h3><ul>
+<li>任何一个依赖服务都可以被隔离在自己的线程池内，即使自己的线程池资源填满了，也不会影响任何其他的服务调用。</li>
+<li>服务可以随时引入一个新的依赖服务，因为即使这个新的依赖服务有问题，也不会影响其他任何服务的调用。</li>
+<li>当一个故障的依赖服务重新变好的时候，可以通过清理掉线程池，瞬间恢复该服务的调用，而如果是 tomcat 线程池被占满，再恢复就很麻烦。</li>
+<li>如果一个 client 调用库配置有问题，线程池的健康状况随时会报告，比如成功&#x2F;失败&#x2F;拒绝&#x2F;超时的次数统计，然后可以近实时热修改依赖服务的调用配置，而不用停机。</li>
+<li>基于线程池的异步本质，可以在同步的调用之上，构建一层异步调用层。</li>
+</ul>
+<p>简单来说，最大的好处，就是资源隔离，确保说任何一个依赖服务故障，不会拖垮当前的这个服务。</p>
+<h3 id="线程池机制的缺点"><a href="#线程池机制的缺点" class="headerlink" title="线程池机制的缺点"></a>线程池机制的缺点</h3><ul>
+<li><p>线程池机制最大的缺点就是增加了 CPU 的开销。<br><br>除了 tomcat 本身的调用线程之外，还有 Hystrix 自己管理的线程池。</p>
+</li>
+<li><p>每个 command 的执行都依托一个独立的线程，会进行排队，调度，还有上下文切换。</p>
+</li>
+<li><p>Hystrix 官方自己做了一个多线程异步带来的额外开销统计，通过对比多线程异步调用+同步调用得出，Netflix API 每天通过 Hystrix 执行 10 亿次调用，每个服务实例有 40 个以上的线程池，每个线程池有 10 个左右的线程。）最后发现说，用 Hystrix 的额外开销，就是给请求带来了 3ms 左右的延时，最多延时在 10ms 以内，相比于可用性和稳定性的提升，这是可以接受的。</p>
+</li>
+</ul>
+<p>我们可以用 Hystrix semaphore 技术来实现对某个依赖服务的并发访问量的限制，而不是通过线程池&#x2F;队列的大小来限制流量。</p>
+<p>semaphore 技术可以用来限流和削峰，但是不能用来对调用延迟的服务进行 timeout 和隔离。</p>
+<p><code>execution.isolation.strategy</code> 设置为 <code>SEMAPHORE</code>，那么 Hystrix 就会用 semaphore 机制来替代线程池机制，来对依赖服务的访问进行限流。如果通过 semaphore 调用的时候，底层的网络调用延迟很严重，那么是无法 timeout 的，只能一直 block 住。一旦请求数量超过了 semaphore 限定的数量之后，就会立即开启限流。</p>
+<h3 id="接口限流-Demo"><a href="#接口限流-Demo" class="headerlink" title="接口限流 Demo"></a>接口限流 Demo</h3><p>假设一个线程池大小为 8，等待队列的大小为 10。timeout 时长我们设置长一些，20s。</p>
+<p>在 command 内部，写死代码，做一个 sleep，比如 sleep 3s。</p>
+<ul>
+<li>withCoreSize：设置线程池大小。</li>
+<li>withMaxQueueSize：设置等待队列大小。</li>
+<li>withQueueSizeRejectionThreshold：这个与 withMaxQueueSize 配合使用，等待队列的大小，取得是这两个参数的较小值。</li>
+</ul>
+<p>如果只设置了线程池大小，另外两个 queue 相关参数没有设置的话，等待队列是处于关闭的状态。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GetProductInfoCommand</span> <span class="keyword">extends</span> <span class="title class_">HystrixCommand</span>&lt;ProductInfo&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Long productId;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">HystrixCommandKey</span> <span class="variable">KEY</span> <span class="operator">=</span> HystrixCommandKey.Factory.asKey(<span class="string">&quot;GetProductInfoCommand&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">GetProductInfoCommand</span><span class="params">(Long productId)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey(<span class="string">&quot;ProductInfoService&quot;</span>))</span><br><span class="line">                .andCommandKey(KEY)</span><br><span class="line">                <span class="comment">// 线程池相关配置信息</span></span><br><span class="line">                .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter()</span><br><span class="line">                        <span class="comment">// 设置线程池大小为8</span></span><br><span class="line">                        .withCoreSize(<span class="number">8</span>)</span><br><span class="line">                        <span class="comment">// 设置等待队列大小为10</span></span><br><span class="line">                        .withMaxQueueSize(<span class="number">10</span>)</span><br><span class="line">                        .withQueueSizeRejectionThreshold(<span class="number">12</span>))</span><br><span class="line">                .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()</span><br><span class="line">                        .withCircuitBreakerEnabled(<span class="literal">true</span>)</span><br><span class="line">                        .withCircuitBreakerRequestVolumeThreshold(<span class="number">20</span>)</span><br><span class="line">                        .withCircuitBreakerErrorThresholdPercentage(<span class="number">40</span>)</span><br><span class="line">                        .withCircuitBreakerSleepWindowInMilliseconds(<span class="number">3000</span>)</span><br><span class="line">                        <span class="comment">// 设置超时时间</span></span><br><span class="line">                        .withExecutionTimeoutInMilliseconds(<span class="number">20000</span>)</span><br><span class="line">                        <span class="comment">// 设置fallback最大请求并发数</span></span><br><span class="line">                        .withFallbackIsolationSemaphoreMaxConcurrentRequests(<span class="number">30</span>)));</span><br><span class="line">        <span class="built_in">this</span>.productId = productId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> ProductInfo <span class="title function_">run</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;调用接口查询商品数据，productId=&quot;</span> + productId);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (productId == -<span class="number">1L</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 请求过来，会在这里hang住3秒钟</span></span><br><span class="line">        <span class="keyword">if</span> (productId == -<span class="number">2L</span>) &#123;</span><br><span class="line">            TimeUtils.sleep(<span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> <span class="string">&quot;http://localhost:8081/getProductInfo?productId=&quot;</span> + productId;</span><br><span class="line">        <span class="type">String</span> <span class="variable">response</span> <span class="operator">=</span> HttpClientUtils.sendGetRequest(url);</span><br><span class="line">        System.out.println(response);</span><br><span class="line">        <span class="keyword">return</span> JSONObject.parseObject(response, ProductInfo.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> ProductInfo <span class="title function_">getFallback</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ProductInfo</span> <span class="variable">productInfo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProductInfo</span>();</span><br><span class="line">        productInfo.setName(<span class="string">&quot;降级商品&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> productInfo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们模拟 25 个请求。前 8 个请求，调用接口时会直接被 hang 住 3s，那么后面的 10 个请求会先进入等待队列中等待前面的请求执行完毕。最后的 7 个请求过来，会直接被 reject，调用 fallback 降级逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="meta">@RunWith(SpringRunner.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RejectTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testReject</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">25</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; HttpClientUtils.sendGetRequest(<span class="string">&quot;http://localhost:8080/getProductInfo?productId=-2&quot;</span>)).start();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 防止主线程提前结束执行</span></span><br><span class="line">        TimeUtils.sleep(<span class="number">50</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从执行结果中，我们可以明显看出一共打印出了 7 个降级商品。这也就是请求数超过线程池+队列的数量而直接被 reject 的结果。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ProductInfo(id=null, name=降级商品, price=null, pictureList=null, specification=null, service=null, color=null, size=null, shopId=null, modifiedTime=null, cityId=null, cityName=null, brandId=null, brandName=null)</span><br><span class="line">ProductInfo(id=null, name=降级商品, price=null, pictureList=null, specification=null, service=null, color=null, size=null, shopId=null, modifiedTime=null, cityId=null, cityName=null, brandId=null, brandName=null)</span><br><span class="line">ProductInfo(id=null, name=降级商品, price=null, pictureList=null, specification=null, service=null, color=null, size=null, shopId=null, modifiedTime=null, cityId=null, cityName=null, brandId=null, brandName=null)</span><br><span class="line">ProductInfo(id=null, name=降级商品, price=null, pictureList=null, specification=null, service=null, color=null, size=null, shopId=null, modifiedTime=null, cityId=null, cityName=null, brandId=null, brandName=null)</span><br><span class="line">ProductInfo(id=null, name=降级商品, price=null, pictureList=null, specification=null, service=null, color=null, size=null, shopId=null, modifiedTime=null, cityId=null, cityName=null, brandId=null, brandName=null)</span><br><span class="line">ProductInfo(id=null, name=降级商品, price=null, pictureList=null, specification=null, service=null, color=null, size=null, shopId=null, modifiedTime=null, cityId=null, cityName=null, brandId=null, brandName=null)</span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">调用接口查询商品数据，productId=<span class="number">-2</span></span><br><span class="line">ProductInfo(id=null, name=降级商品, price=null, pictureList=null, specification=null, service=null, color=null, size=null, shopId=null, modifiedTime=null, cityId=null, cityName=null, brandId=null, brandName=null)</span><br><span class="line">&#123;<span class="string">&quot;id&quot;</span>: <span class="number">-2</span>, <span class="string">&quot;name&quot;</span>: <span class="string">&quot;iphone7手机&quot;</span>, <span class="string">&quot;price&quot;</span>: <span class="number">5599</span>, <span class="string">&quot;pictureList&quot;</span>:<span class="string">&quot;a.jpg,b.jpg&quot;</span>, <span class="string">&quot;specification&quot;</span>: <span class="string">&quot;iphone7的规格&quot;</span>, <span class="string">&quot;service&quot;</span>: <span class="string">&quot;iphone7的售后服务&quot;</span>, <span class="string">&quot;color&quot;</span>: <span class="string">&quot;红色,白色,黑色&quot;</span>, <span class="string">&quot;size&quot;</span>: <span class="string">&quot;5.5&quot;</span>, <span class="string">&quot;shopId&quot;</span>: <span class="number">1</span>, <span class="string">&quot;modifiedTime&quot;</span>: <span class="string">&quot;2017-01-01 12:00:00&quot;</span>, <span class="string">&quot;cityId&quot;</span>: <span class="number">1</span>, <span class="string">&quot;brandId&quot;</span>: <span class="number">1</span>&#125;</span><br><span class="line"><span class="comment">// 后面都是一些正常的商品信息，就不贴出来了</span></span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">woaker</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/07/02/advanced-java/docs/high-availability/hystrix-thread-pool-current-limiting/">http://example.com/2022/07/02/advanced-java/docs/high-availability/hystrix-thread-pool-current-limiting/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">每天都不一样</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/study/">study</a><a class="post-meta__tags" href="/tags/interview/">interview</a></div><div class="post_share"><div class="social-share" data-image="/image/13.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/gh/overtrue/share.js@master/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/07/02/advanced-java/docs/high-availability/hystrix-timeout/"><img class="prev-cover" src="/image/13.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于 timeout 机制为服务接口调用超时提供安全保护</div></div></a></div><div class="next-post pull-right"><a href="/2022/07/02/advanced-java/docs/high-availability/hystrix-circuit-breaker/"><img class="next-cover" src="/image/13.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">深入 Hystrix 断路器执行原理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/06/19/hexo%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" title="hexo使用说明"><img class="cover" src="/image/13.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-19</div><div class="title">hexo使用说明</div></div></a></div><div><a href="/2022/07/02/advanced-java/docs/high-availability/e-commerce-website-detail-page-architecture/" title="电商网站的商品详情页系统架构"><img class="cover" src="/image/13.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-02</div><div class="title">电商网站的商品详情页系统架构</div></div></a></div><div><a href="/2022/07/02/advanced-java/docs/high-availability/hystrix-circuit-breaker/" title="深入 Hystrix 断路器执行原理"><img class="cover" src="/image/13.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-02</div><div class="title">深入 Hystrix 断路器执行原理</div></div></a></div><div><a href="/2022/07/02/advanced-java/docs/high-availability/hystrix-execution-isolation/" title="Hystrix 隔离策略细粒度控制"><img class="cover" src="/image/13.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-02</div><div class="title">Hystrix 隔离策略细粒度控制</div></div></a></div><div><a href="/2022/07/02/advanced-java/docs/high-availability/hystrix-fallback/" title="基于本地缓存的 fallback 降级机制"><img class="cover" src="/image/13.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-02</div><div class="title">基于本地缓存的 fallback 降级机制</div></div></a></div><div><a href="/2022/07/02/advanced-java/docs/high-availability/hystrix-process/" title="深入 Hystrix 执行时内部原理"><img class="cover" src="/image/13.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-02</div><div class="title">深入 Hystrix 执行时内部原理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5-Hystrix-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E9%9A%94%E7%A6%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E9%99%90%E6%B5%81"><span class="toc-number">1.</span> <span class="toc-text">深入 Hystrix 线程池隔离与接口限流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E9%9A%94%E7%A6%BB%E6%8A%80%E6%9C%AF%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">线程池隔离技术的设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hystrix-%E5%BA%94%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%BA%E5%88%B6%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="toc-number">1.2.</span> <span class="toc-text">Hystrix 应用线程池机制的场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%BA%E5%88%B6%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">线程池机制的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%BA%E5%88%B6%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">1.4.</span> <span class="toc-text">线程池机制的缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E9%99%90%E6%B5%81-Demo"><span class="toc-number">1.5.</span> <span class="toc-text">接口限流 Demo</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
