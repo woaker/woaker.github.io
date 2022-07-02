@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="[toc]  一个是索引优化，一个是结构优化。。。。  三范式面试官：先来个三范式 我：好的  第一范式：第一范式就是原子性，字段不可再分割；   数据库表中的所有字段都具有单一属性（即字段不能再分割了） 单一属性的列是由基本数据类型所构成的 设计出来的表都是简单的二维表   第二范式：第二范式需要确保数据库表中的每一列都和主键相关，而不能只与主键的某一部分相关（主要针对联合主键而言） 第三范式：">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/classify/mysql/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84%E4%BC%98%E5%8C%96.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="[toc]  一个是索引优化，一个是结构优化。。。。  三范式面试官：先来个三范式 我：好的  第一范式：第一范式就是原子性，字段不可再分割；   数据库表中的所有字段都具有单一属性（即字段不能再分割了） 单一属性的列是由基本数据类型所构成的 设计出来的表都是简单的二维表   第二范式：第二范式需要确保数据库表中的每一列都和主键相关，而不能只与主键的某一部分相关（主要针对联合主键而言） 第三范式：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/17.jpeg">
+<meta property="article:published_time" content="2022-07-02T08:42:37.593Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.593Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/17.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/classify/mysql/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84%E4%BC%98%E5%8C%96"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><p>[toc]</p>
+<blockquote>
+<p>一个是索引优化，一个是结构优化。。。。</p>
+</blockquote>
+<h2 id="三范式"><a href="#三范式" class="headerlink" title="三范式"></a>三范式</h2><p>面试官：先来个<strong>三范式</strong></p>
+<p>我：好的</p>
+<ol>
+<li>第一范式：第一范式就是原子性，字段不可再分割；</li>
+</ol>
+<ul>
+<li>数据库表中的所有字段都具有单一属性（即字段不能再分割了）</li>
+<li>单一属性的列是由基本数据类型所构成的</li>
+<li>设计出来的表都是简单的二维表</li>
+</ul>
+<ol start="2">
+<li>第二范式：第二范式需要确保数据库表中的每一列都和主键相关，而不能只与主键的某一部分相关（主要针对联合主键而言）</li>
+<li>第三范式：所有非主键字段和主键字段之间不能产生传递依赖</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3e97c2a1687b">例子</a></p>
+<p><strong>反范式设计</strong>：反范式化就是为了性能和读取效率的考虑而适当的对数据库设计范式的要求进行违反，<strong>而允许存在少量的数据冗余，也就是使用空间来换取（查询）时间</strong>；比如举个例子：<strong>比如订单表中应该保留当前购买商品的价格、商品的名称（商品的价格是会变动的，这很危险）</strong></p>
+<p>因此，简单说一下<strong>范式化设计的优缺点</strong>：</p>
+<p>优点：</p>
+<ul>
+<li>可以尽量的减少数据冗余</li>
+<li>范式化的更新操作比反范式化更快</li>
+<li>范式化的表通常比反范式化更小</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>对于查询需要关联多个表</li>
+<li>更难进行索引优化</li>
+</ul>
+<p><strong>反范式化设计的优缺点</strong>：</p>
+<p>优点：</p>
+<ul>
+<li>可以减少表的关联</li>
+<li>可以更好的进行索引优化</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>存在数据冗余和数据维护异常</li>
+<li>对数据修改需要更多的成本</li>
+</ul>
+<p><strong>如何选择varchar和char类型</strong>：</p>
+<ul>
+<li>varchar用于存储变长字符串，只占用的必要的存储空间。</li>
+<li>char类型是定长的，char类型的最大宽度为255</li>
+<li>场景：varchar适用于存储很少被更新的字符串列；char适合存储长度近似的值，适合存储短字符串，适合存储经常更新的字符串</li>
+</ul>
+<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><ol>
+<li><strong>垂直分表</strong></li>
+</ol>
+<p>也就是“大表拆小表”，基于列字段进行的。一般是表中的字段较多，将不常用的， 数据较大，长度较长（比如text类型字段）的拆分到“扩展表“。 一般是针对那种几百列的大表，也避免查询时，数据量太大造成的“跨页”问题。</p>
+<ol start="2">
+<li><strong>垂直分库</strong></li>
+</ol>
+<p>垂直分库针对的是一个系统中的不同业务进行拆分，比如用户User一个库，商品Producet一个库，订单Order一个库。 切分后，要放在多个服务器上，而不是一个服务器上。为什么？ 我们想象一下，一个购物网站对外提供服务，会有用户，商品，订单等的CRUD。没拆分之前， 全部都是落到单一的库上的，这会让数据库的单库处理能力成为瓶颈。按垂直分库后，如果还是放在一个数据库服务器上， 随着用户量增大，这会让单个数据库的处理能力成为瓶颈，还有单个服务器的磁盘空间，内存，tps等非常吃紧。所以我们要拆分到多个服务器上，这样上面的问题都解决了，以后也不会面对单机资源问题。垂直分库一定程度上能够突破IO、连接数及单机硬件资源的瓶颈。</p>
+<ol start="3">
+<li><strong>水平分表</strong></li>
+</ol>
+<p>针对数据量巨大的单张表（比如订单表），按照某种规则（RANGE,HASH取模等），切分到多张表里面去。 但是这些表还是在同一个库中，所以库级别的数据库操作还是有IO瓶颈。不建议采用。</p>
+<p>切分规则：</p>
+<ul>
+<li>RANGE：从0到10000一个表，10001到20000一个表；</li>
+<li>HASH取模：一个商场系统，一般都是将用户，订单作为主表，然后将和它们相关的作为附表，这样不会造成跨库事务之类的问题。 取用户id，然后hash取模，分配到不同的数据库上。</li>
+<li>地理区域：比如按照华东，华南，华北这样来区分业务，七牛云应该就是如此。</li>
+<li>时间：按照时间切分，就是将6个月前，甚至一年前的数据切出去放到另外的一张表，因为随着时间流逝，这些表的数据 被查询的概率变小，所以没必要和“热数据”放在一起，这个也是“冷热数据分离”。</li>
+</ul>
+<ol start="4">
+<li><strong>水平分库分表</strong></li>
+</ol>
+<p>将单张表的数据切分到多个服务器上去，每个服务器具有相应的库与表，只是表中数据集合不同。 水平分库分表能够有效的缓解单机和单库的性能瓶颈和压力，突破IO、连接数、硬件资源等的瓶颈。</p>
+<p><strong>分库分表带来的问题：</strong></p>
+<ol>
+<li><strong>事务支持</strong></li>
+</ol>
+<p>分库分表后，就成了分布式事务了。如果依赖数据库本身的分布式事务管理功能去执行事务，将付出高昂的性能代价； 如果由应用程序去协助控制，形成程序逻辑上的事务，又会造成编程方面的负担。</p>
+<ol start="2">
+<li><strong>join</strong></li>
+</ol>
+<p>TODO 分库分表后表之间的关联操作将受到限制，我们无法join位于不同分库的表，也无法join分表粒度不同的表， 结果原本一次查询能够完成的业务，可能需要多次查询才能完成。 粗略的解决方法： 全局表：基础数据，所有库都拷贝一份。 字段冗余：这样有些字段就不用join去查询了。 系统层组装：分别查询出所有，然后组装起来，较复杂。</p>
+<p><strong>分库分表中间件：</strong></p>
+<p>Mycat 和 ShardingSphere（包括 Sharding-JDBC、Sharding-Proxy 和 Sharding-Sidecar 3 款产品）。</p>
+<p><a target="_blank" rel="noopener" href="https://my.oschina.net/u/4318872/blog/4281049">对比</a></p>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-02T08:44:06.767Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

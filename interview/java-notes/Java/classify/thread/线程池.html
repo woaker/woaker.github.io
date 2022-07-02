@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="线程池 面试必问高频  面试官：了解线程池嘛？ 我：了解 面试官：为啥子采用线程池？有啥子优点？ 我：我大概分为3点  降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。 提高响应速度。当任务到达时，任务可以不需要要等到线程创建就能立即执行。 提高线程的可管理性。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/classify/thread/%E7%BA%BF%E7%A8%8B%E6%B1%A0.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="线程池 面试必问高频  面试官：了解线程池嘛？ 我：了解 面试官：为啥子采用线程池？有啥子优点？ 我：我大概分为3点  降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。 提高响应速度。当任务到达时，任务可以不需要要等到线程创建就能立即执行。 提高线程的可管理性。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/17.jpeg">
+<meta property="article:published_time" content="2022-07-02T08:42:37.628Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.628Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/17.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/classify/thread/%E7%BA%BF%E7%A8%8B%E6%B1%A0"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><blockquote>
+<p>面试必问高频</p>
+</blockquote>
+<p>面试官：了解线程池嘛？</p>
+<p>我：了解</p>
+<p>面试官：为啥子采用线程池？有啥子优点？</p>
+<p>我：我大概分为3点</p>
+<ul>
+<li><strong>降低资源消耗</strong>。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。</li>
+<li><strong>提高响应速度</strong>。当任务到达时，任务可以不需要要等到线程创建就能立即执行。</li>
+<li><strong>提高线程的可管理性</strong>。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。</li>
+</ul>
+<p>面试官：都了解哪些线程池？</p>
+<p>我：我暂时知道的一些的如：<strong>newFixedThreadPool</strong>（固定线程池）、<strong>newSingleThreadExecutor</strong>（单个线程的线程池）、<strong>newCachedThreadPool</strong>（缓存线程的线程池）、<strong>newScheduledThreadPool</strong>（带定时器的线程池），还有几个就不说了。</p>
+<p>我就举点源码吧</p>
+<p><strong>newFixedThreadPool</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// core和max是一样的</span></span><br><span class="line"><span class="comment">// blockQueue是无界阻塞队列</span></span><br><span class="line"><span class="comment">// 嗯， 不好不好！！！</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newFixedThreadPool</span><span class="params">(<span class="type">int</span> nThreads)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>newSingleThreadExecutor</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// core和max无非都是1而已</span></span><br><span class="line"><span class="comment">// blockQueue是无界阻塞队列</span></span><br><span class="line"><span class="comment">// 嗯， 不好不好！！！</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newSingleThreadExecutor</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FinalizableDelegatedExecutorService</span></span><br><span class="line">        (<span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> <span class="title class_">LinkedBlockingQueue</span>&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>newCachedThreadPool</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// core 0</span></span><br><span class="line"><span class="comment">// max有点狠，不怕暴栈？</span></span><br><span class="line"><span class="comment">// 队列还是SynchronousQueue，还真怕</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title function_">newCachedThreadPool</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ThreadPoolExecutor</span>(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                  <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> <span class="title class_">SynchronousQueue</span>&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程池参数"><a href="#线程池参数" class="headerlink" title="线程池参数"></a>线程池参数</h2><p>面试官：讲一下线程池的参数？</p>
+<p>我：没问题，ThreadPoolExecutor源码走起：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ThreadPoolExecutor</span><span class="params">(<span class="type">int</span> corePoolSize,</span></span><br><span class="line"><span class="params">                          <span class="type">int</span> maximumPoolSize,</span></span><br><span class="line"><span class="params">                          <span class="type">long</span> keepAliveTime,</span></span><br><span class="line"><span class="params">                          TimeUnit unit,</span></span><br><span class="line"><span class="params">                          BlockingQueue&lt;Runnable&gt; workQueue,</span></span><br><span class="line"><span class="params">                          ThreadFactory threadFactory,</span></span><br><span class="line"><span class="params">                          RejectedExecutionHandler handler)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>corePoolSize：核心线程数线程数定义了最小可以同时运行的线程数量</li>
+<li>maximumPoolSize：当队列中存放的任务达到队列容量的时候，当前可以同时运行的线程数量变为最大线程数</li>
+<li>keepAliveTime：当线程数大于核心线程数时，多余的空闲线程存活的最长时间</li>
+<li>TimeUnit：时间单位</li>
+<li>BlockingQueue<Runnable>：当新任务来的时候会先判断当前运行的线程数量是否达到核心线程数，如果达到的话，信任就会被存放在队列中</li>
+<li>ThreadFactory：线程工厂，用来创建线程，一般默认即可</li>
+<li>RejectedExecutionHandler：拒绝策略</li>
+</ul>
+<p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8F%82%E6%95%B0%E5%85%B3%E7%B3%BB-JgjlWU.png" alt="线程池参数关系"></p>
+<p>面试官：讲一下都有哪些拒绝策略</p>
+<p>我：还好我提前准备</p>
+<ul>
+<li>AbortPolicy：抛出 <code>RejectedExecutionException</code>来拒绝新任务的处理。</li>
+<li>CallerRunsPolicy：调用执行自己的线程运行任务。您不会任务请求。但是这种策略会降低对于新任务提交速度，影响程序的整体性能。另外，这个策略喜欢增加队列容量。如果您的应用程序可以承受此延迟并且你不能任务丢弃任何一个任务请求的话，你可以选择这个策略。（说白了，谁管理任务的，谁就负责帮忙）</li>
+<li>DiscardPolicy：不处理新任务，直接丢弃掉。</li>
+<li>DiscardOldestPolicy：此策略将丢弃最早的未处理的任务请求。</li>
+</ul>
+<p>面试官：线程池的线程数量怎么确定</p>
+<p>我：分情况，一般来说…</p>
+<ol>
+<li>一般来说，如果是CPU密集型应用，则线程池大小设置为N+1。</li>
+<li>一般来说，如果是IO密集型应用，则线程池大小设置为2N+1。</li>
+<li>在IO优化中，线程等待时间所占比例越高，需要越多线程，线程CPU时间所占比例越高，需要越少线程。这样的估算公式可能更适合：最佳线程数目 &#x3D; （（线程等待时间+线程CPU时间）&#x2F;线程CPU时间 ）* CPU数目</li>
+</ol>
+<h2 id="shutdown和shutdownNow"><a href="#shutdown和shutdownNow" class="headerlink" title="shutdown和shutdownNow"></a>shutdown和shutdownNow</h2><p>面试官：shutdown和shutdownNow的区别</p>
+<p>我：上源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 等待所有线程执行任务完毕之后退出</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">shutdown</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">mainLock</span> <span class="operator">=</span> <span class="built_in">this</span>.mainLock;</span><br><span class="line">    <span class="comment">// 获取锁</span></span><br><span class="line">    mainLock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 检查</span></span><br><span class="line">        checkShutdownAccess();</span><br><span class="line">        <span class="comment">// 设置状态</span></span><br><span class="line">        advanceRunState(SHUTDOWN);</span><br><span class="line">        interruptIdleWorkers();</span><br><span class="line">        onShutdown(); <span class="comment">// hook for ScheduledThreadPoolExecutor</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mainLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 主要在于这里，根据状态来是否立马停止还是等线程执行完毕过后停止</span></span><br><span class="line">    tryTerminate(); <span class="comment">// 这里就不贴了</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 和上面的差不多，立马中断所有线程，关闭线程池</span></span><br><span class="line"><span class="keyword">public</span> List&lt;Runnable&gt; <span class="title function_">shutdownNow</span><span class="params">()</span> &#123;</span><br><span class="line">    List&lt;Runnable&gt; tasks;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">mainLock</span> <span class="operator">=</span> <span class="built_in">this</span>.mainLock;</span><br><span class="line">    mainLock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        checkShutdownAccess();</span><br><span class="line">        <span class="comment">// 设置状态</span></span><br><span class="line">        advanceRunState(STOP);</span><br><span class="line">        interruptWorkers();</span><br><span class="line">        tasks = drainQueue();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mainLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    tryTerminate();</span><br><span class="line">    <span class="keyword">return</span> tasks;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="execute和submit的区别"><a href="#execute和submit的区别" class="headerlink" title="execute和submit的区别"></a>execute和submit的区别</h2><p>面试官：execute和submit的区别</p>
+<p>我：心累</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// execute</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(Runnable command)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (command == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NullPointerException</span>();</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Proceed in 3 steps:</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * 1. If fewer than corePoolSize threads are running, try to</span></span><br><span class="line"><span class="comment">         * start a new thread with the given command as its first</span></span><br><span class="line"><span class="comment">         * task.  The call to addWorker atomically checks runState and</span></span><br><span class="line"><span class="comment">         * workerCount, and so prevents false alarms that would add</span></span><br><span class="line"><span class="comment">         * threads when it shouldn&#x27;t, by returning false.</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * 2. If a task can be successfully queued, then we still need</span></span><br><span class="line"><span class="comment">         * to double-check whether we should have added a thread</span></span><br><span class="line"><span class="comment">         * (because existing ones died since last checking) or that</span></span><br><span class="line"><span class="comment">         * the pool shut down since entry into this method. So we</span></span><br><span class="line"><span class="comment">         * recheck state and if necessary roll back the enqueuing if</span></span><br><span class="line"><span class="comment">         * stopped, or start a new thread if there are none.</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * 3. If we cannot queue task, then we try to add a new</span></span><br><span class="line"><span class="comment">         * thread.  If it fails, we know we are shut down or saturated</span></span><br><span class="line"><span class="comment">         * and so reject the task.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    <span class="comment">// 按还是翻译了一下：</span></span><br><span class="line">    <span class="comment">// 1.如果正在运行的线程少于corePoolSize线程，请尝试使用给定命令作为其第一个任务来启动新线程。</span></span><br><span class="line">	<span class="comment">// 对addWorker的调用从原子上检查runState和workerCount，从而通过返回false来防止在不应该添加线程的情况下发出虚假警报。</span></span><br><span class="line">    <span class="comment">// 2.如果一个任务可以成功排队，那么我们仍然需要仔细检查是否应该添加一个线程（因为现有线程自上次检查后就死掉了）或该池自进入该方法后就关闭了。</span></span><br><span class="line">    <span class="comment">// 因此，我们重新检查状态，并在必要时回滚排队（如果已停止），或者在没有线程时启动一个新线程。</span></span><br><span class="line">    <span class="comment">// 3.如果我们无法将任务排队，则尝试添加一个新线程。</span></span><br><span class="line">	<span class="comment">// 如果失败，我们知道我们已关闭或已饱和，因此拒绝该任务。</span></span><br><span class="line">    <span class="comment">// 总结：说白了，就是上面的流程图</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> ctl.get();</span><br><span class="line">    <span class="keyword">if</span> (workerCountOf(c) &lt; corePoolSize) &#123;</span><br><span class="line">        <span class="keyword">if</span> (addWorker(command, <span class="literal">true</span>))</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        c = ctl.get();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (isRunning(c) &amp;&amp; workQueue.offer(command)) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">recheck</span> <span class="operator">=</span> ctl.get();</span><br><span class="line">        <span class="keyword">if</span> (! isRunning(recheck) &amp;&amp; remove(command))</span><br><span class="line">            reject(command);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (workerCountOf(recheck) == <span class="number">0</span>)</span><br><span class="line">            addWorker(<span class="literal">null</span>, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (!addWorker(command, <span class="literal">false</span>))</span><br><span class="line">        reject(command);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//不过传递的参数，Runnable，那么就意味着没有返回值</span></span><br><span class="line"><span class="comment">// 简单看一下submit吧。</span></span><br><span class="line"><span class="comment">// 不必多说了</span></span><br><span class="line">&lt;T&gt; Future&lt;T&gt; <span class="title function_">submit</span><span class="params">(Callable&lt;T&gt; task)</span>;</span><br><span class="line">Future&lt;?&gt; submit(Runnable task);</span><br></pre></td></tr></table></figure>
+
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-02T08:44:06.767Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

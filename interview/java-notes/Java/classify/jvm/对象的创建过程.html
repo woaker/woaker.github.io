@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对象的创建过程面试官：类加载过程，你之前给我讲过，那么创建对象的过程你知道吗？ 我：我似乎知道。  类加载检查虚拟机遇到一条 new 指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过。如果没有，那必须先执行相应的类加载过程。 分配内存在类加载检查通过后，接下来虚拟机将为新生对象分配内存。对象所需的内存大小在类加载完">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/classify/jvm/%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="对象的创建过程面试官：类加载过程，你之前给我讲过，那么创建对象的过程你知道吗？ 我：我似乎知道。  类加载检查虚拟机遇到一条 new 指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过。如果没有，那必须先执行相应的类加载过程。 分配内存在类加载检查通过后，接下来虚拟机将为新生对象分配内存。对象所需的内存大小在类加载完">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/15.jpeg">
+<meta property="article:published_time" content="2022-07-02T08:42:37.592Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.592Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/15.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/classify/jvm/%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="对象的创建过程"><a href="#对象的创建过程" class="headerlink" title="对象的创建过程"></a>对象的创建过程</h1><p>面试官：类加载过程，你之前给我讲过，那么创建对象的过程你知道吗？</p>
+<p>我：我似乎知道。</p>
+<p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/Java%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B-fC0wRb.png" alt="Java创建对象的过程"></p>
+<h2 id="类加载检查"><a href="#类加载检查" class="headerlink" title="类加载检查"></a>类加载检查</h2><p>虚拟机遇到一条 <strong>new</strong> 指令时，首先将去检查这个指令的参数<strong>是否能在常量池中定位到这个类的符号引用</strong>，并且检查这个符号引用代表的<strong>类是否已被加载过</strong>、<strong>解析和初始化过</strong>。如果没有，那必须先执行相应的类加载过程。</p>
+<h2 id="分配内存"><a href="#分配内存" class="headerlink" title="分配内存"></a>分配内存</h2><p>在<strong>类加载检查</strong>通过后，接下来虚拟机将为新生对象<strong>分配内存</strong>。对象所需的内存大小在类加载完成后便可确定，为对象分配空间的任务等同于把一块确定大小的内存从 Java 堆中划分出来。<strong>分配方式</strong>有 <strong>“指针碰撞”</strong> 和 <strong>“空闲列表”</strong> 两种，<strong>选择那种分配方式由 Java 堆是否规整决定，而 Java 堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能决定</strong>。</p>
+<ul>
+<li><p><strong>指针碰撞</strong></p>
+<ul>
+<li><strong>堆规整（没有内存碎片）</strong></li>
+<li>复制算法</li>
+<li>GC：Serial、ParNew</li>
+</ul>
+</li>
+<li><p><strong>空闲列表</strong></p>
+<ul>
+<li><strong>堆内存不规整的情况下</strong></li>
+<li>虚拟机会维护一个<strong>列表</strong>，该列表会<strong>记录哪些内存块是可用的</strong>，在分配的时候，找一块儿足够大的内存块来划分给对象实例，最后更新列表激励</li>
+<li>GC：CMS</li>
+</ul>
+</li>
+<li><p><strong>并发问题</strong></p>
+<ul>
+<li><strong>CAS+失败重试：</strong> CAS 是乐观锁的一种实现方式。所谓乐观锁就是，每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试，直到成功为止。<strong>虚拟机采用 CAS 配上失败重试的方式保证更新操作的原子性。</strong></li>
+<li><strong>TLAB：</strong> 为<strong>每一个线程预先在 Eden 区分配一块儿内存</strong>，JVM 在给线程中的对象分配内存时，<strong>首先在 TLAB 分配，当对象大于 TLAB 中的剩余内存或 TLAB 的内存已用尽时，再采用上述的 CAS 进行内存分配</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="初始化零值"><a href="#初始化零值" class="headerlink" title="初始化零值"></a>初始化零值</h2><p>内存分配完成后，虚拟机需要将分配到的内存空间都<strong>初始化为零值（不包括对象头）</strong>，这一步操作保证了对象的实例字段在 Java 代码中<strong>可以不赋初始值就直接使用</strong>，程序能访问到这些字段的数据类型所对应的零值。</p>
+<h2 id="设置对象头"><a href="#设置对象头" class="headerlink" title="设置对象头"></a>设置对象头</h2><p>初始化零值完成之后，<strong>虚拟机要对对象进行必要的设置</strong>，例如这个对象是那个类的实例、如何才能找到类的元数据信息、对象的哈希码、对象的 GC 分代年龄等信息。 <strong>这些信息存放在对象头中。</strong> 另外，根据虚拟机当前运行状态的不同，如是否启用偏向锁等，对象头会有不同的设置方式。</p>
+<h2 id="指向init方法"><a href="#指向init方法" class="headerlink" title="指向init方法"></a>指向init方法</h2><p>在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从 Java 程序的视角来看，对象创建才刚开始，<strong>方法还没有执行，所有的字段都还为零。所以一般来说，执行 new 指令之后会接着执行</strong>方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</p>
+<h2 id="内存布局"><a href="#内存布局" class="headerlink" title="内存布局"></a>内存布局</h2><p>面试官：刚才说了内存布局，给我讲一下</p>
+<p>我：好的，内存布局分别为<strong>对象头，实例数据，对其填充</strong></p>
+<ol>
+<li><strong>对象头</strong></li>
+</ol>
+<p><strong>Hotspot 虚拟机的对象头包括两部分信息</strong>，<strong>第一部分用于存储对象自身的自身运行时数据</strong>（哈<strong>希码、GC 分代年龄、锁状态标志</strong>等等），<strong>另一部分是类型指针</strong>，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是那个类的实例。</p>
+<ol start="2">
+<li><strong>实例数据</strong></li>
+</ol>
+<p><strong>实例数据部分是对象真正存储的有效信息</strong>，也是在程序中所定义的各种类型的字段内容。</p>
+<ol start="3">
+<li><strong>对齐填充</strong></li>
+</ol>
+<p><strong>对齐填充部分不是必然存在的，也没有什么特别的含义，仅仅起占位作用。</strong> 因为 Hotspot 虚拟机的自动内存管理系统要求对象起始地址必须是 8 字节的整数倍，换句话说就是对象的大小必须是 8 字节的整数倍。而对象头部分正好是 8 字节的倍数（1 倍或 2 倍），因此，当对象实例数据部分没有对齐时，就需要通过对齐填充来补全。</p>
+<h2 id="句柄的访问方式"><a href="#句柄的访问方式" class="headerlink" title="句柄的访问方式"></a>句柄的访问方式</h2><p>面试官：给我讲讲对象的访问方式</p>
+<p>我：明白，两种：使用句柄和使用直接指针</p>
+<ol>
+<li><strong>句柄</strong>：</li>
+</ol>
+<p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/%E4%BD%BF%E7%94%A8%E5%8F%A5%E6%9F%84-f4Cw9x.png" alt="使用句柄-f4Cw9x"></p>
+<p>如果使用句柄的话，那么 Java 堆中将会划分出一块内存来作为句柄池，reference 中存储的就是对象的句柄地址，而句柄中包含了<strong>对象实例数据</strong>与<strong>类型数据</strong>各自的具体地址信息；</p>
+<ol start="2">
+<li><strong>直接指针</strong>：</li>
+</ol>
+<p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/%E7%9B%B4%E6%8E%A5%E6%8C%87%E9%92%88-8m3HHz.png" alt="直接指针-8m3HHz"></p>
+<p>如果使用直接指针访问，那么 Java 堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而 reference 中存储的直接就是对象的地址。</p>
+<p>话说：这两种对象访问方式各有优势。使用句柄来访问的最大好处是 reference 中存储的是<strong>稳定</strong>的句柄地址，在对象被移动时只会改变句柄中的实例数据指针，而 <strong>reference 本身不需要修改</strong>。使用直接指针访问方式最大的好处就是<strong>速度快</strong>，它节省了一次指针定位的时间开销。</p>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-02T08:44:06.767Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

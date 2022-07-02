@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="值传递 Java值传递，举例子比较合适，总之，拷贝，拷来烤去的。  面试官：了解Java值传递嘛？ 我：了解，我总结了一波：  一个方法不能修改一个基本数据类型的参数（即数值型或布尔型）。  一个方法可以改变一个对象参数的状态。  一个方法不能让对象参数引用一个新的对象。   基本类型所谓第一个，举例子先： 1234567891011121314151617181920212223public s">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/classify/basis/%E5%80%BC%E4%BC%A0%E9%80%92.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="值传递 Java值传递，举例子比较合适，总之，拷贝，拷来烤去的。  面试官：了解Java值传递嘛？ 我：了解，我总结了一波：  一个方法不能修改一个基本数据类型的参数（即数值型或布尔型）。  一个方法可以改变一个对象参数的状态。  一个方法不能让对象参数引用一个新的对象。   基本类型所谓第一个，举例子先： 1234567891011121314151617181920212223public s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/4.jpeg">
+<meta property="article:published_time" content="2022-07-02T08:42:37.588Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.588Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/4.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/classify/basis/%E5%80%BC%E4%BC%A0%E9%80%92"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="值传递"><a href="#值传递" class="headerlink" title="值传递"></a>值传递</h1><blockquote>
+<p>Java值传递，举例子比较合适，总之，拷贝，拷来烤去的。</p>
+</blockquote>
+<p>面试官：了解Java值传递嘛？</p>
+<p>我：了解，我总结了一波：</p>
+<ul>
+<li><p>一个方法<strong>不能修改一个基本数据类型的参数</strong>（即数值型或布尔型）。</p>
+</li>
+<li><p>一个方法可以改变<strong>一个对象参数的状态</strong>。</p>
+</li>
+<li><p>一个方法<strong>不能让对象参数引用一个新的对象</strong>。</p>
+</li>
+</ul>
+<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><p>所谓第一个，举例子先：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">num1</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">num2</span> <span class="operator">=</span> <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    swap(num1, num2); <span class="comment">// 交换</span></span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">&quot;num1 = &quot;</span> + num1); <span class="comment">// 10</span></span><br><span class="line">    System.out.println(<span class="string">&quot;num2 = &quot;</span> + num2); <span class="comment">// 20</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">&quot;a = &quot;</span> + a); <span class="comment">// 20</span></span><br><span class="line">    System.out.println(<span class="string">&quot;b = &quot;</span> + b); <span class="comment">// 10</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// a = 20</span></span><br><span class="line"><span class="comment">// b = 10</span></span><br><span class="line"><span class="comment">// num1 = 10</span></span><br><span class="line"><span class="comment">// num2 = 20</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E4%BC%A0%E9%80%92-QPPzXh.png" alt="基本类型传递"></p>
+<blockquote>
+<p>在 swap 方法中，<strong>a、b 的值进行交换，并不会影响到 num1、num2</strong>。因为，a、b 中的值，只是从 num1、num2 的复制过来的。也就是说，<strong>a、b 相当于 num1、num2 的副本</strong>，副本的内容无论怎么修改，都不会影响到原件本身。 说白了，就是深拷贝</p>
+</blockquote>
+<h2 id="数组类型传递"><a href="#数组类型传递" class="headerlink" title="数组类型传递"></a>数组类型传递</h2><p>所谓第二个，举例子先：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] arr = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line">        System.out.println(arr[<span class="number">0</span>]); <span class="comment">// 1</span></span><br><span class="line">        change(arr);</span><br><span class="line">        System.out.println(arr[<span class="number">0</span>]); <span class="comment">// 0</span></span><br><span class="line">        <span class="comment">// 得到的是对象引用的拷贝，对象引用及其他的拷贝同时引用同一个对象。</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">change</span><span class="params">(<span class="type">int</span>[] array)</span> &#123;</span><br><span class="line">        <span class="comment">// 修改数组中的一个元素</span></span><br><span class="line">        array[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B%E4%BC%A0%E9%80%92-fxStps.png" alt="数组类型传递"></p>
+<blockquote>
+<p>array 被初始化 arr 的拷贝也就是<strong>一个对象的引用</strong>，也就是说 array 和 arr 指向的是<strong>同一个数组对象</strong>。 因此，外部对引用对象的改变会反映到所对应的对象上。说白了，浅拷贝</p>
+</blockquote>
+<h2 id="对象引用"><a href="#对象引用" class="headerlink" title="对象引用"></a>对象引用</h2><p>所谓第三个，举例子先：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 有些程序员认为 Java 程序设计语言对对象采用的是引用调用，实际上，这种理解是不对的。</span></span><br><span class="line">        <span class="type">Student</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;Mai&quot;</span>);</span><br><span class="line">        <span class="type">Student</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(<span class="string">&quot;Feng&quot;</span>);</span><br><span class="line">        swap2(s1, s2);</span><br><span class="line">        System.out.println(<span class="string">&quot;s1:&quot;</span> + s1.getName()); <span class="comment">// Mai</span></span><br><span class="line">        System.out.println(<span class="string">&quot;s2:&quot;</span> + s2.getName()); <span class="comment">// Feng</span></span><br><span class="line">        <span class="comment">// 方法并没有改变存储在变量 s1 和 s2 中的对象引用。</span></span><br><span class="line">        <span class="comment">// swap 方法的参数 x 和 y 被初始化为两个对象引用的拷贝，这个方法交换的是这两个拷贝</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">swap2</span><span class="params">(Student x, Student y)</span> &#123;</span><br><span class="line">        <span class="type">Student</span> <span class="variable">temp</span> <span class="operator">=</span> x;</span><br><span class="line">        x = y;</span><br><span class="line">        y = temp;</span><br><span class="line">        System.out.println(<span class="string">&quot;x:&quot;</span> + x.getName()); <span class="comment">// Feng</span></span><br><span class="line">        System.out.println(<span class="string">&quot;y:&quot;</span> + y.getName()); <span class="comment">// Mai</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// x:Feng</span></span><br><span class="line"><span class="comment">// y:Mai</span></span><br><span class="line"><span class="comment">// s1:Mai</span></span><br><span class="line"><span class="comment">// s2:Feng</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92-m3CrXE.png" alt="对象引用传递"></p>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-02T08:44:06.767Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

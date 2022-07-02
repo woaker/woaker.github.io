@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="160. 相交链表url 题目编写一个程序，找到两个单链表相交的起始节点。 如下面的两个链表： 在节点 c1 开始相交。  1234输入：输入：intersectVal &#x3D; 8, listA &#x3D; [4,1,8,4,5], listB &#x3D; [5,0,1,8,4,5], skipA &#x3D; 2, skipB &#x3D; 3输出：Reference of the node with value &#x3D; 8输入解释：相交">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/alg/lc/160.%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="160. 相交链表url 题目编写一个程序，找到两个单链表相交的起始节点。 如下面的两个链表： 在节点 c1 开始相交。  1234输入：输入：intersectVal &#x3D; 8, listA &#x3D; [4,1,8,4,5], listB &#x3D; [5,0,1,8,4,5], skipA &#x3D; 2, skipB &#x3D; 3输出：Reference of the node with value &#x3D; 8输入解释：相交">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/9.jpeg">
+<meta property="article:published_time" content="2022-07-02T08:42:37.557Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.557Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/9.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/alg/lc/160.%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="160-相交链表"><a href="#160-相交链表" class="headerlink" title="160. 相交链表"></a>160. 相交链表</h1><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/">url</a></p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>编写一个程序，找到两个单链表相交的起始节点。</p>
+<p>如下面的两个链表：<br><img src="https://cdn.jsdelivr.net/gh/DreamCats/imgs@main/uPic/160_statement-lc-j1QVOw.png" alt="160_statement-lc-j1QVOw"></p>
+<p>在节点 c1 开始相交。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/DreamCats/imgs@main/uPic/160_example_1-lc-bAOm3q.png" alt="160_example_1-lc-bAOm3q"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,0,1,8,4,5], skipA = 2, skipB = 3</span><br><span class="line">输出：Reference of the node with value = 8</span><br><span class="line">输入解释：相交节点的值为 8 （注意，如果两个链表相交则不能为 0）。从各自的表头开始算起，链表 A 为 [4,1,8,4,5]，链表 B 为 [5,0,1,8,4,5]。在 A 中，相交节点前有 2 个节点；在 B 中，相交节点前有 3 个节点。</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/DreamCats/imgs@main/uPic/160_example_2-lc-iqzSva.png" alt="160_example_2-lc-iqzSva"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：intersectVal = 2, listA = [0,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1</span><br><span class="line">输出：Reference of the node with value = 2</span><br><span class="line">输入解释：相交节点的值为 2 （注意，如果两个链表相交则不能为 0）。从各自的表头开始算起，链表 A 为 [0,9,1,2,4]，链表 B 为 [3,2,4]。在 A 中，相交节点前有 3 个节点；在 B 中，相交节点前有 1 个节点。</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/DreamCats/imgs@main/uPic/160_example_3-lc-RNgABI.png" alt="160_example_3-lc-RNgABI"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">输入：intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2</span><br><span class="line">输出：null</span><br><span class="line">输入解释：从各自的表头开始算起，链表 A 为 [2,6,4]，链表 B 为 [1,5]。由于这两个链表不相交，所以 intersectVal 必须为 0，而 skipA 和 skipB 可以是任意值。</span><br><span class="line">解释：这两个链表不相交，因此返回 null。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">- 如果两个链表没有交点，返回 `null`.</span><br><span class="line">- 在返回结果后，两个链表仍须保持原有的结构。</span><br><span class="line">- 可假定整个链表结构中没有循环。</span><br><span class="line">- 程序尽量满足 `O(n) `时间复杂度，且仅用 `O(1) `内存。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>双指针</p>
+<ul>
+<li>分别走A、B两圈，如果相等，则退出循环</li>
+</ul>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><h3 id="js"><a href="#js" class="headerlink" title="js"></a>js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">getIntersectionNode</span> = (<span class="params">headA, headB</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> l1 = headA, l2 = headB;</span><br><span class="line">    <span class="keyword">while</span> (l1 !== l2) &#123;</span><br><span class="line">        l1 = l1 === <span class="literal">null</span> ? headB : l1.<span class="property">next</span>;</span><br><span class="line">        l2 = l2 === <span class="literal">null</span> ? <span class="attr">headA</span>: l2.<span class="property">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="go"><a href="#go" class="headerlink" title="go"></a>go</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getIntersectionNode</span><span class="params">(headA, headB *ListNode)</span></span> *ListNode &#123;</span><br><span class="line">	l1, l2 := headA, headB</span><br><span class="line">	<span class="keyword">for</span> l1 != l2 &#123;</span><br><span class="line">		<span class="keyword">if</span> l1 == <span class="literal">nil</span> &#123;</span><br><span class="line">			l1 = headB</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			l1 = l1.Next</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> l2 == <span class="literal">nil</span> &#123;</span><br><span class="line">			l2 = headA</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			l2 = l2.Next</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> l1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="java"><a href="#java" class="headerlink" title="java"></a>java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> ListNode <span class="title function_">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> &#123;</span><br><span class="line">        <span class="type">ListNode</span> <span class="variable">l1</span> <span class="operator">=</span> headA, l2 = headB;</span><br><span class="line">        <span class="keyword">while</span> (l1 != l2) &#123;</span><br><span class="line">            l1 = l1 == <span class="literal">null</span> ? headB : l1.next;</span><br><span class="line">            l2 = l2 == <span class="literal">null</span> ? headA : l2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> l1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-02T08:44:06.767Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

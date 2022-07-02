@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="TCP&#x2F;UDPTCPTCP是什么？TCP（Transmission Control Protocol 传输控制协议）是一种面向连接的、可靠的、基于字节流的传输层通信协议。 TCP头部报文source port 和 destination port 两者分别为「源端口号」和「目的端口号」。源端口号就是指本地端口，目的端口就是远程端口。  可以这么理解，我们有很多软件，每个软件都对应一个端口">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/classify/net/TCP%E5%92%8CUDP.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="TCP&#x2F;UDPTCPTCP是什么？TCP（Transmission Control Protocol 传输控制协议）是一种面向连接的、可靠的、基于字节流的传输层通信协议。 TCP头部报文source port 和 destination port 两者分别为「源端口号」和「目的端口号」。源端口号就是指本地端口，目的端口就是远程端口。  可以这么理解，我们有很多软件，每个软件都对应一个端口">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/9.jpeg">
+<meta property="article:published_time" content="2022-07-02T08:42:37.621Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.621Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/9.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/classify/net/TCP%E5%92%8CUDP"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h2 id="TCP-x2F-UDP"><a href="#TCP-x2F-UDP" class="headerlink" title="TCP&#x2F;UDP"></a>TCP&#x2F;UDP</h2><h3 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h3><h4 id="TCP是什么？"><a href="#TCP是什么？" class="headerlink" title="TCP是什么？"></a>TCP是什么？</h4><p><code>TCP（Transmission Control Protocol 传输控制协议）</code>是一种面向连接的、可靠的、基于字节流的传输层通信协议。</p>
+<h4 id="TCP头部报文"><a href="#TCP头部报文" class="headerlink" title="TCP头部报文"></a>TCP头部报文</h4><h5 id="source-port-和-destination-port"><a href="#source-port-和-destination-port" class="headerlink" title="source port 和 destination port"></a>source port 和 destination port</h5><blockquote>
+<p>两者分别为「源端口号」和「目的端口号」。源端口号就是指本地端口，目的端口就是远程端口。</p>
+</blockquote>
+<p>可以这么理解，我们有很多软件，每个软件都对应一个端口，假如，你想和我数据交互，咱们得互相知道你我的端口号。</p>
+<p>再来一个很官方的：</p>
+<blockquote>
+<p>扩展：应用程序的端口号和应用程序所在主机的 IP 地址统称为 socket（套接字），IP:端口号, 在互联网上 socket 唯一标识每一个应用程序，源端口+源IP+目的端口+目的IP称为”套接字对“，一对套接字就是一个连接，一个客户端与服务器之间的连接。</p>
+</blockquote>
+<h5 id="Sequence-Number"><a href="#Sequence-Number" class="headerlink" title="Sequence Number"></a>Sequence Number</h5><blockquote>
+<p>称为「序列号」。用于 TCP 通信过程中某一传输方向上字节流的每个字节的编号，为了确保数据通信的有序性，避免网络中乱序的问题。接收端根据这个编号进行确认，保证分割的数据段在原始数据包的位置。初始序列号由自己定，而后绪的序列号由对端的 ACK 决定：SN_x &#x3D; ACK_y (x 的序列号 &#x3D; y 发给 x 的 ACK)。</p>
+</blockquote>
+<p>说白了，类似于身份证一样，而且还得发送此时此刻的所在的位置，就相当于身份证上的地址一样。</p>
+<h5 id="Acknowledge-Number"><a href="#Acknowledge-Number" class="headerlink" title="Acknowledge Number"></a>Acknowledge Number</h5><blockquote>
+<p>称为「确认序列号」。确认序列号是接收确认端所期望收到的下一序列号。确认序号应当是上次已成功收到数据字节序号加1，只有当标志位中的 ACK 标志为 1 时该确认序列号的字段才有效。主要用来解决不丢包的问题。</p>
+</blockquote>
+<h5 id="TCP-Flag"><a href="#TCP-Flag" class="headerlink" title="TCP Flag"></a>TCP Flag</h5><p><code>TCP</code> 首部中有 6 个标志比特，它们中的多个可同时被设置为 <code>1</code>，主要是用于操控 <code>TCP</code> 的状态机的，依次为<code>URG，ACK，PSH，RST，SYN，FIN</code>。</p>
+<p>当然只介绍三个：</p>
+<ol>
+<li><strong>ACK</strong>：这个标识可以理解为发送端发送数据到接收端，发送的时候 ACK 为 0，标识接收端还未应答，一旦接收端接收数据之后，就将 ACK 置为 1，发送端接收到之后，就知道了接收端已经接收了数据。</li>
+<li><strong>SYN</strong>：表示「同步序列号」，是 TCP 握手的发送的第一个数据包。用来建立 TCP 的连接。SYN 标志位和 ACK 标志位搭配使用，当连接请求的时候，SYN&#x3D;1，ACK&#x3D;0连接被响应的时候，SYN&#x3D;1，ACK&#x3D;1；这个标志的数据包经常被用来进行端口扫描。扫描者发送一个只有 SYN 的数据包，如果对方主机响应了一个数据包回来 ，就表明这台主机存在这个端口。</li>
+<li><strong>FIN</strong>：表示发送端已经达到数据末尾，也就是说双方的数据传送完成，没有数据可以传送了，发送FIN标志位的 TCP 数据包后，连接将被断开。这个标志的数据包也经常被用于进行端口扫描。发送端只剩最后的一段数据了，同时要告诉接收端后边没有数据可以接受了，所以用FIN标识一下，接收端看到这个FIN之后，哦！这是接受的最后的数据，接受完就关闭了；<strong>TCP四次分手必然问</strong>。</li>
+</ol>
+<h5 id="Window-size"><a href="#Window-size" class="headerlink" title="Window size"></a>Window size</h5><blockquote>
+<p>称为滑动窗口大小。所说的滑动窗口，用来进行流量控制。</p>
+</blockquote>
+<h3 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h3><p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B-2ujCx2.svg" alt="TCP三次握手-2ujCx2"></p>
+<ul>
+<li><strong>初始状态</strong>：客户端处于 <code>closed(关闭)</code>状态，服务器处于 <code>listen(监听)</code> 状态。</li>
+<li><strong>第一次握手</strong>：客户端发送请求报文将 <code>SYN = 1</code>同步序列号和初始化序列号<code>seq = x</code>发送给服务端，发送完之后客户端处于<code>SYN_Send</code>状态。</li>
+<li><strong>第二次握手</strong>：服务端收到 <code>SYN</code> 请求报文之后，如果同意连接，会以自己的同步序列号<code>SYN(服务端) = 1</code>、初始化序列号 <code>seq = y</code>和确认序列号（期望下次收到的数据包）<code>ack = x + 1</code> 以及确认号<code>ACK = 1</code>报文作为应答，服务器为<code>SYN_Receive</code>状态。（问题来了，两次握手之后，所以老哥，你需要给我三次握手来传个话告诉我一声。你要是不告诉我，万一我认为你跑了，然后我可能出于安全性的考虑继续给你发一次，看看你回不回我。）</li>
+<li><strong>第三次握手</strong>： 客户端接收到服务端的 <code>SYN + ACK</code>之后，知道可以下次可以发送了下一序列的数据包了，然后发送同步序列号 <code>ack = y + 1</code>和数据包的序列号 <code>seq = x + 1</code>以及确认号<code>ACK = 1</code>确认包作为应答，客户端转为<code>established</code>状态。（分别站在双方的角度上思考，各自ok）</li>
+</ul>
+<ol>
+<li>你吃饭了嘛？（seq&#x3D;x），收到请回答（SYN&#x3D;1）</li>
+<li>收到（ACK&#x3D;1），吃饭了（ack&#x3D;x+1），你吃饭了吗？（seq&#x3D;y），收到请回答（SYN&#x3D;1）</li>
+<li>收到（ACK&#x3D;1），吃饭了（ack&#x3D;y+1），那么我们聊一下接下里的事情（established）</li>
+</ol>
+<h3 id="TCP四次分手"><a href="#TCP四次分手" class="headerlink" title="TCP四次分手"></a>TCP四次分手</h3><p><img src="https://gitee.com/dreamcater/blog-img/raw/master/uPic/TCP%E5%9B%9B%E6%AC%A1%E5%88%86%E6%89%8B-Nt8NUx.png" alt="TCP四次分手-Nt8NUx"></p>
+<ul>
+<li><strong>初始化状态</strong>：客户端和服务端都在连接状态，接下来开始进行四次分手断开连接操作。</li>
+<li><strong>第一次分手</strong>：第一次分手无论是客户端还是服务端都可以发起，因为 TCP 是全双工的。</li>
+</ul>
+<blockquote>
+<p>假如客户端发送的数据已经发送完毕，发送FIN &#x3D; 1 <strong>告诉服务端，客户端所有数据已经全发完了</strong>，<strong>服务端你可以关闭接收了</strong>，但是如果你们服务端有数据要发给客户端，客户端照样可以接收的。此时客户端处于FIN &#x3D; 1等待服务端确认释放连接状态。</p>
+</blockquote>
+<ul>
+<li><strong>第二次分手</strong>：服务端接收到客户端的释放请求连接之后，<strong>知道客户端没有数据要发给自己了</strong>，<strong>然后服务端发送ACK &#x3D; 1告诉客户端收到你发给我的信息</strong>，此时服务端处于 CLOSE_WAIT 等待关闭状态。（服务端先回应给客户端一声，我知道了，但服务端的发送数据能力即将等待关闭，于是接下来第三次就来了。）</li>
+<li><strong>第三次分手</strong>：此时服务端向客户端把所有的数据发送完了，然后发送一个FIN &#x3D; 1，<strong>用于告诉客户端，服务端的所有数据发送完毕</strong>，<strong>客户端你也可以关闭接收数据连接了</strong>。此时服务端状态处于LAST_ACK状态，来等待确认客户端是否收到了自己的请求。（服务端等客户端回复是否收到呢，不收到的话，服务端不知道客户端是不是挂掉了还是咋回事呢）</li>
+<li><strong>第四次分手</strong>：此时如果客户端收到了服务端发送完的信息之后，就发送ACK &#x3D; 1，告诉服务端，客户端已经收到了你的信息。<strong>有一个 2 MSL 的延迟等待</strong>。</li>
+</ul>
+<h4 id="为什么要有2MSL等待延迟？"><a href="#为什么要有2MSL等待延迟？" class="headerlink" title="为什么要有2MSL等待延迟？"></a>为什么要有2MSL等待延迟？</h4><p>对应这样一种情况，最后客户端发送的ACK &#x3D; 1给服务端的<strong>过程中丢失</strong>了，服务端没收到，服务端怎么认为的？我已经发送完数据了，怎么客户端没回应我？是不是中途丢失了？然后服务端再次发起断开连接的请求，一个来回就是2MSL。</p>
+<p>客户端给服务端发送的ACK &#x3D; 1丢失，<strong>服务端等待 1MSL没收到</strong>，<strong>然后重新发送消息需要1MSL</strong>。如果再次接收到服务端的消息，则<strong>重启2MSL计时器</strong>，<strong>发送确认请求</strong>。客户端只需等待2MSL，如果没有再次收到服务端的消息，就说明服务端已经接收到自己确认消息；此时双方都关闭的连接，TCP 四次分手完毕</p>
+<h4 id="为什么四次分手？"><a href="#为什么四次分手？" class="headerlink" title="为什么四次分手？"></a>为什么四次分手？</h4><p>任何一方都可以在数据传送结束后发出连接释放的通知，待对方确认后进入半关闭状态。当另一方也没有数据再发送的时候，则发出连接释放通知，对方确认后就完全关闭了TCP连接。举个例子：A 和 B 打电话，通话即将结束后，A 说“我没啥要说的了”，B回答“我知道了”，但是 B 可能还会有要说的话，A 不能要求 B 跟着自己的节奏结束通话，于是 B 可能又巴拉巴拉说了一通，最后 B 说“我说完了”，A 回答“知道了”，这样通话才算结束。</p>
+<h3 id="TCP粘包"><a href="#TCP粘包" class="headerlink" title="TCP粘包"></a>TCP粘包</h3><p><strong>TCP粘包</strong>是指发送方发送的若干包数据到接收方接收时粘成一包，从接收缓冲区看，后一包数据的头紧接着前一包数据的尾。</p>
+<p>个人觉得：应用层的报文在以流的形式传输时，每一个报文的报头紧接着上一个报文的报文尾部，这就是所谓的“粘包”问题。</p>
+<ul>
+<li>由TCP<strong>连接复用</strong>造成的粘包问题。</li>
+<li>因为TCP默认会使用<strong>Nagle算法</strong>，此算法会导致粘包问题。<ul>
+<li>只有上一个分组得到确认，才会发送下一个分组；</li>
+<li>收集多个小分组，在一个确认到来时一起发送。</li>
+</ul>
+</li>
+<li><strong>数据包过大</strong>造成的粘包问题。</li>
+<li>流量控制，<strong>拥塞控制</strong>也可能导致粘包。</li>
+<li><strong>接收方不及时接收缓冲区的包，造成多个包接收</strong></li>
+</ul>
+<p><strong>解决</strong>：</p>
+<ol>
+<li><strong>Nagle算法</strong>问题导致的，需要结合应用场景适当关闭该算法</li>
+<li>尾部标记序列。通过特殊标识符表示数据包的边界，例如\n\r，\t，或者一些隐藏字符。</li>
+<li>头部标记分步接收。在TCP报文的头部加上表示数据长度。</li>
+<li>应用层发送数据时<strong>定长</strong>发送。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xp178171640/article/details/104746379/">https://blog.csdn.net/xp178171640/article/details/104746379/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/songchuwang1868/article/details/87707127">https://blog.csdn.net/songchuwang1868/article/details/87707127</a></p>
+<h3 id="TCP-协议如何保证可靠传输？"><a href="#TCP-协议如何保证可靠传输？" class="headerlink" title="TCP 协议如何保证可靠传输？"></a>TCP 协议如何保证可靠传输？</h3><ul>
+<li><strong>确认和重传</strong>：接收方收到报文就会确认，发送方发送一段时间后没有收到确认就会重传。</li>
+<li><strong>数据校验</strong>：TCP报文头有校验和，用于校验报文是否损坏。</li>
+<li><strong>数据合理分片和排序</strong>：tcp会按最大传输单元(MTU)合理分片，接收方会缓存未按序到达的数据，重新排序后交给应用层。而UDP：IP数据报大于1500字节，大于MTU。这个时候发送方的IP层就需要分片，把数据报分成若干片，是的每一片都小于MTU。而接收方IP层则需要进行数据报的重组。由于UDP的特性，某一片数据丢失时，接收方便无法重组数据报，导致丢弃整个UDP数据报。</li>
+<li><strong>流量控制</strong>：当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。</li>
+<li><strong>拥塞控制</strong>：当网络拥塞时，通过拥塞窗口，减少数据的发送，防止包丢失。</li>
+</ul>
+<h3 id="TCP-利用滑动窗口实现流量控制的机制？"><a href="#TCP-利用滑动窗口实现流量控制的机制？" class="headerlink" title="TCP 利用滑动窗口实现流量控制的机制？"></a>TCP 利用滑动窗口实现流量控制的机制？</h3><blockquote>
+<p> 流量控制是为了控制发送方发送速率，保证接收方来得及接收。TCP 利用滑动窗口实现流量控制。</p>
+</blockquote>
+<p>TCP 中采用滑动窗口来进行传输控制，滑动窗口的大小意味着<strong>接收方还有多大的缓冲区可以用于接收数据</strong>。发送方可以通过滑动窗口的大小来确定应该发送多少字节的数据。当滑动窗口为 0 时，发送方一般不能再发送数据报，但有两种情况除外，一种情况是可以发送紧急数据。</p>
+<blockquote>
+<p>例如，允许用户终止在远端机上的运行进程。另一种情况是发送方可以发送一个 1 字节的数据报来通知接收方重新声明它希望接收的下一字节及发送方的滑动窗口大小。</p>
+</blockquote>
+<h3 id="TCP拥塞控制的机制以及算法？"><a href="#TCP拥塞控制的机制以及算法？" class="headerlink" title="TCP拥塞控制的机制以及算法？"></a>TCP拥塞控制的机制以及算法？</h3><blockquote>
+<p>在某段时间，若对网络中某一资源的需求超过了该资源所能提供的可用部分，网络的性能就要变坏。这种情况就叫拥塞。</p>
+</blockquote>
+<p>TCP 发送方要维持一个 <strong>拥塞窗口(cwnd) 的状态变量</strong>。拥塞控制窗口的大小<strong>取决于网络的拥塞程度</strong>，并且动态变化。发送方让自己的发送窗口取为拥塞窗口和接收方的接受窗口中较小的一个。TCP的拥塞控制采用了四种算法，即 <strong>慢开始</strong> 、 <strong>拥塞避免</strong> 、<strong>快重传</strong> 和 <strong>快恢复</strong>。在网络层也可以使路由器采用适当的分组丢弃策略（如主动队列管理 AQM），以减少网络拥塞的发生。</p>
+<h3 id="TCP的长连接和短连接"><a href="#TCP的长连接和短连接" class="headerlink" title="TCP的长连接和短连接"></a>TCP的长连接和短连接</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chinaops/p/9303041.html">https://www.cnblogs.com/chinaops/p/9303041.html</a></p>
+<h3 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h3><p>提供<strong>无连接</strong>的，尽最大努力的数据传输服务（<strong>不保证数据传输的可靠性</strong>）。</p>
+<h4 id="UDP的特点"><a href="#UDP的特点" class="headerlink" title="UDP的特点"></a>UDP的特点</h4><ul>
+<li>UDP是<strong>无连接的</strong>；</li>
+<li>UDP使用<strong>尽最大努力交付</strong>，即不保证可靠交付，因此主机不需要维持复杂的链接状态（这里面有许多参数）；</li>
+<li>UDP是<strong>面向报文</strong>的；</li>
+<li>UDP<strong>没有拥塞控制</strong>，因此网络出现拥塞不会使源主机的发送速率降低（对实时应用很有用，如IP电话，实时视频会议等）；</li>
+<li>UDP<strong>支持一对一、一对多、多对一和多对多</strong>的交互通信；</li>
+<li>UDP的<strong>首部开销小</strong>，只有8个字节，比TCP的20个字节的首部要短。</li>
+</ul>
+<p>那么，再说一次TCP的特点：</p>
+<ul>
+<li><strong>TCP是面向连接的</strong>。（就好像打电话一样，通话前需要先拨号建立连接，通话结束后要挂机释放连接）；</li>
+<li>每一条TCP连接只能有两个端点，每一条TCP连接只能是点对点的（<strong>一对一</strong>）；</li>
+<li>TCP<strong>提供可靠交付的服务</strong>。通过TCP连接传送的数据，无差错、不丢失、不重复、并且按序到达；</li>
+<li>TCP<strong>提供全双工通信</strong>。TCP允许通信双方的应用进程在任何时候都能发送数据。TCP连接的两端都设有发送缓存和接收缓存，用来临时存放双方通信的数据；</li>
+<li><strong>面向字节流</strong>。TCP中的“流”（stream）指的是流入进程或从进程流出的字节序列。“面向字节流”的含义是：虽然应用程序和TCP的交互是一次一个数据块（大小不等），但TCP把应用程序交下来的数据仅仅看成是一连串的无结构的字节流。</li>
+</ul>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-02T08:44:06.767Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

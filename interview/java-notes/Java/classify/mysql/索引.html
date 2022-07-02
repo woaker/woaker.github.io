@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这一块，最好能知道怎么优化  面试官：索引介绍一下 索引类型我：ok，先说一下索引类型：  FULLTEXT：即为全文索引，目前只有MyISAM引擎支持。其可以在CREATE TABLE ，ALTER TABLE ，CREATE INDEX 使用，不过目前只有 CHAR、VARCHAR ，TEXT 列上可以创建全文索引。 HASH：由于HASH的唯一及类似键值对的形式，很适合作为索引。 HASH">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/classify/mysql/%E7%B4%A2%E5%BC%95.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="这一块，最好能知道怎么优化  面试官：索引介绍一下 索引类型我：ok，先说一下索引类型：  FULLTEXT：即为全文索引，目前只有MyISAM引擎支持。其可以在CREATE TABLE ，ALTER TABLE ，CREATE INDEX 使用，不过目前只有 CHAR、VARCHAR ，TEXT 列上可以创建全文索引。 HASH：由于HASH的唯一及类似键值对的形式，很适合作为索引。 HASH">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/13.jpeg">
+<meta property="article:published_time" content="2022-07-02T08:42:37.619Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.619Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/13.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/classify/mysql/%E7%B4%A2%E5%BC%95"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><blockquote>
+<p>这一块，最好能知道怎么优化</p>
+</blockquote>
+<p>面试官：索引介绍一下</p>
+<h2 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h2><p>我：ok，先说一下<strong>索引类型</strong>：</p>
+<ul>
+<li>FULLTEXT：即为全文索引，目前只有MyISAM引擎支持。其可以在CREATE TABLE ，ALTER TABLE ，CREATE INDEX 使用，不过目前只有 CHAR、VARCHAR ，TEXT 列上可以创建全文索引。</li>
+<li>HASH：由于HASH的唯一及类似键值对的形式，很适合作为索引。 HASH索引可以一次定位，不需要像树形索引那样逐层查找,因此具有极高的效率。但是，这种高效是有条件的，即只在“&#x3D;”和“in”条件下高效，对于范围查询、排序及组合索引仍然效率不高。</li>
+<li>BTREE：BTREE索引就是一种将索引值按一定的算法，存入一个树形的数据结构中（二叉树），每次查询都是从树的入口root开始，依次遍历node，获取leaf。这是MySQL里默认和最常用的索引类型。</li>
+<li>RTREE：RTREE在MySQL很少使用，仅支持geometry数据类型，支持该类型的存储引擎只有MyISAM、BDb、InnoDb、NDb、Archive几种。 相对于BTREE，RTREE的优势在于范围查找。</li>
+</ul>
+<h2 id="索引种类"><a href="#索引种类" class="headerlink" title="索引种类"></a>索引种类</h2><p>再说一下<strong>索引种类</strong>：</p>
+<ul>
+<li>普通索引：仅加速查询</li>
+<li>唯一索引：加速查询 + 列值唯一（可以有null）</li>
+<li>主键索引：加速查询 + 列值唯一（不可以有null）+ 表中只有一个</li>
+<li>组合索引：多列值组成一个索引，专门用于组合搜索，其效率大于索引合并</li>
+<li>全文索引：对文本的内容进行分词，进行搜索</li>
+<li>索引合并：使用多个单列索引组合搜索</li>
+<li>覆盖索引：select的数据列只用从索引中就能够取得，不必读取数据行，换句话说查询列要被所建的索引覆盖</li>
+<li>聚簇索引：表数据是和主键一起存储的，主键索引的叶结点存储行数据(包含了主键值)，二级索引的叶结点存储行的主键值。使用的是B+树作为索引的存储结构，非叶子节点都是索引关键字，但非叶子节点中的关键字中不存储对应记录的具体内容或内容地址。叶子节点上的数据是主键与具体记录(数据内容)</li>
+</ul>
+<h2 id="索引结构"><a href="#索引结构" class="headerlink" title="索引结构"></a>索引结构</h2><p>其次说<strong>索引结构</strong>：</p>
+<p><strong>MyISAM</strong>：</p>
+<ol>
+<li>MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址，同样使用B+Tree作为索引结构，叶节点的data域存放的是数据记录的地址</li>
+<li>在MyISAM中，主索引和辅助索引（Secondary key）在结构上没有任何区别，只是主索引要求key是唯一的，而辅助索引的key可以重复</li>
+<li>MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录</li>
+</ol>
+<p><strong>InnoDB</strong>：</p>
+<ol>
+<li>InnoDB的数据文件本身就是索引文件，这棵树的叶节点data域保存了完整的数据记录（聚集索引）</li>
+<li>InnoDB的辅助索引data域存储相应记录主键的值而不是地址</li>
+<li>聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。</li>
+</ol>
+<p>补充一下**为什么InnoDB索引是B+**：</p>
+<ul>
+<li>Hash索引：Hash索引底层是哈希表，哈希表是一种以key-value存储数据的结构，所以多个数据在存储关系上是完全没有任何顺序关系的，所以，对于区间查询是无法直接通过索引查询的，就需要全表扫描。所以，哈希索引只适用于等值查询的场景。而B+ 树是一种多路平衡查询树，所以他的节点是天然有序的（左子节点小于父节点、父节点小于右子节点），所以对于范围查询的时候不需要做全表扫描</li>
+<li>二叉查找树：解决了排序的基本问题，但是由于无法保证平衡，可能退化为链表。</li>
+<li>平衡二叉树：通过旋转解决了平衡的问题，但是旋转操作效率太低。</li>
+<li>红黑树：通过舍弃严格的平衡和引入红黑节点，解决了 AVL旋转效率过低的问题，但是在磁盘等场景下，树仍然太高，IO次数太多。</li>
+<li>B+树：在B树的基础上，<strong>B+树相对于B树能够有更多的分支，使得这棵树更加矮胖，查询时做的IO操作次数也更少</strong>；此外将叶节点使用指针连接成链表，范围查询更加高效。B+树的<strong>非叶子节点不保存数据</strong>，只保存<strong>子树的临界值</strong>（最大或者最小），所以同样大小的节点。</li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/544e97672deb">B+树的高度</a></li>
+</ul>
+<p>补充B树：</p>
+<p>B树（英语: B-tree）是一种自平衡的树，能够保持数据有序。这种数据结构能够让<strong>查找数据、顺序访问、插入数据及删除的动作，都在对数时间内完成</strong>。B树，概括来说是一个<strong>一般化的二叉查找树</strong>（binary search tree），可以拥有最多2个子节点。与自平衡二叉查找树不同，B树适用于读写相对大的数据块的存储系统，例如磁盘。</p>
+<ul>
+<li>关键字集合分布在整颗树中；</li>
+<li>任何一个关键字出现且只出现在一个结点中；</li>
+<li>搜索有可能在非叶子结点结束；</li>
+<li>其搜索性能等价于在关键字全集内做一次二分查找；</li>
+</ul>
+<h2 id="索引失效"><a href="#索引失效" class="headerlink" title="索引失效"></a>索引失效</h2><p>查询什么时候不走<strong>索引</strong>：</p>
+<ol>
+<li><strong>模糊查询 %like</strong></li>
+<li><strong>索引列参与计算,使用了函数</strong></li>
+<li><strong>非最左前缀顺序</strong></li>
+<li><strong>where对null判断</strong></li>
+<li><strong>where不等于</strong></li>
+<li>or操作有至少一个字段没有索引</li>
+<li>需要回表的查询结果集过大（超过配置的范围）</li>
+<li><strong>将打算加索引的列设置为NOT NULL，否则将导致引擎放弃使用索引而进行全表扫描</strong></li>
+</ol>
+<h2 id="索引最左"><a href="#索引最左" class="headerlink" title="索引最左"></a>索引最左</h2><p><strong>索引最左原则：</strong></p>
+<p><strong>举例子</strong>：<br>如果索引列分别为A，B，C，顺序也是A，B，C：</p>
+<ul>
+<li>那么查询的时候，如果查询【A】【A，B】 【A，B，C】，那么可以通过索引查询</li>
+<li>如果查询的时候，采用【A，C】，那么C这个虽然是索引，但是由于中间缺失了B，因此C这个索引是用不到的，只能用到A索引</li>
+<li>如果查询的时候，采用【B】 【B，C】 【C】，由于没有用到第一列索引，不是最左前缀，那么后面的索引也是用不到了</li>
+<li>如果查询的时候，采用范围查询，并且是最左前缀，也就是第一列索引，那么可以用到索引，但是范围后面的列无法用到索引（比如，a&gt;&#x3D; 3 and b &#x3D; 4 and c &#x3D; 5; A走索引，bc不走）（比如，a &#x3D; 3 and b &gt;&#x3D; 4 and c &#x3D; 5; a和b走，c不走）</li>
+</ul>
+<p><strong>组合索引的底层其实按照第一个索引排序，从排序里面查第二个索引，以此类推。如果第一个索引失效，或者没有经过第一个索引，后面没发在前面的基础上查询。</strong></p>
+<h2 id="为什么使用索引"><a href="#为什么使用索引" class="headerlink" title="为什么使用索引"></a>为什么使用索引</h2><ul>
+<li>通过创建唯一性索引，可以保证数据库表中每一行数据的<strong>唯一性</strong>。</li>
+<li>可以大大加快数据的<strong>检索速度</strong>，这也是创建索引的最主要的原因。</li>
+<li>帮助服务器<strong>避免排序和临时表</strong>。</li>
+<li>将<strong>随机IO变为顺序IO</strong>。</li>
+<li>可以<strong>加速表和表之间的连接</strong>，特别是在实现数据的参考完整性方面特别有意义。</li>
+</ul>
+<p>但是使用索引要看一条准则—  那就是读写比例，我们知道索引的缺点：</p>
+<ul>
+<li>当对表中的数据进行增加、删除和修改的时候，<strong>索引也要动态的维护</strong>，这样就降低了数据的维护速度。</li>
+<li>索引需要<strong>占物理空间</strong>，除了数据表占数据空间之外，每一个索引还要占一定的物理空间，如果要建立簇索引，那么需要的空间就会更大。</li>
+<li><strong>创建索引和维护索引要耗费时间</strong>，这种时间随着数据量的增加而增加</li>
+</ul>
+<p><strong>你想，如果某个场景，发送10条请求，9条写，1条读。 加索引岂不是在浪费效率和空间？</strong></p>
+<h2 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h2><p>面试官：聊聊<strong>explain</strong></p>
+<p>我：好的，不过这一块内容好多，我只说几个关键的吧</p>
+<ol>
+<li>id : 表示SQL执行的顺序的标识,SQL从大到小的执行</li>
+<li>select_type：表示查询中每个select子句的类型</li>
+<li>table：显示这一行的数据是关于哪张表的，有时不是真实的表名字</li>
+<li>type：表示MySQL在表中找到所需行的方式，又称“访问类型”。常用的类型有： ALL, index,  range, ref, eq_ref, const, system, NULL（从左到右，性能从差到好）</li>
+<li>possible_keys：指出MySQL能使用哪个索引在表中找到记录，查询涉及到的字段上若存在索引，则该索引将被列出，但不一定被查询使用</li>
+<li>Key：key列显示MySQL实际决定使用的键（索引），如果没有选择索引，键是NULL。</li>
+<li>key_len：表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度（key_len显示的值为索引字段的最大可能长度，并非实际使用长度，即key_len是根据表定义计算而得，不是通过表内检索出的）</li>
+<li>ref：表示上述表的连接匹配条件，即哪些列或常量被用于查找索引列上的值</li>
+<li>rows： 表示MySQL根据表统计信息及索引选用情况，估算的找到所需的记录所需要读取的行数，理论上行数越少，查询性能越好</li>
+<li>Extra：该列包含MySQL解决查询的详细信息</li>
+</ol>
+<h2 id="慢查询优化"><a href="#慢查询优化" class="headerlink" title="慢查询优化"></a>慢查询优化</h2><p>面试官：慢查询优化</p>
+<p>我：我试试</p>
+<p>打开慢查询日志</p>
+<ol>
+<li>先运行看看是否真的很慢，注意设置SQL_NO_CACHE</li>
+<li>where条件单表查，锁定最小返回记录表。这句话的意思是把查询语句的where都应用到表中返回的记录数最小的表开始查起，单表每个字段分别查询，看哪个字段的区分度最高</li>
+<li>explain查看执行计划，是否与1预期一致（从锁定记录较少的表开始查询）</li>
+<li>order by limit 形式的sql语句让排序的表优先查（这里要注意如果数据量大，要注意了）</li>
+<li>了解业务方使用场景</li>
+<li>加索引时参照建索引的几大原则</li>
+<li>观察结果，不符合预期继续从0分析</li>
+</ol>
+<p>咱们知道，使用limit分页查询，offset越大，性能越差，比如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 以真实的生产环境的6万条数据的一张表为例，比较一下优化前后的查询耗时：</span></span><br><span class="line"><span class="comment">-- 传统limit，文件扫描</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> id limit <span class="number">50000</span>,<span class="number">2</span>;</span><br><span class="line">受影响的行: <span class="number">0</span></span><br><span class="line">时间:  <span class="number">0.171</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 子查询方式，索引扫描</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">where</span> id <span class="operator">&gt;=</span> (<span class="keyword">select</span> id <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> id limit <span class="number">50000</span> , <span class="number">1</span>)</span><br><span class="line">limit <span class="number">2</span>;</span><br><span class="line">受影响的行: <span class="number">0</span></span><br><span class="line">时间: <span class="number">0.035</span>s</span><br><span class="line"></span><br><span class="line"><span class="comment">-- JOIN分页方式</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">as</span> t1</span><br><span class="line"><span class="keyword">join</span> (<span class="keyword">select</span> id <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">order</span> <span class="keyword">by</span> id limit <span class="number">50000</span>, <span class="number">1</span>) <span class="keyword">as</span> t2</span><br><span class="line"><span class="keyword">where</span> t1.id <span class="operator">&lt;=</span> t2.id <span class="keyword">order</span> <span class="keyword">by</span> t1.id limit <span class="number">2</span>;</span><br><span class="line">受影响的行: <span class="number">0</span></span><br><span class="line">时间: <span class="number">0.036</span>s</span><br></pre></td></tr></table></figure>
+
+<p>原因：因为 MySQL 并非是跳过偏移量直接去取后面的数据，而是先把偏移量+要取的条数，然后再把前面偏移量这一段的数据抛弃掉再返回的。比如上面的(50000，2)，每次取2条，还要经过回表，发现不是想要的，舍弃。那肯定非常耗时间，而通过子查询通过id索引，只查询id，使用到了innodb的索引覆盖, 在内存缓冲区中进行检索,没有回表查询. 然后再用id &gt;&#x3D; 条件,进一步的缩小查询范围.这样就大大提高了效率。</p>
+<p>而MyISAM，是直接索引是分离的，通过索引文件查到的数据记录地址，不需要回表，直接对应数据记录，效率也很高。</p>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-02T08:44:06.767Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
