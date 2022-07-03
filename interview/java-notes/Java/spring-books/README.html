@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Spring书籍、源码分析与学习引言 个人Spring学习之旅，📝笔记。  参考笔记 b站视频入口 代码资料  思维导图 Spring注解驱动开发  目录说明组件注册 xml注册bean方式 xml注册包扫描方式 注解注册bean方式 注解注册包扫描方式 @Filter的使用 @Scope的使用 @Lazy的使用 @Conditional的使用 @Import的使用  生命周期 bean的生命周">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/Java/spring-books/README.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="Spring书籍、源码分析与学习引言 个人Spring学习之旅，📝笔记。  参考笔记 b站视频入口 代码资料  思维导图 Spring注解驱动开发  目录说明组件注册 xml注册bean方式 xml注册包扫描方式 注解注册bean方式 注解注册包扫描方式 @Filter的使用 @Scope的使用 @Lazy的使用 @Conditional的使用 @Import的使用  生命周期 bean的生命周">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/18.jpeg">
+<meta property="article:published_time" content="2022-07-03T08:00:04.006Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.640Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/18.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/Java/spring-books/README"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="Spring书籍、源码分析与学习"><a href="#Spring书籍、源码分析与学习" class="headerlink" title="Spring书籍、源码分析与学习"></a>Spring书籍、源码分析与学习</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><blockquote>
+<p>个人Spring学习之旅，📝笔记。</p>
+</blockquote>
+<h2 id="参考笔记"><a href="#参考笔记" class="headerlink" title="参考笔记"></a>参考笔记</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av32102436?p=1">b站视频入口</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/adanzzz/spring_source_parsing_data">代码资料</a></li>
+</ul>
+<h2 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.processon.com/view/link/5e30213ae4b096de64c8e9bf">Spring注解驱动开发</a></li>
+</ul>
+<h2 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h2><h3 id="组件注册"><a href="#组件注册" class="headerlink" title="组件注册"></a>组件注册</h3><ul>
+<li><a href="docs/1.xml%E6%B3%A8%E8%A7%A3bean%E6%96%B9%E5%BC%8F.md">xml注册bean方式</a></li>
+<li><a href="docs/2.xml%E6%B3%A8%E5%86%8C%E5%8C%85%E6%89%AB%E6%8F%8F%E6%96%B9%E5%BC%8F.md">xml注册包扫描方式</a></li>
+<li><a href="docs/3.%E6%B3%A8%E8%A7%A3%E6%B3%A8%E5%86%8Cbean%E6%96%B9%E5%BC%8F.md">注解注册bean方式</a></li>
+<li><a href="docs/4.%E6%B3%A8%E8%A7%A3%E6%B3%A8%E5%86%8C%E5%8C%85%E6%89%AB%E6%8F%8F%E6%96%B9%E5%BC%8F.md">注解注册包扫描方式</a></li>
+<li><a href="docs/5.@Filter%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Filter的使用</a></li>
+<li><a href="docs/6.@Scope%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Scope的使用</a></li>
+<li><a href="docs/7.@Lazy%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Lazy的使用</a></li>
+<li><a href="docs/8.@Conditional%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Conditional的使用</a></li>
+<li><a href="docs/9.@Import%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Import的使用</a></li>
+</ul>
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><ul>
+<li><a href="docs/10.bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.md">bean的生命周期</a></li>
+</ul>
+<h3 id="属性赋值"><a href="#属性赋值" class="headerlink" title="属性赋值"></a>属性赋值</h3><ul>
+<li><a href="docs/11.@Value%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Value的使用</a></li>
+<li><a href="docs/12.@PropertySource%E7%9A%84%E4%BD%BF%E7%94%A8.md">@PropertySource的使用</a></li>
+</ul>
+<h3 id="自动装配"><a href="#自动装配" class="headerlink" title="自动装配"></a>自动装配</h3><ul>
+<li><a href="docs/13.@Autowired%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Autowired的使用</a></li>
+<li><a href="docs/14.@Qualifier%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Qualifier的使用</a></li>
+<li><a href="docs/15.@Profile%E7%9A%84%E4%BD%BF%E7%94%A8.md">@Profile的使用</a></li>
+</ul>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><ul>
+<li><a href="docs/16.AOP%E5%B0%8F%E4%BE%8B%E5%AD%90.md">AOP小例子</a></li>
+</ul>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><ul>
+<li><a href="docs/17.Spring%E4%BA%8B%E5%8A%A1.md">Spring事务</a></li>
+<li><a href="docs/17.Spring%E4%BA%8B%E5%8A%A1.md">Spring事务源码</a></li>
+</ul>
+<h3 id="扩展原理"><a href="#扩展原理" class="headerlink" title="扩展原理"></a>扩展原理</h3><ul>
+<li><a href="docs/18.BeanFactoryPostProcessor.md">BeanFactoryPostProcessor</a></li>
+<li><a href="docs/19.BeanDefinitionRegistryPostProcessor.md">BeanDefinitionRegistryPostProcessor</a></li>
+<li><a href="docs/20.ApplicationListener.md">ApplicationListener</a></li>
+</ul>
+<h2 id="源码总结"><a href="#源码总结" class="headerlink" title="源码总结"></a>源码总结</h2><ul>
+<li><a href="Spring%E5%92%8CSpringAOP%E6%BA%90%E7%A0%81%E6%80%BB%E7%BB%93.md">Spring和SpringAOP</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringMVC-Principle">参考这位大佬的MVC原理</a> <strong>这位大佬总结的不错，可参考</strong></li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html">SpringMVC开发文档</a> <strong>这里就不贴视频中的SpringMVC工程</strong></li>
+</ul>
+<h2 id="手写简单的IOC和AOP"><a href="#手写简单的IOC和AOP" class="headerlink" title="手写简单的IOC和AOP"></a>手写简单的IOC和AOP</h2><ul>
+<li><a href="spring-ioc">手写简单的IOC</a> 非常简单，每行都有注释</li>
+<li><a href="spring-aop2">手写简单的AOP</a> 非常简单，每行都有注释</li>
+</ul>
+<h2 id="SpringBoot"><a href="#SpringBoot" class="headerlink" title="SpringBoot"></a>SpringBoot</h2><p><strong><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/springboot-guide/#/">参考这位大佬</a></strong><br><strong>项目结构过于具体简单的文件解释就不说了，主要是看细节和原理</strong></p>
+<ul>
+<li><a href="SpringBoot%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90.md">SpringBoot启动流程分析</a></li>
+</ul>
+<h2 id="Spring常见面试问题"><a href="#Spring常见面试问题" class="headerlink" title="Spring常见面试问题"></a>Spring常见面试问题</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions">参考这位大佬总结的，挺好的</a> 其实专注一个参考资料，认真备面就完全ok</li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_1-%e4%bb%80%e4%b9%88%e6%98%af-spring-%e6%a1%86%e6%9e%b6">什么是Spring框架</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_2-%e5%88%97%e4%b8%be%e4%b8%80%e4%ba%9b%e9%87%8d%e8%a6%81%e7%9a%84spring%e6%a8%a1%e5%9d%97%ef%bc%9f">列举一些重要的Spring模块</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_3-restcontroller-vs-controller">@RestController vs @Controller</a></li>
+<li><strong>@ResponseBody的作用</strong>：<strong>注解的作用是将 Controller 的方法返回的对象通过适当的转换器转换为指定的格式之后，写入到HTTP 响应(Response)对象的 body 中，通常用来返回 JSON 或者 XML 数据，返回 JSON 数据的情况比较多。</strong></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_41-%e8%b0%88%e8%b0%88%e8%87%aa%e5%b7%b1%e5%af%b9%e4%ba%8e-spring-ioc-%e5%92%8c-aop-%e7%9a%84%e7%90%86%e8%a7%a3">谈谈自己对于Spring IoC和AOP的理解</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_41-%e8%b0%88%e8%b0%88%e8%87%aa%e5%b7%b1%e5%af%b9%e4%ba%8e-spring-ioc-%e5%92%8c-aop-%e7%9a%84%e7%90%86%e8%a7%a3">SpringAOP和AspectAOP有什么区别</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_51-spring-%e4%b8%ad%e7%9a%84-bean-%e7%9a%84%e4%bd%9c%e7%94%a8%e5%9f%9f%e6%9c%89%e5%93%aa%e4%ba%9b">Spring中的bean的作用域有哪些</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_52-spring-%e4%b8%ad%e7%9a%84%e5%8d%95%e4%be%8b-bean-%e7%9a%84%e7%ba%bf%e7%a8%8b%e5%ae%89%e5%85%a8%e9%97%ae%e9%a2%98%e4%ba%86%e8%a7%a3%e5%90%97%ef%bc%9f">Spring中的单例bean的线程安全问题了解吗</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_53-component-%e5%92%8c-bean-%e7%9a%84%e5%8c%ba%e5%88%ab%e6%98%af%e4%bb%80%e4%b9%88%ef%bc%9f">@Component和@bean的区别是什么</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_54-%e5%b0%86%e4%b8%80%e4%b8%aa%e7%b1%bb%e5%a3%b0%e6%98%8e%e4%b8%baspring%e7%9a%84-bean-%e7%9a%84%e6%b3%a8%e8%a7%a3%e6%9c%89%e5%93%aa%e4%ba%9b">将一个类声明为Spring的bean的注解有哪些</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_55-spring-%e4%b8%ad%e7%9a%84-bean-%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f">Spring中的bean生命周期-一</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringBean">Spring中的bean生命周期-二</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_61-%e8%af%b4%e8%af%b4%e8%87%aa%e5%b7%b1%e5%af%b9%e4%ba%8e-spring-mvc-%e4%ba%86%e8%a7%a3">说说自己对于SpringMVC了解</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_62-springmvc-%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86%e4%ba%86%e8%a7%a3%e5%90%97">SpringMVC工作原理了解吗</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/SpringInterviewQuestions?id=_7-spring-%e6%a1%86%e6%9e%b6%e4%b8%ad%e7%94%a8%e5%88%b0%e4%ba%86%e5%93%aa%e4%ba%9b%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f%ef%bc%9f">Spring框架中用到了哪些设计模型-一</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/Spring-Design-Patterns">Spring框架中用到了哪些设计模型-二</a></li>
+</ul>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-03T08:25:55.395Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

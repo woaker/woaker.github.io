@@ -1,0 +1,1188 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>每天都不一样 | 每天都不一样</title><meta name="keywords" content="程序员"><meta name="author" content="woaker"><meta name="copyright" content="woaker"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="java-notes引言  个人博客 在线面试阅读 Dreamcats 的公众号：访问链接   🔖DreamCats   类型 名称 来源    小程序 在线面试助手 DreamCats   面经 大厂面经汇总 DreamCats   知识体系 Java 后端知识分类 DreamCats    疯狂吐血系列 DreamCats    知识架构思维导图 DreamCats   刷题 CS-Note">
+<meta property="og:type" content="website">
+<meta property="og:title" content="每天都不一样">
+<meta property="og:url" content="http://example.com/interview/java-notes/README.html">
+<meta property="og:site_name" content="每天都不一样">
+<meta property="og:description" content="java-notes引言  个人博客 在线面试阅读 Dreamcats 的公众号：访问链接   🔖DreamCats   类型 名称 来源    小程序 在线面试助手 DreamCats   面经 大厂面经汇总 DreamCats   知识体系 Java 后端知识分类 DreamCats    疯狂吐血系列 DreamCats    知识架构思维导图 DreamCats   刷题 CS-Note">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/21.jpeg">
+<meta property="article:published_time" content="2022-07-03T08:00:04.272Z">
+<meta property="article:modified_time" content="2022-07-02T08:42:37.646Z">
+<meta property="article:author" content="woaker">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/21.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/interview/java-notes/README"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '每天都不一样',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-07-02 16:42:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/image/15.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">每天都不一样</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/List"><i class="fa-fw fas fa-list"></i><span> Study</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></div><div class="menus_item"><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">每天都不一样</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h1 id="java-notes"><a href="#java-notes" class="headerlink" title="java-notes"></a>java-notes</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.heiye.site/">个人博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://heiye.site/java-interview/">在线面试阅读</a></li>
+<li><strong>Dreamcats 的公众号</strong>：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/NTRnfdPcr2pVnTvhFMYJCg">访问链接</a></li>
+</ul>
+</blockquote>
+<h3 id="🔖DreamCats"><a href="#🔖DreamCats" class="headerlink" title="🔖DreamCats"></a>🔖DreamCats</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>小程序</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/DreamCats/online-interview">在线面试助手</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td>面经</td>
+<td><a href="Java/mianjing/README.md">大厂面经汇总</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td>知识体系</td>
+<td><a href="Java/classify/README.md">Java 后端知识分类</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/crazy/README.md">疯狂吐血系列</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/mind/README.md">知识架构思维导图</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td>刷题</td>
+<td><a target="_blank" rel="noopener" href="http://www.cyc2018.xyz/">CS-Notes</a></td>
+<td>cyc</td>
+</tr>
+<tr>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/labuladong/fucking-algorithm">写算法套路模板</a></td>
+<td>labuladong</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/alg/%E6%8C%89%E7%83%AD%E5%BA%A6%E6%80%BB%E7%BB%93lc.md">按热度总结 lc</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/alg/%E5%89%91%E6%8C%87offer.md">剑指 Offer</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/alg/%E4%B8%AA%E4%BA%BA%E5%88%B7%E7%86%9F%E9%A2%98.md">个人秋招刷熟题</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/alg/README.md">秋招常考的热点题</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/bishi/sql.md">LC-SQL</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38354000">图解 SQL 面试题</a></td>
+<td>xxx</td>
+</tr>
+<tr>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://www.nowcoder.com/contestRoom">牛客走起来</a></td>
+<td>xxx</td>
+</tr>
+<tr>
+<td>项目</td>
+<td><a href="Java/bus/README.md">微服务班车在线预约系统-文档</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/DreamCats/school-bus">微服务班车在线预约系统-项目地址</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/B-Gzw20xKIPC_w4b_8bJiA">B 站淘了 2 个 Java 实战项目：选一个认真钻研即可</a></td>
+<td>JavaGuide</td>
+</tr>
+<tr>
+<td>其他</td>
+<td><a href="Java/jdk/README.md">JDK1.8 部分源码</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="books.md">相应阅读的书籍</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="Java/spring-books/README.md">Spring 简要学习</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/DreamCats/dream-script/blob/master/notify_lc.py">在线推送 lc 脚本</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/DreamCats/dream-script/blob/master/notify_know.py">在线推送知识点</a></td>
+<td>DreamCats</td>
+</tr>
+</tbody></table>
+<h2 id="文章系列"><a href="#文章系列" class="headerlink" title="文章系列"></a>文章系列</h2><blockquote>
+<p>有比较好的技术团队写的文章，值得大家阅读，受益匪浅。比如：阿里技术、美团技术团队等。</p>
+</blockquote>
+<h3 id="🔖-其他"><a href="#🔖-其他" class="headerlink" title="🔖 其他"></a>🔖 其他</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Other</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/EbookFoundation/free-programming-books">free-programming-books</a></td>
+<td>EbookFoundation</td>
+</tr>
+<tr>
+<td>Other</td>
+<td><a target="_blank" rel="noopener" href="https://tanqingbo.cn/CSBook001/">计算机专业电子书下载</a></td>
+<td>IT 码农</td>
+</tr>
+<tr>
+<td>Other</td>
+<td><a target="_blank" rel="noopener" href="https://tanqingbo.cn/CSBook001/">计算机专业电子书下载-2</a></td>
+<td>javaer-roadmap</td>
+</tr>
+<tr>
+<td>Other</td>
+<td><a target="_blank" rel="noopener" href="https://www.bookstack.cn/">各个技术开发文档</a></td>
+<td>书栈网</td>
+</tr>
+<tr>
+<td>Other</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/HUJxTbMr0mep9uxAOa4F0A">TikTok 二面: 说下二维码登录的原理？</a></td>
+<td>小哈学</td>
+</tr>
+<tr>
+<td>Other</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/9aUTvdKFbsi_fzuO0BjPvw">性能优化：关于缓存的一些思考</a></td>
+<td>阿里技术</td>
+</tr>
+<tr>
+<td>Other</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/yifeikong/reverse-interview-zh">技术面试最后反问面试官的话</a></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="📉Java"><a href="#📉Java" class="headerlink" title="📉Java"></a>📉Java</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://www.toutiao.com/a6940243711880364577/">面试官：谈谈 JVM 垃圾回收的三色标记，避坑建议看这篇就够了</a></td>
+<td>Java 码农之路</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4D49dPEfGlTV04vso3VT5Q">JVM 如何判断哪些对象可以回收？</a></td>
+<td>大鱼仙人</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/7UTEHA6pdHeitg1htzdcRw">Java Map 中那些巧妙的设计</a></td>
+<td>阿里技术团队</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/359249269">JDK 16 中的 ZGC：平均暂停时间 0.05 毫秒</a></td>
+<td>Glavo</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/G4z08HfiqJ4qm3th0KtovA">再谈 synchronized 锁升级</a></td>
+<td>码农参上</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6946087172143317023">Java 线程池源码解析</a></td>
+<td>Xiao 镔</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cswiki/p/14628286.html">String 的不可变真的是因为 final 吗？</a></td>
+<td>飞天小牛肉</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://www.toutiao.com/a6947938522997342734/">假期后来一波干货：一文理清 JVM 和 GC</a></td>
+<td>Java 架构师联盟</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/6svoUV"><strong>java</strong>高并发情况下<strong>sychronized</strong>有什么问题？</a></td>
+<td>Jian</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="http://mrw.so/6bwBMh">Java 并发高频面试题：聊聊你对 AQS 的理解？</a></td>
+<td>敖丙</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/E2fOUHOabm10k_EVugX08g">【基本功】不可不说的 Java“锁”事</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/5EG54Nhttp://mtw.so/5EG54N">并发下的 HashMap 为什么会引起死循环？？？</a></td>
+<td>Java 学习者社区</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Ie2jGnRqv0vGgWvrKU0tMA">两次被裁之后，我终于解决了数据库缓存一致性问题</a></td>
+<td>码农小说家</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6948034657321484318">别再纠结线程池大小&#x2F;线程数量了，没有固定公式的</a></td>
+<td>空无</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/5QnbxF">Spring 拦截器和过滤器的区别？</a></td>
+<td>华为云开发者社区</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/zTKcixJ6CUC-oq7VJMjYEA">面试官：能说出 Synchronized 同步方法的八种使用场景吗</a></td>
+<td>我是程序汪</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2014/09/23/java-memory-reordering.html">Java 内存访问重排序的研究</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="http://mrw.so/5suJqN">面试官：谈谈 JVM 垃圾回收的三色标记，避坑建议看这篇就够了</a></td>
+<td>Java 码农之路</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2016/11/04/nio.html">Java NIO 浅析</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2016/09/23/g1.html">Java Hotspot G1 GC 的一些关键技术</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2016/06/24/java-hashmap.html">Java 8 系列之重新认识 HashMap</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2020/08/06/new-zgc-practice-in-meituan.html">新一代垃圾回收器 ZGC 的探索与实践</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html">Java 线程池实现原理及其在美团业务中的实践</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>Spring</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6953623068568715294">盘点 SpringIOC : 循环依赖</a></td>
+<td>苦逼的程序源</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/tu90FNXKSQUID2l1dSZyJg">类加载常见错误总结，写得非常好！</a></td>
+<td>Java 之道</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/K5JrXsKVWoJ5JF3P95_P3w">Java 双刃剑之 Unsafe 类详解</a></td>
+<td>Dr Hydra</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4-U7SpexOR331zVd3FnWuQ">有了 CopyOnWrite 为何又要有 ReadWriteLock？</a></td>
+<td>java 金融</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6959333602748268575">ThreadLocal 使用与原理</a></td>
+<td>敖丙</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6963050105893027871">动态代理总结，你要知道的都在这里，无废话！</a></td>
+<td>月伴飞鱼</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/3uSBmQJcv9eEWs-mHl0Ifw">Java 并发-线程池篇-附场景分析</a></td>
+<td>汤圆</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jaLvb21yVHg2R_gJ-JSeVA">从源码角度学习 Java 动态代理</a></td>
+<td>盖伦专治花里胡哨</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6967184141833994248">现在已经卷到需要问三色标记了吗？</a></td>
+<td>艾小仙</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/afr-S_hpuidUHDOSVxjjcw">一文理解 JVM 线程属于用户态还是内核态</a></td>
+<td>全菜工程师小辉</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/EvVSyJYtI2kNe7DNw-q38A">一文理解 Java 中的 SPI 机制</a></td>
+<td>全菜工程师小辉</td>
+</tr>
+<tr>
+<td>Spring</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/AYCSL5BhfOcH-HpE1VP-mg">给老板解释解释，为什么要用 SpringCloud alibaba 作为微服务开发框架？？？</a></td>
+<td>票飘沙 Jam</td>
+</tr>
+<tr>
+<td>Spring</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mghio/p/14881156.html">如何实现一个简易版的 Spring - 如何实现 AOP（终结篇）</a></td>
+<td>mghio</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6974405506630680590">高频面试题-请把 Java 的双亲委派机制说清楚！</a></td>
+<td>Ijiran</td>
+</tr>
+<tr>
+<td>Spring</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6979398918429736996">北京某大公司：SpringBean 生命周期</a> k</td>
+<td>Java3y</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/5x9ScQ">通俗易懂的 ReentrantLock，不懂你来砍我</a></td>
+<td>程序猿阿星</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/qSkRtwH_jUjXHPxu0KDQxA">面试官：”遇到过死锁问题吗？怎么发生的？如何解决呢？”</a></td>
+<td>承香墨影</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/IVmVdCQCKOXk8NnHNcFz4A">String s&#x3D;”a”+”b”+”c”，到底创建了几个对象？</a></td>
+<td>码农参上</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4M4rePjjy8-UBVvCzHchTQ">聊聊 spring 事务失效的 12 种场景，太坑了</a></td>
+<td>苏三说技术</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/XYsEJyIo46jXhHE1sOR_0Q">面渣逆袭：JVM 经典五十问，这下面试稳了！</a></td>
+<td>老三</td>
+</tr>
+</tbody></table>
+<h3 id="📚-数据库"><a href="#📚-数据库" class="headerlink" title="📚 数据库"></a>📚 数据库</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CfcU1rde3SkDlvCJGXnK7A">分页场景（limit,offset）为什么会慢？</a></td>
+<td>Java 学习者社区</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://toutiao.io/k/z5c0vp0">谈谈 MySQL 锁</a></td>
+<td>郭儿的跋涉</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/2cOhU3L88E3_ZV3ywl136A">好代码实践：基于 Redis 的轻量级分布式均衡消费队列</a></td>
+<td>阿里技术团队</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://toutiao.io/k/47fg3nq">Redis 入门：Redis 概念和基础 (查看原文)</a></td>
+<td>Java 全栈知识体系</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2014/08/20/innodb-lock.html">Innodb 中的事务隔离级别和锁的关系</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2014/06/30/mysql-index.html">MySQL 索引原理及慢查询优化</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/X6FI9Ci7ZXGDNDCkh2VnNA">浅谈分库分表那些事儿</a></td>
+<td>阿里技术团队</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039915710">MySQL 与 Redis 缓存的同步方案</a></td>
+<td>民大哥</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hollischuang/p/14749826.html">我面试几乎必问：你设计索引的原则是什么？怎么避免索引失效？</a></td>
+<td>Hollischuang</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4S_BhPtIMikefPJLo5498Q">分区取模分库分表策略：多表事务分库内闭环解决方案</a></td>
+<td>阿里技术</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/mc1zzjy5fEbXCxwhJoWA2Q">亿级系统的 Redis 缓存如何设计？？？</a></td>
+<td>TomGE</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6964531365643550751">美团二面：Redis 与 MySQL 双写一致性如何保证？</a></td>
+<td>捡田螺的小男孩</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000040066409">索引失效的场景有哪些？索引何时会失效？</a></td>
+<td>民工哥</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qianyueric/p/14822012.html">看完这篇还不懂 MySQL 主从复制，可以回家躺平了～</a></td>
+<td>小羽</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://blog.csdn.net/y277an/article/details/97457358?spm=1001.2014.3001.5501">快速了解缓存穿透与缓存雪崩</a></td>
+<td>全菜工程师小辉</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/IdpY7CPxyqRNx3BYYxl2Ow">面试题：mysql 一棵 B+ 树能存多少条数据？</a></td>
+<td>TomGE</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/8gDVqlywLBl-MZa6XrtXug">为什么磁盘存储引擎用 b+树来作为索引结构？</a></td>
+<td>腾讯技术工程</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000040186654">源码级别了解 Redis 持久化</a></td>
+<td>蘑菇睡不着</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6978280894704386079">大厂经典面试题：Redis 为什么这么快？</a></td>
+<td>捡田螺的小男孩</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/LDUWmEb8z5mTjPZLlJ1iVw">一文了解数据拆分与分库分表</a></td>
+<td>全菜工程师小辉</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6983810713055658015">【redis 前传】zset 如何解决内部链表查找效率低下|跳表构建</a></td>
+<td>zxhtom</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/OYDfxgzNAOUGFILGk__CBQ">值得收藏，揭秘 MySQL 多版本并发控制实现原理</a></td>
+<td>架构精进之路</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/3yki4dljbLMgnOVrsqbk8w">慢 SQL 排查思路？就这。</a></td>
+<td>yes 的练级攻略</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cxuanBlog/p/15059928.html">42 张图带你撸完 MySQL 优化</a></td>
+<td>程序员 emcxuan</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/6iZInk">容易引起雪崩的两个处理</a></td>
+<td>编程一生</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VjsQR_co2oM11EywegZrMw">一个 MySQL 锁和面试官大战三十回合，我霸中霸！</a></td>
+<td>yes 的练级攻略</td>
+</tr>
+<tr>
+<td>MySQl</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/iQnArUNIsZFzVCj90MZjyg">五分钟搞懂 MySQL 索引下推</a></td>
+<td>老三</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><a target="_blank" rel="noopener" href="https://jishuin.proginn.com/p/763bfbd4d516">干货-16 张图吃透 Redis 架构演进</a></td>
+<td>IT</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/WyfRV-7sK_O8pxDZbPXQtQ">慢 sql 治理经典案例分享</a></td>
+<td>阿里技术</td>
+</tr>
+</tbody></table>
+<h3 id="🧾-分布式-amp-amp-中间件"><a href="#🧾-分布式-amp-amp-中间件" class="headerlink" title="🧾 分布式&amp;&amp;中间件"></a>🧾 分布式&amp;&amp;中间件</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分布式</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2016/09/29/distributed-system-mutually-exclusive-idempotence-cerberus-gtis.html">分布式系统互斥性与幂等性问题的分析与解决</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>分布式锁</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CiqQT4U3_NPbrBhGR6wAvQ">一文搞懂分布式锁的原理与实现</a></td>
+<td>架构精进之路</td>
+</tr>
+<tr>
+<td>并发</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jJTIBL8unJ-IRbDqgREsCw">【万级并发】电商库存扣减如何设计？不超卖！</a></td>
+<td>TomGE</td>
+</tr>
+<tr>
+<td>分布式事务</td>
+<td><a target="_blank" rel="noopener" href="http://mrw.so/5WvneB">七种分布式事务的解决方案，一次讲给你听</a></td>
+<td>moon 聊技术</td>
+</tr>
+<tr>
+<td>分布式</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6956790589606068232">服务端如何防止重复支付</a></td>
+<td>Markerhub</td>
+</tr>
+<tr>
+<td>限流</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6955201079017472014">为什么大厂服务并发高却很稳定？分布式服务熔断降级限流利器至 Hystrix</a></td>
+<td>zxhtom</td>
+</tr>
+<tr>
+<td>分布式锁</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/g7NbrelsUhYg8pVO96Ui1g">SpringBoot + Redis 分布式锁：模拟抢单</a></td>
+<td>JAVA 小咖秀</td>
+</tr>
+<tr>
+<td>消息队列</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/69rjv8">消息队列如何确保消息的有序性？</a></td>
+<td>杜亦舒</td>
+</tr>
+<tr>
+<td>消息队列</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/E5FWKPPhRBNhWaOiu2cXsQ">听叔一句劝，消息队列的水太深，你把握不住！</a></td>
+<td>单一色调</td>
+</tr>
+<tr>
+<td>分布式锁</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/v7xpp9Iu8apgsSOf2xkyyA">丢，隔壁的老哥又让我用分布式锁</a></td>
+<td>Java3y</td>
+</tr>
+<tr>
+<td>Dubbo</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/6vZwy9">详解 Apache Dubbo 的 SPI 实现机制</a></td>
+<td>Ning Peng</td>
+</tr>
+<tr>
+<td>分布式</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/E-chAZyHtaZOdA19mW59-Q">携程最终一致和强一致性缓存实践</a></td>
+<td>GSF</td>
+</tr>
+<tr>
+<td>分布式锁</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaoxiaotank/p/14982602.html">基于 Redis 的分布式锁设计</a></td>
+<td>xiaoxiaotank</td>
+</tr>
+<tr>
+<td>分布式</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jajian/p/10896624.html">分布式系统中一致性哈希算法</a></td>
+<td>码辣架构</td>
+</tr>
+<tr>
+<td>消息</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/kLb1pweomL19aGaiHjO3Fg">消息幂等（去重）如何解决？来看看这个方案！</a></td>
+<td>JAVA 日知录</td>
+</tr>
+<tr>
+<td>本地缓存</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ADcu_XKTJxXectMQ8S20SQ">Guava Cache 原理分析与最佳实践</a></td>
+<td>梓川</td>
+</tr>
+<tr>
+<td>分布式锁</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/35aCS_5GqLyzZS3VobL6fg">万字长文说透分布式锁</a></td>
+<td>多颗糖</td>
+</tr>
+<tr>
+<td>降级限流</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/-E3RupBNVia0qfph-iOo1w">高并发整体可用性：一文详解降级、限流和熔断</a></td>
+<td>Coder 的技术之路</td>
+</tr>
+<tr>
+<td>kafka</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/0dHPu8O70v69mVuM4--HfA">Kafka 为什么要放弃 Zookeeper</a></td>
+<td>捉虫大师</td>
+</tr>
+</tbody></table>
+<h3 id="🎈-数据结构"><a href="#🎈-数据结构" class="headerlink" title="🎈 数据结构"></a>🎈 数据结构</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/neol2vvmA_uXGbndKec1hw">常见的初级排序算法，这次全搞懂</a></td>
+<td>XSliently9527</td>
+</tr>
+<tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6947842412102287373">字节跳动最爱考的 64 道算法题（JS 版）</a></td>
+<td>图雀社区</td>
+</tr>
+<tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/JqaN_1GPiqRQzXt2AizmdA">MySQL 索引底层：B+树详解</a></td>
+<td>Java3y</td>
+</tr>
+<tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://tech.meituan.com/2016/12/02/redblack-tree.html">红黑树深入剖析及 Java 实现</a></td>
+<td>美团技术团队</td>
+</tr>
+<tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6953821179836629005">牛逼哄哄的 BitMap，到底牛逼在哪？</a></td>
+<td>ITl 老哥</td>
+</tr>
+<tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://www.wolai.com/dreamcat/iPRdAMVPcCJqiZ9gBd3Jvd?theme=dark">布隆过滤器</a></td>
+<td>DreamCats</td>
+</tr>
+<tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZziTk_ZwHRRaIgorarJMhQ">实现 LRU 缓存机制</a></td>
+<td>郭儿的跋涉</td>
+</tr>
+<tr>
+<td>算法</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Eyu1sKzrajttiQ0DxP5Q3w">实现 LFU 缓存机制</a></td>
+<td>郭儿的跋涉</td>
+</tr>
+</tbody></table>
+<h3 id="📖-计算机网络"><a href="#📖-计算机网络" class="headerlink" title="📖 计算机网络"></a>📖 计算机网络</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>计网</td>
+<td><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039905721">GET 和 POST 请求的本质区别是什么？原来我一直理解错了</a></td>
+<td>码农突围</td>
+</tr>
+<tr>
+<td>计网</td>
+<td><a target="_blank" rel="noopener" href="http://mtw.so/6otjBG">懵了！有了 HTTP，为什么还要 RPC</a></td>
+<td>小哈学</td>
+</tr>
+<tr>
+<td>计网</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QxY2Y8BhGTaGgOG1dyRuFg">“三次握手，四次挥手”这么讲，保证你忘不了</a></td>
+<td>三分恶</td>
+</tr>
+<tr>
+<td>计网</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6919755385330991112">超详细 DNS 协议解析</a></td>
+<td>飞天小牛肉</td>
+</tr>
+<tr>
+<td>计网</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904034181070861">傻傻分不清之 Cookie、Session、Token、JWT</a></td>
+<td>秋天不落叶</td>
+</tr>
+<tr>
+<td>计网</td>
+<td><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/402559256">简略图解：输入 url 到出现页面，浏览器做了什么？</a></td>
+<td>又拍云</td>
+</tr>
+</tbody></table>
+<h3 id="✉️-操作系统"><a href="#✉️-操作系统" class="headerlink" title="✉️ 操作系统"></a>✉️ 操作系统</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Oc787q5cK_83t5B6h631DQ">逛到底层看 NIO 的零拷贝</a></td>
+<td>皇甫嗷嗷叫</td>
+</tr>
+<tr>
+<td>系统</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/jhOSjVyRA6rNKqVT2pKMIQ">进程、线程与协程傻傻分不清？一文带你吃透！</a></td>
+<td>程序猿阿星</td>
+</tr>
+<tr>
+<td>系统</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903507594575886">虚拟内存的那点事儿</a></td>
+<td>Sylvanassun</td>
+</tr>
+<tr>
+<td>系统</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Tp680dfOB7Zb6xlXSay7XA">今晚：<strong>CPU</strong> 核数与线程数有什么关系？</a></td>
+<td>码农的荒岛求生</td>
+</tr>
+<tr>
+<td>系统</td>
+<td><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhaozhibo/p/15109430.html">谈谈操作系统的多进程</a></td>
+<td>ZhiboZhao</td>
+</tr>
+<tr>
+<td>系统</td>
+<td><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/czMlM6xuuyq2XlU_FB9aVQ">阿里二面：什么是 mmap？</a></td>
+<td>苏三说技术</td>
+</tr>
+</tbody></table>
+<h3 id="🍎-效率工具"><a href="#🍎-效率工具" class="headerlink" title="🍎 效率工具"></a>🍎 效率工具</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>写作</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7010985866185146399">图床，uPic 和阿里 oss 搭建与使用</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>Git</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7011413073881727013">你的文件需要 git，详细安装与使用（一）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>Git</td>
+<td><a target="_blank" rel="noopener" href="https://tc.dreamcat.ink/archives/18.html">你的文件需要 git，常用命令（二）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>文件</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7017382028865699877">mac 解决移动文件的痛点-yoink</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>图床</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7026587086920613896/">管理图床-oss-browser </a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>终端</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7026924031056019486/">时而花里胡哨，时而朴实无华-iterm2 </a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>rss</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7028022886380077093/">及时推送-RSSHub</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>vim</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7028887363266805773/">vim 编程-初探（一）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>vim</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7033966288863133732/">vim 编程-优雅（二）</a></td>
+<td>黑夜</td>
+</tr>
+</tbody></table>
+<h3 id="😣-源码阅读"><a href="#😣-源码阅读" class="headerlink" title="😣 源码阅读"></a>😣 源码阅读</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7012491394979725349">闲不下来-nginx 是什么？（一）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7012922394478116900">闲不下来-nginx 环境搭建（二）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7018372907780800526">闲不下来-nginx 源码全局认知（三）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/user/2928754709248584">闲不下来-nginx 配置文件（四）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7025426746228867102/">闲不下来-nginx 基本数据结构（五）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7026253473184219150/">闲不下来-nginx 数组结构（六）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7031466605297008647/">闲不下来-nginx 链表结构（七）</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7045147643555069988/">闲不下来-nginx 队列结构（八）</a></td>
+<td>司司</td>
+</tr>
+</tbody></table>
+<h3 id="👽-我学设计模式"><a href="#👽-我学设计模式" class="headerlink" title="👽 我学设计模式"></a>👽 我学设计模式</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设计模式</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7016615747073867784">我学设计模式-单例模式</a></td>
+<td>司司</td>
+</tr>
+<tr>
+<td>设计模式</td>
+<td><a target="_blank" rel="noopener" href="https://juejin.cn/post/7020608341969731591">我学设计模式-工厂模式</a></td>
+<td>司司</td>
+</tr>
+</tbody></table>
+<h3 id="💌-场景题"><a href="#💌-场景题" class="headerlink" title="💌 场景题"></a>💌 场景题</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>题目</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据结构</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/5d07538f.html">如何设计一个 map（一）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>数据结构</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/e46dcc51.html">如何设计一个并发 map（二）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>数据结构</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/bb676e1b.html">如何设计一个 LRU（三）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>数据结构</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/4662309e.html">如何设计一个布隆过滤器（四）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>系统设计</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/792e9ab.html">如何设计一个幂等方案（五）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>锁</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/cec40f04.html">如何设计一个读写锁（六）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>锁</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/aa3f1514.html">如何设计一个分布式锁（七）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>锁</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/f57ca5bc.html">如何设计一个乐观锁（八）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>登录</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/6f6c8f0a.html">二维码扫描登录的原理（九）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>登录</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/b0bd063d.html">手机验证码登录原理（十）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>登录</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/de27e5eb.html">手机号码一键登录原理（十一）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>登录</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/d3bfb199.html">app手机号码登录区分新用户（十二）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>订单</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/f567d34f.html">订单过期自动更新状态（十三）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>计数器</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/5fc6d5d6.html">基于Redis计数器的实现（十四）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>MySQL分页</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/121835cc.html">MySQL分页查询优化（十五）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>限流算法</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/7c4f38da.html">基于Golang实现的漏桶算法（十六）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>限流算法</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/112f9fb6.html">基于Golang实现的令牌桶算法（十七）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>系统设计</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/7bba2c37.html">如何设计拼单服务（十八）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>系统设计</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/7de561a6.html">如何设计短链服务（十九）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>系统设计</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/9a691261.html">如何设计视频弹幕服务（二十）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/3e3b3d85.html">MySQL并发事务写引发的问题（二十一）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>热key</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/d2e3e1b2.html">高并发热key的问题（二十二）</a></td>
+<td>黑夜</td>
+</tr>
+<tr>
+<td>库存</td>
+<td><a target="_blank" rel="noopener" href="https://blog.heiye.site/article/6d6a84b3.html">高并发情况下如何扣减库存（二十三） </a></td>
+<td>黑夜</td>
+</tr>
+</tbody></table>
+<h2 id="🙈-与我联系"><a href="#🙈-与我联系" class="headerlink" title="🙈 与我联系"></a>🙈 与我联系</h2><ul>
+<li>公众号(Dreamcats)：沉淀、分享、成长，专注于原创专题案例，以最易学习编程的方式分享知识，让自己和他人都能有所收获。个人秋招经历、🐂 客面经问题按照频率总结、Java 一系列知识、数据库、分布式、微服务、前端、技术面试、每日文章等(持续更新)</li>
+</ul>
+<p><img src="http://imgs.heiye.site/blog/wxgzh.jpg" alt="wx-gzh"></p>
+<ul>
+<li>小程序(在线面试助手)：包含各个大厂的面经、算法题、知识点，并且小程序包含长按复制和点击图片预览功能，同时小程序继续优化和开发。</li>
+</ul>
+<p><img src="http://imgs.heiye.site/blog/online-interview-qr.jpg" alt="wx-xcx"></p>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">woaker</div><div class="author-info__description">不积跬步无以至千里</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">194</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/woaker"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务"><img src="/image/12.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/micro-services/microservices-introduction/" title="微服务">微服务</a><time datetime="2022-07-02T01:48:10.973Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用"><img src="/image/11.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="缓存是如何使用"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-cache/" title="缓存是如何使用">缓存是如何使用</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列"><img src="/image/10.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消息队列"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/why-mq/" title="消息队列">消息队列</a><time datetime="2022-07-02T01:48:10.969Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis 主从架构"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-master-slave/" title="Redis 主从架构">Redis 主从架构</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式"><img src="/image/9.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis 的持久化有哪几种方式"/></a><div class="content"><a class="title" href="/2022/07/02/advanced-java/docs/high-concurrency/redis-persistence/" title="redis 的持久化有哪几种方式">redis 的持久化有哪几种方式</a><time datetime="2022-07-02T01:48:10.968Z" title="发表于 2022-07-02 09:48:10">2022-07-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/interview/"><span class="card-category-list-name">interview</span><span class="card-category-list-count">57</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/study/"><span class="card-category-list-name">study</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/interview/" style="font-size: 1.3em; color: #99a1ac">interview</a> <a href="/tags/java/" style="font-size: 1.5em; color: #99a9bf">java</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/study/" style="font-size: 1.5em; color: #99a9bf">study</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">59</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">135</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">194</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-07-03T08:25:55.395Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By woaker</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
